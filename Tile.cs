@@ -19,7 +19,7 @@
             {
                 return piece.ToString();
             }
-            return "+ ";
+            return ". ";
         }
     }
 }
