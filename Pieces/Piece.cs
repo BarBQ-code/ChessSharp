@@ -42,11 +42,5 @@ namespace ChessSharp
             return false;
         }
 
-        protected bool IsPieceBlocking(List<Tile> tiles, int x, int y)
-        {
-
-
-            return false;
-        }
     }
 }

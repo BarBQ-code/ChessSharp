@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessSharp.Pieces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,25 +7,102 @@ namespace ChessSharp
 {
     public class Grid
     {
-        public Tile[,] board { get; }
+        public Tile[,] Board { get; private set; }
 
-
-        public Tile GetTile(int x, int y)
+        public Grid()
         {
-            return board[x, y];
+            Init();
         }
 
-        public List<Tile> GetTilesInRow(int row) // get X axis
+        public void Init()
         {
-            return Enumerable.Range(0, this.board.GetLength(1))
-                .Select(x => this.board[row, x])
-                .ToList();
+            Board = new Tile[8, 8];
+
+            Board[0, 0] = new Tile(new Rook(false), 0, 0);
+            Board[0, 1] = new Tile(new Knight(false), 1, 0);
+            Board[0, 2] = new Tile(new Bishop(false), 2, 0);
+            Board[0, 3] = new Tile(new Queen(false), 3, 0);
+            Board[0, 4] = new Tile(new King(false), 4, 0);
+            Board[0, 5] = new Tile(new Bishop(false), 5, 0);
+            Board[0, 6] = new Tile(new Knight(false), 6, 0);
+            Board[0, 7] = new Tile(new Rook(false), 7, 0);
+            //Initialize pawns
+            for (int i = 0; i < 8; i++)
+            {
+                Board[1, i] = new Tile(new Pawn(false), i, 1);
+                Board[6, i] = new Tile(new Pawn(true), i, 6);
+            }
+
+            Board[7, 0] = new Tile(new Rook(true), 0, 7);
+            Board[7, 1] = new Tile(new Knight(true), 1, 7);
+            Board[7, 2] = new Tile(new Bishop(true), 2, 7);
+            Board[7, 3] = new Tile(new Queen(true), 3, 7);
+            Board[7, 4] = new Tile(new King(true), 4, 7);
+            Board[7, 5] = new Tile(new Bishop(true), 5, 7);
+            Board[7, 6] = new Tile(new Knight(true), 6, 7);
+            Board[7, 7] = new Tile(new Rook(true), 7, 7);
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 2; j < 6; j++)
+                {
+                    Board[j, i] = new Tile(null, i, j);
+                }
+            }
         }
-        public List<Tile> GetTilesInCol(int col) //get Y axis
+
+        public  Tile GetTile(int x, int y)
         {
-            return Enumerable.Range(0, this.board.GetLength(0))
-                .Select(x => this.board[x, col])
-                .ToList();
+            return Board[x, y];
+        }
+
+        public List<Tile> GetTilesInRow(Tile pos1, Tile pos2) // get X axis
+        {
+            List<Tile> res = new List<Tile>();
+
+            if(pos1.X == pos2.X)
+            {
+                return res; //return empty list
+            }
+            else if(pos1.X > pos2.X)
+            {
+                for (int i = pos1.X + 1; i < pos2.X; i++)
+                {
+                    res.Add(Board[pos1.Y, i]);
+                }
+            }
+            else
+            {
+                for (int i = pos2.X + 1; i < pos1.X; i++)
+                {
+                    res.Add(Board[pos1.Y, i]);
+                }
+            }
+            return res;
+        }
+        public List<Tile> GetTilesInCol(Tile pos1, Tile pos2) //get Y axis
+        {
+            List<Tile> res = new List<Tile>();
+
+            if (pos1.Y == pos1.Y)
+            {
+                return res; //return empty list
+            }
+            else if (pos1.Y > pos2.Y)
+            {
+                for (int i = pos1.Y + 1; i < pos2.Y; i++)
+                {
+                    res.Add(Board[i, pos1.X]);
+                }
+            }
+            else
+            {
+                for (int i = pos2.Y + 1; i < pos1.Y; i++)
+                {
+                    res.Add(Board[i, pos1.X]);
+                }
+            }
+            return res;
         }
 
         public List<Tile> GetDiagonalTiles(Tile start, Tile end)
@@ -34,7 +112,7 @@ namespace ChessSharp
             {
                 for (int j = start.X; j < end.X; j++)
                 {
-                    var tile = this.board[i, j];
+                    var tile = this.Board[i, j];
                     if (Math.Abs(start.X - tile.X) == Math.Abs(start.Y - tile.Y))
                         tiles.Add(tile);
                 }
@@ -48,6 +126,20 @@ namespace ChessSharp
             return res;
         }
 
+        public override string ToString()
+        {
+            string res = "";
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    res += Board[i, j].ToString();
+                }
+                res += Environment.NewLine;
+            }
+            return res;
+        }
+        
 
     }
 }

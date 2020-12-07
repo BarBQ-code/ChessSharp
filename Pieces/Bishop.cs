@@ -14,7 +14,7 @@ namespace ChessSharp.Pieces
         {
             List<Tile> res = new List<Tile>();
 
-            foreach (Tile tile in board.board)
+            foreach (Tile tile in board.Board)
             {
                 if (Math.Abs(piecePos.X - tile.X) != Math.Abs(piecePos.Y - tile.Y))
                 {

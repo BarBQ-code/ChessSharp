@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mishi\\source\\repos\\ChessSharp\\ChessSharp.csproj": {}
+    "C:\\Users\\mishi\\Desktop\\ChessSharp\\ChessSharp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mishi\\source\\repos\\ChessSharp\\ChessSharp.csproj": {
+    "C:\\Users\\mishi\\Desktop\\ChessSharp\\ChessSharp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mishi\\source\\repos\\ChessSharp\\ChessSharp.csproj",
+        "projectUniqueName": "C:\\Users\\mishi\\Desktop\\ChessSharp\\ChessSharp.csproj",
         "projectName": "ChessSharp",
-        "projectPath": "C:\\Users\\mishi\\source\\repos\\ChessSharp\\ChessSharp.csproj",
+        "projectPath": "C:\\Users\\mishi\\Desktop\\ChessSharp\\ChessSharp.csproj",
         "packagesPath": "C:\\Users\\mishi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mishi\\source\\repos\\ChessSharp\\obj\\",
+        "outputPath": "C:\\Users\\mishi\\Desktop\\ChessSharp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",

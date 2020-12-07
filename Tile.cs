@@ -6,11 +6,20 @@
         public int Y { get; set; }
         public Piece piece { get; set; }
 
-        public Tile(int x, int y, Piece p)
+        public Tile(Piece p, int x, int y)
         {
+            piece = p;
             X = x;
             Y = y;
-            piece = p;
+        }
+
+        public override string ToString()
+        {
+            if(piece != null)
+            {
+                return piece.ToString();
+            }
+            return "+ ";
         }
     }
 }

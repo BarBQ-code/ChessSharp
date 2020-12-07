@@ -16,12 +16,12 @@ namespace ChessSharp.Pieces
         {
             List<Tile> res = new List<Tile>();
 
-            foreach(Tile tile in board.board)
+            foreach(Tile tile in board.Board)
             {
                 //Rook logic
                 if (tile.X == piecePos.X)
                 {
-                    var tiles = board.GetTilesInRow(piecePos.X);
+                    var tiles = board.GetTilesInCol(piecePos, tile);
                     if (!IsPieceBlocking(tiles))
                     {
                         res.Add(tile);
@@ -29,7 +29,7 @@ namespace ChessSharp.Pieces
                 }
                 else if (tile.Y == piecePos.Y)
                 {
-                    var tiles = board.GetTilesInCol(piecePos.Y);
+                    var tiles = board.GetTilesInRow(piecePos, tile);
                     if (!IsPieceBlocking(tiles))
                     {
                         res.Add(tile);

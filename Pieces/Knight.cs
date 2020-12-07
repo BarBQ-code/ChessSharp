@@ -15,7 +15,7 @@ namespace ChessSharp.Pieces
         {
             List<Tile> res = new List<Tile>();
 
-            foreach(Tile tile in board.board)
+            foreach(Tile tile in board.Board)
             {
                 if(Grid.Distance(tile, piecePos) == validDistance)
                 {
