@@ -17,6 +17,11 @@
         {
             if(piece != null)
             {
+                if(!piece.IsWhite)
+                {
+                    return piece.ToString().ToLower();
+                }
+
                 return piece.ToString();
             }
             return ". ";

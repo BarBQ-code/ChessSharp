@@ -19,8 +19,8 @@ Console.WriteLine(board.ToString());
 
 Output:
 ```
-R N B Q K B N R
-P P P P P P P P
+r n b q k b n r
+p p p p p p p p
 . . . . . . . .
 . . . . . . . .
 . . . . . . . .
