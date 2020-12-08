@@ -15,20 +15,26 @@ namespace ChessSharp.Pieces
             pieceChar = 'P';
         }
 
-        public override List<Tile> GetAllMoves(Grid board, Tile piecePos)
+        public override List<Move> GetAllMoves(Grid board, Tile piecePos)
         {
-            List<Tile> res = new List<Tile>();
+            List<Move> moves = new List<Move>();
+            Move move;
 
             if(piecePos.piece.IsWhite)
             {
                 foreach (Tile tile in board.Board)
                 {
+                    if (tile.piece != null && tile.piece.IsWhite == piecePos.piece.IsWhite)
+                        continue;
+
                     //normal move
-                    if(tile.piece == null)
+                    if (tile.piece == null)
                     {
+                        move = new Move(piecePos, tile, board.CurrentPlayer);
+
                         if(Grid.Distance(tile, piecePos) == validDistances.normalMove && tile.Y == piecePos.Y + 1)
                         {
-                            res.Add(tile);
+                            moves.Add(move);
                         }
                         else if(Grid.Distance(tile, piecePos) == validDistances.firstMove && tile.Y == piecePos.Y + 2) //first move
                         {
@@ -37,7 +43,7 @@ namespace ChessSharp.Pieces
                             {
                                 if(!pawn.HasMoved)
                                 {
-                                    res.Add(tile);
+                                    moves.Add(move);
                                 }
                             }
                         }
@@ -46,11 +52,14 @@ namespace ChessSharp.Pieces
                     }
                     else //capture logic
                     {
+                       
+
                         if(tile.piece.IsWhite != piecePos.piece.IsWhite)
                         {
                             if((tile.X == piecePos.X - 1 || tile.X == piecePos.X + 1) && tile.Y == piecePos.Y + 1)
                             {
-                                res.Add(tile);
+                                move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
+                                moves.Add(move);
                             }
                         }
                     }
@@ -63,9 +72,11 @@ namespace ChessSharp.Pieces
                 {
                     if(tile.piece == null)
                     {
+                        move = new Move(piecePos, tile, board.CurrentPlayer);
+
                         if(Grid.Distance(tile, piecePos) == validDistances.normalMove && tile.Y == piecePos.Y - 1)
                         {
-                            res.Add(tile);
+                            moves.Add(move);
                         }
                         else if(Grid.Distance(tile, piecePos) == validDistances.firstMove && tile.Y == piecePos.Y - 2)
                         {
@@ -74,7 +85,7 @@ namespace ChessSharp.Pieces
                             {
                                 if (!pawn.HasMoved)
                                 {
-                                    res.Add(tile);
+                                    moves.Add(move);
                                 }
                             }
                         }
@@ -88,7 +99,8 @@ namespace ChessSharp.Pieces
                         {
                             if ((tile.X == piecePos.X - 1 || tile.X == piecePos.X + 1) && tile.Y == piecePos.Y - 1)
                             {
-                                res.Add(tile);
+                                move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
+                                moves.Add(move);
                             }
                         }
                     }
@@ -97,7 +109,7 @@ namespace ChessSharp.Pieces
             }
 
 
-            return res;
+            return moves;
         }
     }
 }

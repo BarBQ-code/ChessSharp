@@ -12,13 +12,13 @@ namespace ChessSharp.Pieces
         }
 
 
-        public override List<Tile> GetAllMoves(Grid board, Tile piecePos)
+        public override List<Move> GetAllMoves(Grid board, Tile piecePos)
         {
-            List<Tile> res = new Rook(piecePos.piece.IsWhite).GetAllMoves(board, piecePos);
+            List<Move> moves = new Rook(piecePos.piece.IsWhite).GetAllMoves(board, piecePos);
 
-            res.AddRange(new Bishop(piecePos.piece.IsWhite).GetAllMoves(board, piecePos));
+            moves.AddRange(new Bishop(piecePos.piece.IsWhite).GetAllMoves(board, piecePos));
 
-            return res;
+            return moves;
         }
 
         

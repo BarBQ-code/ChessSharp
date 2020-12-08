@@ -11,18 +11,30 @@ namespace ChessSharp.Pieces
             pieceChar = 'N';
         }
 
-        public override List<Tile> GetAllMoves(Grid board, Tile piecePos)
+        public override List<Move> GetAllMoves(Grid board, Tile piecePos)
         {
-            List<Tile> res = new List<Tile>();
+            List<Move> moves = new List<Move>();
+            Move move;
 
             foreach(Tile tile in board.Board)
             {
+                if (tile.piece != null && tile.piece.IsWhite == piecePos.piece.IsWhite)
+                    continue;
+
                 if(Grid.Distance(tile, piecePos) == validDistance)
                 {
-                    res.Add(tile);
+                    if(tile.piece != null)
+                    {
+                        move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
+                    }
+                    else
+                    {
+                        move = new Move(piecePos, tile, board.CurrentPlayer);
+                    }
+                    moves.Add(move);
                 }
             }
-            return res;
+            return moves;
         }
     }
 }

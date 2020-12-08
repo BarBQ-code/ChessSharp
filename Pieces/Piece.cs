@@ -14,19 +14,19 @@ namespace ChessSharp
             IsWhite = isWhite;
         }
 
-        public bool CanMove(Grid board, Tile start, Tile end)
+        public bool CanMove(Grid board, Move move)
         {
-            if (start.piece == null || end.piece == null)
+            if (move.Start.piece == null)
                 return false;
 
-            if (start.piece.IsWhite == end.piece.IsWhite)
-                return false;
-
-            return GetAllMoves(board, start).Contains(end);
+            if(move.End.piece != null)
+            {
+                if (move.Start.piece.IsWhite == move.End.piece.IsWhite)
+                    return false;
+            }
+            
+            return GetAllMoves(board, move.Start).Contains(move);
         }
-
-        public abstract List<Tile> GetAllMoves(Grid board, Tile piecePos);
-
         public override string ToString()
         {
             return pieceChar + " ";
@@ -41,6 +41,8 @@ namespace ChessSharp
             }
             return false;
         }
+
+        public abstract List<Move> GetAllMoves(Grid board, Tile piecePos);
 
     }
 }

@@ -20,7 +20,7 @@ namespace ChessSharp
         public Player Player { get; }
         public MoveType MoveType { get; }
 
-        public Move(Tile start, Tile end, Player player, MoveType moveType)
+        public Move(Tile start, Tile end, Player player, MoveType moveType = MoveType.Normal)
         {
             (Start, End, Player, MoveType) = (start, end, player, moveType);
         }

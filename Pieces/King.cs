@@ -24,8 +24,11 @@ namespace ChessSharp.Pieces
 
             foreach (Tile tile in board.Board) 
             {
+                if (tile.piece != null && tile.piece.IsWhite == piecePos.piece.IsWhite)
+                    continue;
+
                 // normal move
-                if(Grid.Distance(tile, piecePos) == validDistance.Item1 ||
+                if (Grid.Distance(tile, piecePos) == validDistance.Item1 ||
                     Grid.Distance(tile, piecePos) == validDistance.Item2)
                 {
                     if(!InCheck(board, tile, piecePos.piece.IsWhite))
