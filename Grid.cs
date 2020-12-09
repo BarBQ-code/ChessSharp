@@ -1,4 +1,5 @@
 ﻿using ChessSharp.Pieces;
+using ChessSharp.Players;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace ChessSharp
     {
         public Tile[,] Board { get; private set; }
 
+        public Player CurrentPlayer { get; private set; }
         public Grid()
         {
             Init();
@@ -18,29 +20,29 @@ namespace ChessSharp
         {
             Board = new Tile[8, 8];
 
-            Board[0, 0] = new Tile(new Rook(false), 0, 0);
-            Board[0, 1] = new Tile(new Knight(false), 1, 0);
-            Board[0, 2] = new Tile(new Bishop(false), 2, 0);
-            Board[0, 3] = new Tile(new Queen(false), 3, 0);
-            Board[0, 4] = new Tile(new King(false), 4, 0);
-            Board[0, 5] = new Tile(new Bishop(false), 5, 0);
-            Board[0, 6] = new Tile(new Knight(false), 6, 0);
-            Board[0, 7] = new Tile(new Rook(false), 7, 0);
+            Board[0, 0] = new Tile(new Rook(false), 0, 7);
+            Board[0, 1] = new Tile(new Knight(false), 1, 7);
+            Board[0, 2] = new Tile(new Bishop(false), 2, 7);
+            Board[0, 3] = new Tile(new Queen(false), 3, 7);
+            Board[0, 4] = new Tile(new King(false), 4, 7);
+            Board[0, 5] = new Tile(new Bishop(false), 5, 7);
+            Board[0, 6] = new Tile(new Knight(false), 6, 7);
+            Board[0, 7] = new Tile(new Rook(false), 7, 7);
             //Initialize pawns
             for (int i = 0; i < 8; i++)
             {
-                Board[1, i] = new Tile(new Pawn(false), i, 1);
-                Board[6, i] = new Tile(new Pawn(true), i, 6);
+                Board[1, i] = new Tile(new Pawn(false), i, 6);
+                Board[6, i] = new Tile(new Pawn(true), i, 1);
             }
 
-            Board[7, 0] = new Tile(new Rook(true), 0, 7);
-            Board[7, 1] = new Tile(new Knight(true), 1, 7);
-            Board[7, 2] = new Tile(new Bishop(true), 2, 7);
-            Board[7, 3] = new Tile(new Queen(true), 3, 7);
-            Board[7, 4] = new Tile(new King(true), 4, 7);
-            Board[7, 5] = new Tile(new Bishop(true), 5, 7);
-            Board[7, 6] = new Tile(new Knight(true), 6, 7);
-            Board[7, 7] = new Tile(new Rook(true), 7, 7);
+            Board[7, 0] = new Tile(new Rook(true), 0, 0);
+            Board[7, 1] = new Tile(new Knight(true), 1, 0);
+            Board[7, 2] = new Tile(new Bishop(true), 2, 0);
+            Board[7, 3] = new Tile(new Queen(true), 3, 0);
+            Board[7, 4] = new Tile(new King(true), 4, 0);
+            Board[7, 5] = new Tile(new Bishop(true), 5, 0);
+            Board[7, 6] = new Tile(new Knight(true), 6, 0);
+            Board[7, 7] = new Tile(new Rook(true), 7, 0);
 
             for (int i = 0; i < 8; i++)
             {
@@ -49,11 +51,65 @@ namespace ChessSharp
                     Board[j, i] = new Tile(null, i, j);
                 }
             }
+
+            CurrentPlayer = new Player(true);
+
         }
 
-        public  Tile GetTile(int x, int y)
+        public bool MakeMove(Move move)
         {
-            return Board[x, y];
+            if (move == null)
+                throw new ArgumentNullException(nameof(move));
+
+            Tile start = move.Start;
+            Tile end = move.End;
+
+            if (start.piece == null)
+                throw new InvalidOperationException("Source tile has no piece");
+
+            if (end.piece != null)
+            {
+                if (start.piece.IsWhite == end.piece.IsWhite)
+                    throw new InvalidOperationException("Source tile piece and destination tile piece are of the same team");
+            }
+
+            if(start.piece.CanMove(this, move))
+            {
+                GetTile(end).piece = GetTile(start).piece;
+                GetTile(start).piece = null;
+                CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
+                return true;
+            }
+            return false;
+        }
+
+        public List<Move> LegalMoves()
+        {
+            List<Move> moves = new List<Move>();
+
+            foreach(Tile tile in Board)
+            {
+                if(tile.piece != null)
+                {
+                    if (tile.piece.IsWhite == CurrentPlayer.IsWhite)
+                    {
+                        moves.AddRange(tile.piece.GetAllMoves(this, tile));
+                    }
+                }
+                
+            }
+
+            return moves;
+        }
+
+        public Tile GetTile(int x, int y)
+        {
+            return Board[y, x];
+        }
+
+        public Tile GetTile(Tile tile)
+        {
+            return GetTile(tile.X, tile.Y);
         }
 
         public List<Tile> GetTilesInRow(Tile pos1, Tile pos2) // get X axis
