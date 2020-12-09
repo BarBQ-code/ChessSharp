@@ -14,7 +14,7 @@ Inorder To Create A Quick Board:
 ```csharp
 
 Grid board = new Grid();
-Console.WriteLine(board.ToString());
+Console.WriteLine(board);
 ```
 
 Output:
@@ -35,6 +35,5 @@ Things To Add:
 En pessent
 Promotion
 Board Moves
-Move Class
 Testing
 ```
