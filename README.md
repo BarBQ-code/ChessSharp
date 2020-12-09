@@ -30,10 +30,21 @@ R N B Q K B N R
 
 ```
 
+Get All Possible Moves:
+
+```csharp
+List<Move> moves = board.LegalMoves();
+
+foreach(Move move in moves)
+{
+	Console.WriteLine(move);
+}
+
+```
+
 Things To Add:
 ```
 En pessent
 Promotion
-Board Moves
 Testing
 ```
