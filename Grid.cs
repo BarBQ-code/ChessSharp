@@ -20,29 +20,29 @@ namespace ChessSharp
         {
             Board = new Tile[8, 8];
 
-            Board[0, 0] = new Tile(new Rook(false), 0, 7);
-            Board[0, 1] = new Tile(new Knight(false), 1, 7);
-            Board[0, 2] = new Tile(new Bishop(false), 2, 7);
-            Board[0, 3] = new Tile(new Queen(false), 3, 7);
-            Board[0, 4] = new Tile(new King(false), 4, 7);
-            Board[0, 5] = new Tile(new Bishop(false), 5, 7);
-            Board[0, 6] = new Tile(new Knight(false), 6, 7);
-            Board[0, 7] = new Tile(new Rook(false), 7, 7);
+            Board[7, 0] = new Tile(new Rook(false), 0, 7);
+            Board[7, 1] = new Tile(new Knight(false), 1, 7);
+            Board[7, 2] = new Tile(new Bishop(false), 2, 7);
+            Board[7, 3] = new Tile(new Queen(false), 3, 7);
+            Board[7, 4] = new Tile(new King(false), 4, 7);
+            Board[7, 5] = new Tile(new Bishop(false), 5, 7);
+            Board[7, 6] = new Tile(new Knight(false), 6, 7);
+            Board[7, 7] = new Tile(new Rook(false), 7, 7);
             //Initialize pawns
             for (int i = 0; i < 8; i++)
             {
-                Board[1, i] = new Tile(new Pawn(false), i, 6);
-                Board[6, i] = new Tile(new Pawn(true), i, 1);
+                Board[6, i] = new Tile(new Pawn(false), i, 6);
+                Board[1, i] = new Tile(new Pawn(true), i, 1);
             }
 
-            Board[7, 0] = new Tile(new Rook(true), 0, 0);
-            Board[7, 1] = new Tile(new Knight(true), 1, 0);
-            Board[7, 2] = new Tile(new Bishop(true), 2, 0);
-            Board[7, 3] = new Tile(new Queen(true), 3, 0);
-            Board[7, 4] = new Tile(new King(true), 4, 0);
-            Board[7, 5] = new Tile(new Bishop(true), 5, 0);
-            Board[7, 6] = new Tile(new Knight(true), 6, 0);
-            Board[7, 7] = new Tile(new Rook(true), 7, 0);
+            Board[0, 0] = new Tile(new Rook(true), 0, 0);
+            Board[0, 1] = new Tile(new Knight(true), 1, 0);
+            Board[0, 2] = new Tile(new Bishop(true), 2, 0);
+            Board[0, 3] = new Tile(new Queen(true), 3, 0);
+            Board[0, 4] = new Tile(new King(true), 4, 0);
+            Board[0, 5] = new Tile(new Bishop(true), 5, 0);
+            Board[0, 6] = new Tile(new Knight(true), 6, 0);
+            Board[0, 7] = new Tile(new Rook(true), 7, 0);
 
             for (int i = 0; i < 8; i++)
             {
@@ -164,16 +164,23 @@ namespace ChessSharp
         public List<Tile> GetDiagonalTiles(Tile start, Tile end)
         {
             List<Tile> tiles = new List<Tile>();
-            for (int i = start.Y; i < end.Y; i++)
+
+            int minX = Math.Min(start.X, end.X);
+            int maxX = Math.Max(start.X, end.X);
+            int minY = Math.Min(start.Y, end.Y);
+            int maxY = Math.Max(start.Y, end.Y);
+
+            for(int i = minX + 1; i < maxX; i++)
             {
-                for (int j = start.X; j < end.X; j++)
+                for (int j = minY + 1; j < maxY; j++)
                 {
-                    var tile = this.Board[i, j];
+                    Tile tile = GetTile(i, j);
                     if (Math.Abs(start.X - tile.X) == Math.Abs(start.Y - tile.Y))
                         tiles.Add(tile);
                 }
             }
             return tiles;
+
         }
 
         public static double Distance(Tile start, Tile end)
@@ -185,9 +192,10 @@ namespace ChessSharp
         public override string ToString()
         {
             string res = "";
-            for (int i = 0; i < 8; i++)
+
+            for (int i = 7 ; i >= 0; i--)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 7; j >= 0; j--)
                 {
                     res += Board[i, j].ToString();
                 }
