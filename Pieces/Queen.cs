@@ -17,9 +17,8 @@ namespace ChessSharp.Pieces
             {
                 Tile start = move.Start;
 
-                if (!new Rook(start.piece.IsWhite).CanMove(board, move))
-                    return false;
-                if (!new Bishop(start.piece.IsWhite).CanMove(board, move))
+                if (!new Rook(start.piece.IsWhite).CanMove(board, move) &&
+                    !new Bishop(start.piece.IsWhite).CanMove(board, move))
                     return false;
 
                 return true;
