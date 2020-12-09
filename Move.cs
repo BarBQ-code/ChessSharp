@@ -24,5 +24,12 @@ namespace ChessSharp
         {
             (Start, End, Player, MoveType) = (start, end, player, moveType);
         }
+
+        public override string ToString()
+        {
+            string res = (char)('a' + Start.X) + (Start.Y + 1).ToString();
+            res += (char)('a' + End.X) + (End.Y + 1).ToString();
+            return res;
+        }
     }
 }
