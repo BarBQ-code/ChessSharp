@@ -10,39 +10,26 @@ namespace ChessSharp.Pieces
         {
             pieceChar = 'B';
         }
-        public override List<Move> GetAllMoves(Grid board, Tile piecePos)
+
+        public override bool CanMove(Grid board, Move move)
         {
-            List<Move> moves = new List<Move>();
-            Move move;
-
-            foreach (Tile tile in board.Board)
+            if(base.CanMove(board, move))
             {
-                if (tile.piece != null && tile.piece.IsWhite == piecePos.piece.IsWhite)
-                    continue;
+                Tile start = move.Start;
+                Tile end = move.End;
 
-                if (Math.Abs(piecePos.X - tile.X) != Math.Abs(piecePos.Y - tile.Y))
-                { 
-                    var tiles = board.GetDiagonalTiles(piecePos, tile);
- 
-                    if(!IsPieceBlocking(tiles))
-                    {
-                        if(tile.piece != null)
-                        {
-                            move = new Move(piecePos, tile, board.CurrentPlayer);
-                        }
-                        else
-                        {
-                            move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
-                        }
+                if (Math.Abs(start.X - end.X) != Math.Abs(start.Y - end.Y))
+                    return false;
 
-                        moves.Add(move);
-                    }
-                }
+                var tiles = board.GetDiagonalTiles(start, end);
+
+                if (IsPieceBlocking(tiles))
+                    return false;
+
+                return true;
             }
-
-            return moves;
+            return false;
         }
-
         
     }
 }

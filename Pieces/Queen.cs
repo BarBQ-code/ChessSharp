@@ -11,16 +11,20 @@ namespace ChessSharp.Pieces
             pieceChar = 'Q';
         }
 
-
-        public override List<Move> GetAllMoves(Grid board, Tile piecePos)
+        public override bool CanMove(Grid board, Move move)
         {
-            List<Move> moves = new Rook(piecePos.piece.IsWhite).GetAllMoves(board, piecePos);
+            if(base.CanMove(board, move))
+            {
+                Tile start = move.Start;
 
-            moves.AddRange(new Bishop(piecePos.piece.IsWhite).GetAllMoves(board, piecePos));
+                if (!new Rook(start.piece.IsWhite).CanMove(board, move))
+                    return false;
+                if (!new Bishop(start.piece.IsWhite).CanMove(board, move))
+                    return false;
 
-            return moves;
+                return true;
+            }
+            return false;
         }
-
-        
     }
 }

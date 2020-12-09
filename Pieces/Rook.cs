@@ -13,52 +13,37 @@ namespace ChessSharp.Pieces
         }
         public bool HasMoved { get; set; } = false;
 
-        public override List<Move> GetAllMoves(Grid board, Tile piecePos)
+        public override bool CanMove(Grid board, Move move)
         {
-            List<Move> moves = new List<Move>();
-            Move move;
-
-            foreach (Tile tile in board.Board)
+            if(base.CanMove(board, move))
             {
-                if (tile.piece != null && tile.piece.IsWhite == piecePos.piece.IsWhite)
-                    continue;
+                Tile start = move.Start;
+                Tile end = move.End;
 
-                if (tile.X == piecePos.X)
+                if (start.X == end.X)
                 {
-                    var tiles = board.GetTilesInCol(piecePos, tile);
-                    if(!IsPieceBlocking(tiles))
-                    {
-                        if (tile.piece != null)
-                        {
-                            move = new Move(piecePos, tile, board.CurrentPlayer);
-                        }
-                        else
-                        {
-                            move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
-                        }
+                    var tiles = board.GetTilesInCol(start, end);
 
-                        moves.Add(move);
-                    }
+                    if (IsPieceBlocking(tiles))
+                        return false;
+
+                    return true;
                 }
-                else if(tile.Y == piecePos.Y)
+                else if(start.Y == end.Y)
                 {
-                    var tiles = board.GetTilesInRow(piecePos, tile);
-                    if(!IsPieceBlocking(tiles))
-                    {
-                        if (tile.piece != null)
-                        {
-                            move = new Move(piecePos, tile, board.CurrentPlayer);
-                        }
-                        else
-                        {
-                            move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
-                        }
-                        moves.Add(move);
-                    }
+                    var tiles = board.GetTilesInRow(start, end);
+
+                    if (IsPieceBlocking(tiles))
+                        return false;
+
+                    return true;
                 }
+
+                return false;
             }
-            return moves;
+            return false;
         }
+
 
        
     }

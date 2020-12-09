@@ -15,101 +15,80 @@ namespace ChessSharp.Pieces
             pieceChar = 'P';
         }
 
-        public override List<Move> GetAllMoves(Grid board, Tile piecePos)
+        public override bool CanMove(Grid board, Move move)
         {
-            List<Move> moves = new List<Move>();
-            Move move;
-
-            if(piecePos.piece.IsWhite)
+            if(base.CanMove(board, move))
             {
-                foreach (Tile tile in board.Board)
+                Tile start = move.Start;
+                Tile end = move.End;
+
+                if(start.piece.IsWhite)
                 {
-                    if (tile.piece != null && tile.piece.IsWhite == piecePos.piece.IsWhite)
-                        continue;
-
-                    //normal move
-                    if (tile.piece == null)
+                    if (end.piece == null) // normal move
                     {
-                        move = new Move(piecePos, tile, board.CurrentPlayer);
+                        if (Grid.Distance(start, end) == validDistances.normalMove && start.Y + 1 == end.Y)
+                            return true;
 
-                        if(Grid.Distance(tile, piecePos) == validDistances.normalMove && tile.Y == piecePos.Y + 1)
+                        else if (Grid.Distance(start, end) == validDistances.firstMove && start.Y + 2 == end.Y) // first move
                         {
-                            moves.Add(move);
+                            Pawn pawn = start.piece as Pawn;
+
+                            if (pawn == null)
+                                return false;
+
+                            if (pawn.HasMoved)
+                                return false;
+
+                            return true;
                         }
-                        else if(Grid.Distance(tile, piecePos) == validDistances.firstMove && tile.Y == piecePos.Y + 2) //first move
-                        {
-                            Pawn pawn = piecePos.piece as Pawn;
-                            if(pawn != null)
-                            {
-                                if(!pawn.HasMoved)
-                                {
-                                    moves.Add(move);
-                                }
-                            }
-                        }
-                        // en passent logic
-                        // if move is promotion
+                        return false;
                     }
                     else //capture logic
                     {
-                       
+                        if (start.piece.IsWhite == end.piece.IsWhite)
+                            return false;
 
-                        if(tile.piece.IsWhite != piecePos.piece.IsWhite)
-                        {
-                            if((tile.X == piecePos.X - 1 || tile.X == piecePos.X + 1) && tile.Y == piecePos.Y + 1)
-                            {
-                                move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
-                                moves.Add(move);
-                            }
-                        }
+                        if ((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y + 1 == end.Y)
+                            return true;
+
+                        return false;
                     }
-
                 }
-            }
-            else
-            {
-                foreach(Tile tile in board.Board)
+                else
                 {
-                    if(tile.piece == null)
+                    if(end.piece == null) // normal moves
                     {
-                        move = new Move(piecePos, tile, board.CurrentPlayer);
+                        if (Grid.Distance(start, end) == validDistances.normalMove && start.Y - 1 == end.Y)
+                            return true;
 
-                        if(Grid.Distance(tile, piecePos) == validDistances.normalMove && tile.Y == piecePos.Y - 1)
+                        else if(Grid.Distance(start, end) == validDistances.firstMove && start.Y - 2 == end.Y)
                         {
-                            moves.Add(move);
-                        }
-                        else if(Grid.Distance(tile, piecePos) == validDistances.firstMove && tile.Y == piecePos.Y - 2)
-                        {
-                            Pawn pawn = piecePos.piece as Pawn;
-                            if (pawn != null)
-                            {
-                                if (!pawn.HasMoved)
-                                {
-                                    moves.Add(move);
-                                }
-                            }
-                        }
+                            Pawn pawn = start.piece as Pawn;
 
-                        //en pessent
-                        //promotion
+                            if (pawn == null)
+                                return false;
+
+                            if (pawn.HasMoved)
+                                return false;
+
+                            return true;
+                        }
+                        return false;
                     }
-                    else //captures
+                    else //capture logic
                     {
-                        if(tile.piece.IsWhite != piecePos.piece.IsWhite)
-                        {
-                            if ((tile.X == piecePos.X - 1 || tile.X == piecePos.X + 1) && tile.Y == piecePos.Y - 1)
-                            {
-                                move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
-                                moves.Add(move);
-                            }
-                        }
+                        if (start.piece.IsWhite == end.piece.IsWhite)
+                            return false;
+
+                        if ((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y - 1 == end.Y)
+                            return true;
+
+                        return false;
                     }
                 }
-                
             }
-
-
-            return moves;
+            return false;
         }
+        
     }
 }

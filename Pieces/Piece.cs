@@ -14,8 +14,11 @@ namespace ChessSharp
             IsWhite = isWhite;
         }
 
-        public bool CanMove(Grid board, Move move)
+        public virtual bool CanMove(Grid board, Move move)
         {
+            if (move == null)
+                return false;
+
             if (move.Start.piece == null)
                 return false;
 
@@ -24,8 +27,33 @@ namespace ChessSharp
                 if (move.Start.piece.IsWhite == move.End.piece.IsWhite)
                     return false;
             }
+
+            return true;
+        }
+        public List<Move> GetAllMoves(Grid board, Tile piecePos)
+        {
+            List<Move> moves = new List<Move>();
             
-            return GetAllMoves(board, move.Start).Contains(move);
+            foreach(Tile tile in board.Board)
+            {
+                Move move = null;
+
+                if (tile.piece == null)
+                {
+                    move = new Move(piecePos, tile, board.CurrentPlayer);
+                }
+                if (tile.piece != null && tile.piece.IsWhite != piecePos.piece.IsWhite)
+                {
+                    move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
+                }
+                
+                if(piecePos.piece.CanMove(board, move))
+                {
+                    moves.Add(move);
+                }
+            }
+
+            return moves;
         }
         public override string ToString()
         {
@@ -42,7 +70,6 @@ namespace ChessSharp
             return false;
         }
 
-        public abstract List<Move> GetAllMoves(Grid board, Tile piecePos);
 
     }
 }

@@ -17,72 +17,70 @@ namespace ChessSharp.Pieces
             pieceChar = 'K';
         }
 
-
-        public override List<Tile> GetAllMoves(Grid board, Tile piecePos)
+        public override bool CanMove(Grid board, Move move)
         {
-            List<Tile> res = new List<Tile>();
-
-            foreach (Tile tile in board.Board) 
+            if(base.CanMove(board, move))
             {
-                if (tile.piece != null && tile.piece.IsWhite == piecePos.piece.IsWhite)
-                    continue;
+                Tile start = move.Start;
+                Tile end = move.End;
 
-                // normal move
-                if (Grid.Distance(tile, piecePos) == validDistance.Item1 ||
-                    Grid.Distance(tile, piecePos) == validDistance.Item2)
+                if (Grid.Distance(start, end) == validDistance.Item1 ||
+                    Grid.Distance(start, end) == validDistance.Item2)
                 {
-                    if(!InCheck(board, tile, piecePos.piece.IsWhite))
-                    {
-                        res.Add(tile);
-                    }
+                    if (InCheck(board, end, start.piece.IsWhite))
+                        return false;
+
+                    return true;    
                 }
-                else if(Grid.Distance(tile, piecePos) == castlingDistance && piecePos.Y == tile.Y) // same rank and castling dist
+                else if(Grid.Distance(start, end) == castlingDistance && start.Y == end.Y) // same rank and castling distance
                 {
-                    if (tile.X > piecePos.X) //short castle 
+                    if(end.X > start.X) // short castle
                     {
-                        Rook rook = board.GetTile(tile.X + 1, tile.Y).piece as Rook;
-                        King king = piecePos.piece as King;
+                        Rook rook = board.GetTile(end.X + 1, end.Y).piece as Rook;
+                        King king = start.piece as King;
 
-                        if (rook != null && king != null)
+                        if (rook == null || king == null)
                         {
-                            if (!rook.HasMoved && !king.HasMoved)
-                            {
-                                var tiles = board.GetTilesInRow(tile, piecePos);
-                                if (!IsPieceBlocking(tiles))
-                                {
-                                    res.Add(tile);
-                                }
-                            }
+                            return false;
                         }
 
+                        if (rook.HasMoved || king.HasMoved)
+                            return false;
+
+                        var tiles = board.GetTilesInRow(start, end);
+
+                        if (CheckTilesInCheck(board, tiles, king.IsWhite))
+                            return false;
+
+                        if (IsPieceBlocking(tiles))
+                            return false;
+
+                        return true;
                     }
-                    else // long castle
+                    else //long castle
                     {
-                        Rook rook = board.GetTile(tile.X - 2, tile.Y).piece as Rook;
-                        King king = piecePos.piece as King;
-                        
-                        if(rook != null && king != null)
-                        {
-                            if(!rook.HasMoved && !king.HasMoved)
-                            {
-                                var tiles = board.GetTilesInRow(tile, piecePos);
+                        Rook rook = board.GetTile(end.X - 2, end.Y).piece as Rook;
+                        King king = start.piece as King;
 
-                                if (!CheckTilesInCheck(board, tiles, king.IsWhite))
-                                {
-                                    if (!IsPieceBlocking(tiles))
-                                    {
-                                        res.Add(tile);
-                                    }
-                                }
+                        if (rook == null || king == null)
+                            return false;
 
-                                
-                            }
-                        }
+                        if (rook.HasMoved || king.HasMoved)
+                            return false;
+
+                        var tiles = board.GetTilesInRow(start, end);
+
+                        if (CheckTilesInCheck(board, tiles, king.IsWhite))
+                            return false;
+
+                        if (IsPieceBlocking(tiles))
+                            return false;
+
+                        return true;
                     }
                 }
             }
-
-            return res;
+            return false;
         }
 
         public bool InCheck(Grid board, Tile kingLocation, bool teamColor)
@@ -91,7 +89,7 @@ namespace ChessSharp.Pieces
             {
                 if(tile.piece != null && tile.piece.IsWhite != teamColor) //if enemy team piece
                 {
-                    if(tile.piece.CanMove(board, tile, kingLocation))
+                    if(tile.piece.CanMove(board, new Move(tile, kingLocation, board.CurrentPlayer)))
                     {
                         return true;       
                     }
@@ -107,9 +105,9 @@ namespace ChessSharp.Pieces
             {
                 foreach(Tile cell in board.Board)
                 {
-                    if(cell.piece != null && cell.piece.IsWhite != teamColor)
+                    if(cell.piece != null && cell.piece.IsWhite != teamColor) // if enemy team
                     {
-                        if (cell.piece.CanMove(board, cell, tile))
+                        if (cell.piece.CanMove(board, new Move(cell, tile, board.CurrentPlayer)))
                         {
                             return true;
                         }
