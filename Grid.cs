@@ -122,14 +122,14 @@ namespace ChessSharp
             }
             else if(pos1.X > pos2.X)
             {
-                for (int i = pos1.X + 1; i < pos2.X; i++)
+                for (int i = pos2.X + 1; i < pos1.X; i++)
                 {
                     res.Add(Board[pos1.Y, i]);
                 }
             }
             else
             {
-                for (int i = pos2.X + 1; i < pos1.X; i++)
+                for (int i = pos1.X + 1; i < pos2.X; i++)
                 {
                     res.Add(Board[pos1.Y, i]);
                 }
@@ -140,20 +140,20 @@ namespace ChessSharp
         {
             List<Tile> res = new List<Tile>();
 
-            if (pos1.Y == pos1.Y)
+            if (pos1.Y == pos2.Y)
             {
                 return res; //return empty list
             }
             else if (pos1.Y > pos2.Y)
             {
-                for (int i = pos1.Y + 1; i < pos2.Y; i++)
+                for (int i = pos2.Y + 1; i < pos1.Y; i++)
                 {
                     res.Add(Board[i, pos1.X]);
                 }
             }
             else
             {
-                for (int i = pos2.Y + 1; i < pos1.Y; i++)
+                for (int i = pos1.Y + 1; i < pos2.Y; i++)
                 {
                     res.Add(Board[i, pos1.X]);
                 }
