@@ -57,7 +57,7 @@ namespace ChessSharp
         }
         public override string ToString()
         {
-            return pieceChar + " ";
+            return pieceChar.ToString();
         }
 
         protected bool IsPieceBlocking(List<Tile> tiles)
