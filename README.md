@@ -45,33 +45,36 @@ foreach(Move move in moves)
 OutPut:
 
 ```
-b1a3
-b1c3
-g1f3
-g1h3
-a2a3
-a2a4
-b2b3
-b2b4
-c2c3
-c2c4
-d2d3
-d2d4
-e2e3
-e2e4
-f2f3
-f2f4
-g2g3
-g2g4
-h2h3
-h2h4
+Na3
+Nc3
+Nf3
+Nh3
+a3
+a4
+b3
+b4
+c3
+c4
+d3
+d4
+e3
+e4
+f3
+f4
+g3
+g4
+h3
+h4
 ```
 
-Support For UCI Is Not Available Yet
+Simple UCI Is Available
 
 Things To Add:
 ```
 En pessent
 Promotion
 Testing
+Complex UCI
+FEN
+PGN
 ```
