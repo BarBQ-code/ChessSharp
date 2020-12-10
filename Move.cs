@@ -1,4 +1,5 @@
-﻿using ChessSharp.Players;
+﻿using ChessSharp.Pieces;
+using ChessSharp.Players;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,8 +28,22 @@ namespace ChessSharp
 
         public override string ToString()
         {
-            string res = (char)('a' + Start.X) + (Start.Y + 1).ToString();
-            res += (char)('a' + End.X) + (End.Y + 1).ToString();
+            string res = "";
+            if(Start.piece != null)
+            {
+                if(Start.piece is Pawn)
+                {
+                    res = (char)('a' + End.X) + (End.Y + 1).ToString();
+                    return res;
+                }
+                else
+                {
+                    res = Start.ToString();
+                    res.Remove(res.Length - 1);
+                    res += (char)('a' + End.X) + (End.Y + 1).ToString();
+                }
+                
+            }
             return res;
         }
     }
