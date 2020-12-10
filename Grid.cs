@@ -197,7 +197,8 @@ namespace ChessSharp
             {
                 for (int j = 7; j >= 0; j--)
                 {
-                    res += Board[i, j].ToString();
+                    res += Board[i, j].ToString() + " ";
+                    
                 }
                 res += Environment.NewLine;
             }
