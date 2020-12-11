@@ -12,7 +12,6 @@ Then Import The Library:
 Inorder To Create A Quick Board:
 
 ```csharp
-
 Grid board = new Grid();
 Console.WriteLine(board);
 ```
@@ -42,7 +41,7 @@ foreach(Move move in moves)
 
 ```
 
-OutPut:
+Output:
 
 ```
 Na3
