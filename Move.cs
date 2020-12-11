@@ -21,6 +21,8 @@ namespace ChessSharp
         public Player Player { get; }
         public MoveType MoveType { get; }
 
+        private const char capturesChar = 'x';
+
         public Move(Tile start, Tile end, Player player, MoveType moveType = MoveType.Normal)
         {
             (Start, End, Player, MoveType) = (start, end, player, moveType);
@@ -34,12 +36,15 @@ namespace ChessSharp
                 if(Start.piece is Pawn)
                 {
                     res = (char)('a' + End.X) + (End.Y + 1).ToString();
+                    if (MoveType == MoveType.Capture)
+                        res += capturesChar;
                     return res;
                 }
                 else
                 {
                     res = Start.ToString();
-                    res.Remove(res.Length - 1);
+                    if (MoveType == MoveType.Capture)
+                        res += capturesChar;
                     res += (char)('a' + End.X) + (End.Y + 1).ToString();
                 }
                 
