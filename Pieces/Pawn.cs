@@ -6,13 +6,20 @@ namespace ChessSharp.Pieces
 {
     public class Pawn : Piece
     {
-        public bool HasMoved { get; set; } = false;
+        
 
         private (int normalMove, int firstMove) validDistances = (1, 4);
+
+        private int startingRank { get; }
 
         public Pawn(bool isWhite) : base(isWhite)
         {
             pieceChar = 'P';
+
+            if (isWhite)
+                startingRank = 1;
+            else
+                startingRank = 6;
         }
 
         public override bool CanMove(Grid board, Move move)
@@ -36,7 +43,7 @@ namespace ChessSharp.Pieces
                             if (pawn == null)
                                 return false;
 
-                            if (pawn.HasMoved)
+                            if (pawn.startingRank != start.Y)
                                 return false;
 
                             return true;
@@ -68,7 +75,7 @@ namespace ChessSharp.Pieces
                             if (pawn == null)
                                 return false;
 
-                            if (pawn.HasMoved)
+                            if (pawn.startingRank != start.Y)
                                 return false;
 
                             return true;
