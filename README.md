@@ -7,7 +7,9 @@ Add A New Console Application Project And Add This Library As A Reference
 
 Then Import The Library:
 
-```csharp using ChessSharp; ```
+```csharp 
+using ChessSharp; 
+```
 
 Inorder To Create A Quick Board:
 
