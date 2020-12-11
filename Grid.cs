@@ -35,7 +35,6 @@ namespace ChessSharp
             else if(teamFlag[0] == 'b')
             {
                 CurrentPlayer = new Player(false);
-
             }
             else
             {
@@ -44,6 +43,7 @@ namespace ChessSharp
             
 
             string[] boardState = arr[0].Split('/');
+
             for(int i = 0; i < boardState.Length; i++)
             {
                 int xPos = 0;
@@ -180,6 +180,9 @@ namespace ChessSharp
 
         public Tile GetTile(int x, int y)
         {
+            if (x < 0 || x > 7 || y < 0 || y > 7)
+                throw new IndexOutOfRangeException();
+            
             return Board[y, x];
         }
 
