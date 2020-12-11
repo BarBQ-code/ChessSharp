@@ -31,6 +31,25 @@ R N B Q K B N R
 
 ```
 
+Or Create A Board Through Using FEN:
+
+```csharp
+Grid board = new Grid("5r2/2p2rb1/1pNp4/p2Pp1pk/2P1K3/PP3PP1/5R2/5R2 w - - 1 51");
+Console.WriteLine(board);
+```
+
+Output:
+```
+. . . . . r . .
+. . p . . r b .
+. p N p . . . .
+p . . P p . p k
+. . P . K . . .
+P P . . . P P .
+. . . . . R . .
+. . . . . R . .
+```
+
 Get All Possible Moves:
 
 ```csharp
