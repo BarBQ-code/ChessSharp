@@ -22,6 +22,27 @@ namespace ChessSharp
             Board = new Tile[8, 8];
 
             string[] arr = fen.Split(' ');
+
+            string teamFlag = arr[1];
+
+            if(teamFlag.Length != 1)
+                throw new ArgumentException("Invalid board state");
+
+            if(teamFlag[0] == 'w')
+            {
+                CurrentPlayer = new Player(true);
+            } 
+            else if(teamFlag[0] == 'b')
+            {
+                CurrentPlayer = new Player(false);
+
+            }
+            else
+            {
+                throw new ArgumentException("Invalid board state");
+            }
+            
+
             string[] boardState = arr[0].Split('/');
             for(int i = 0; i < boardState.Length; i++)
             {
