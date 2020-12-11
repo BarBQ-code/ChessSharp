@@ -16,6 +16,61 @@ namespace ChessSharp
             Init();
         }
 
+        // fen to board
+        public Grid(string fen)
+        {
+            Board = new Tile[8, 8];
+
+            string[] arr = fen.Split(' ');
+            string[] boardState = arr[0].Split('/');
+            for(int i = 0; i < boardState.Length; i++)
+            {
+                int xPos = 0;
+                foreach (char ch in boardState[i])
+                {
+                    
+                    int number;
+
+                    bool success = int.TryParse(ch.ToString(), out number);
+                    if (success)
+                    {
+                        for (int j = 0; j < number; j++)
+                        {
+                            Board[7 - i, xPos] = new Tile(null, xPos, 7 - i);
+                            xPos++;
+                        }
+                    }
+                    else
+                    {
+                        Piece piece = ch switch 
+                        { 
+                            'p' => new Pawn(false),
+                            'r' => new Rook(false),
+                            'n' => new Knight(false),
+                            'b' => new Bishop(false),
+                            'q' => new Queen(false),
+                            'k' => new King(false),
+                            'P' => new Pawn(true),
+                            'R' => new Rook(true),
+                            'N' => new Knight(true),
+                            'B' => new Bishop(true),
+                            'Q' => new Queen(true),
+                            'K' => new King(true),
+                            _ => null
+                        };
+
+                        if (piece == null)
+                            throw new ArgumentException("Invalid board state");
+
+                        Board[7 - i, xPos] = new Tile(piece, xPos, 7 - i);
+                        xPos++;
+                    }
+                }
+                
+            }
+
+        }
+
         public void Init()
         {
             Board = new Tile[8, 8];
@@ -195,11 +250,11 @@ namespace ChessSharp
 
             for (int i = 7 ; i >= 0; i--)
             {
-                for (int j = 7; j >= 0; j--)
+                for (int j = 0; j < 8; j++)
                 {
                     res += Board[i, j].ToString() + " ";
-                    
                 }
+
                 res += Environment.NewLine;
             }
             return res;
