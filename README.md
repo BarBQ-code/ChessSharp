@@ -53,7 +53,7 @@ P P . . . P P .
 
 To Create A Move:
 
-```chsarp
+```csharp
 Move e4 = Move.FromUCI(board, "e2e4");
 board.MakeMove(e4);
 Console.WriteLine(board);
