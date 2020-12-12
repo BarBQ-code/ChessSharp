@@ -12,9 +12,15 @@ namespace ChessSharp.Pieces
 
         public bool HasMoved { get; set; } = false;
 
+        private int startingRank;
+
         public King(bool isWhite) : base(isWhite)
         {
             pieceChar = 'K';
+            if (isWhite)
+                startingRank = 0;
+            else
+                startingRank = 7;
         }
 
         public override bool CanMove(Grid board, Move move)
@@ -32,7 +38,7 @@ namespace ChessSharp.Pieces
 
                     return true;    
                 }
-                else if(Grid.Distance(start, end) == castlingDistance && start.Y == end.Y) // same rank and castling distance
+                else if(Grid.Distance(start, end) == castlingDistance && start.Y == end.Y && start.Y == startingRank) // same rank and castling distance
                 {
                     if(end.X > start.X) // short castle
                     {
