@@ -6,7 +6,6 @@ namespace ChessSharp.Pieces
 {
     public class Rook : Piece
     {
-
         public Rook(bool isWhite) : base(isWhite)
         {
             pieceChar = 'R';
@@ -44,7 +43,9 @@ namespace ChessSharp.Pieces
             return false;
         }
 
-
-       
+        public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

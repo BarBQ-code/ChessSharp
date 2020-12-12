@@ -69,6 +69,7 @@ namespace ChessSharp
                 if (tile.piece != null)
                     return true;
             }
+
             return false;
         }
 

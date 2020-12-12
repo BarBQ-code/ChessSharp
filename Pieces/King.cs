@@ -124,6 +124,9 @@ namespace ChessSharp.Pieces
             return false;
         }
 
-        
+        public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

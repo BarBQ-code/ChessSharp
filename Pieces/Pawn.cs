@@ -6,10 +6,7 @@ namespace ChessSharp.Pieces
 {
     public class Pawn : Piece
     {
-        
-
         private (int normalMove, int firstMove) validDistances = (1, 4);
-
         private int startingRank { get; }
 
         public Pawn(bool isWhite) : base(isWhite)
@@ -96,6 +93,10 @@ namespace ChessSharp.Pieces
             }
             return false;
         }
-        
+
+        public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
