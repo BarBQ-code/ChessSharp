@@ -42,7 +42,7 @@ namespace ChessSharp
                 {
                     move = new Move(piecePos, tile, board.CurrentPlayer);
                 }
-                if (tile.piece != null && tile.piece.IsWhite != piecePos.piece.IsWhite)
+                else if (tile.piece != null && tile.piece.IsWhite != piecePos.piece.IsWhite)
                 {
                     move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
                 }
@@ -55,6 +55,8 @@ namespace ChessSharp
 
             return moves;
         }
+        public abstract bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation); 
+
         public override string ToString()
         {
             return pieceChar.ToString();
