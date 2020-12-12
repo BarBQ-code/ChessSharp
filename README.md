@@ -50,6 +50,27 @@ P P . . . P P .
 . . . . . R . .
 ```
 
+
+To Create A Move:
+
+```chsarp
+Move e4 = Move.FromUCI(board, "e2e4");
+board.MakeMove(e4);
+Console.WriteLine(board);
+```
+
+Output:
+```
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . P . . .
+. . . . . . . .
+P P P P . P P P
+R N B Q K B N R
+```
+
 Get All Possible Moves:
 
 ```csharp
