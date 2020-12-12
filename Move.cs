@@ -28,6 +28,34 @@ namespace ChessSharp
             (Start, End, Player, MoveType) = (start, end, player, moveType);
         }
 
+        public static Move FromUCI(Grid board, string uci, Piece piece = null)
+        {
+            Move move = null;
+
+            if (uci.Length != 4)
+                throw new ArgumentException("UCI must be 4 chararacthers");
+
+            int startX = (int)(uci[0] - 'a');
+            int startY = int.Parse(uci[1].ToString()) - 1;
+            int endX = (int)(uci[2] - 'a');
+            int endY = int.Parse(uci[3].ToString()) - 1;
+
+            Tile start = board.GetTile(startX, startY);
+            Tile end = board.GetTile(endX, endY);
+
+            if(end.piece != null)
+            {
+                move = new Move(start, end, board.CurrentPlayer, MoveType.Capture);
+            }
+            else
+            {
+                move = new Move(start, end, board.CurrentPlayer);
+            }
+
+
+            return move;
+        }
+
         public override string ToString()
         {
             string res = "";
