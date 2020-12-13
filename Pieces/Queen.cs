@@ -28,7 +28,11 @@ namespace ChessSharp.Pieces
 
         public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
         {
-            throw new NotImplementedException();
+            if (!new Rook(piecePos.piece.IsWhite).IsAttackingTile(board, piecePos, destionation) &&
+                !new Bishop(piecePos.piece.IsWhite).IsAttackingTile(board, piecePos, destionation))
+                return false;
+
+            return true;
         }
     }
 }
