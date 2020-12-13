@@ -114,10 +114,10 @@ namespace ChessSharp.Pieces
                 {
                     if(cell.piece != null && cell.piece.IsWhite != teamColor) // if enemy team
                     {
-                        if (cell.piece.CanMove(board, new Move(cell, tile, board.CurrentPlayer)))
+                        if(cell.piece.IsAttackingTile(board, cell, tile))
                         {
                             return true;
-                        }
+                        }    
                     }
                 }
             }
