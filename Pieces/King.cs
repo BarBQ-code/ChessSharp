@@ -33,7 +33,7 @@ namespace ChessSharp.Pieces
                 if (Grid.Distance(start, end) == validDistance.Item1 ||
                     Grid.Distance(start, end) == validDistance.Item2)
                 {
-                    if (InCheck(board, end, start.piece.IsWhite))
+                    if (IsTileAttacked(board, end, start.piece.IsWhite))
                         return false;
 
                     return true;    
@@ -45,13 +45,18 @@ namespace ChessSharp.Pieces
                         Rook rook = board.GetTile(end.X + 1, end.Y).piece as Rook;
                         King king = start.piece as King;
 
+                        
+
                         if (rook == null || king == null)
                         {
                             return false;
                         }
 
-                        if (rook.HasMoved || king.HasMoved)
+                        if (king.InCheck(board, start, king.IsWhite))
                             return false;
+
+                        if (rook.HasMoved || king.HasMoved)
+                        return false;
 
                         var tiles = board.GetTilesInRow(start, end);
 
@@ -69,6 +74,9 @@ namespace ChessSharp.Pieces
                         King king = start.piece as King;
 
                         if (rook == null || king == null)
+                            return false;
+
+                        if (king.InCheck(board, start, king.IsWhite))
                             return false;
 
                         if (rook.HasMoved || king.HasMoved)
@@ -130,6 +138,21 @@ namespace ChessSharp.Pieces
                 Grid.Distance(piecePos, destionation) == validDistance.Item2)
                 return true;
 
+            return false;
+        }
+
+        public bool IsTileAttacked(Grid board, Tile tilePos, bool team)
+        {
+            foreach(Tile tile in board.Board)
+            {
+                if(tile.piece != null && tile.piece.IsWhite != team) // if enemy team
+                {
+                    if(tile.piece.IsAttackingTile(board, tile, tilePos))
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
     }
