@@ -61,8 +61,10 @@ namespace ChessSharp.Pieces
                 if (IsPieceBlocking(tiles))
                     return false;
 
+                return true;
             }
-            return true;
+            return false;
+           
 
         }
     }
