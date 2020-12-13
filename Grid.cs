@@ -262,6 +262,21 @@ namespace ChessSharp
 
         }
 
+        public bool IsTileAttacked(Tile tilePos, bool team)
+        {
+            foreach (Tile tile in Board)
+            {
+                if(tile.piece != null && tile.piece.IsWhite != team) //if enemy piece
+                {
+                    if(tile.piece.IsAttackingTile(this, tile, tilePos))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public static double Distance(Tile start, Tile end)
         {
             double res = Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2);
