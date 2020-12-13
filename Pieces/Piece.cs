@@ -14,6 +14,7 @@ namespace ChessSharp
             IsWhite = isWhite;
         }
 
+        public abstract bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation); 
         public virtual bool CanMove(Grid board, Move move)
         {
             if (move == null)
@@ -55,7 +56,6 @@ namespace ChessSharp
 
             return moves;
         }
-        public abstract bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation); 
 
         public override string ToString()
         {
