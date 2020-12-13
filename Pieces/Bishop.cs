@@ -33,7 +33,15 @@ namespace ChessSharp.Pieces
 
         public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
         {
-            throw new NotImplementedException();
+            if (Math.Abs(piecePos.X - destionation.X) != Math.Abs(piecePos.Y - destionation.Y))
+                return false;
+
+            var tiles = board.GetDiagonalTiles(piecePos, destionation);
+
+            if (IsPieceBlocking(tiles))
+                return false;
+
+            return true;
         }
     }
 }
