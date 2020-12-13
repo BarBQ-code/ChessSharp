@@ -126,7 +126,11 @@ namespace ChessSharp.Pieces
 
         public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
         {
-            throw new NotImplementedException();
+            if (Grid.Distance(piecePos, destionation) == validDistance.Item1 ||
+                Grid.Distance(piecePos, destionation) == validDistance.Item2)
+                return true;
+
+            return false;
         }
     }
 }
