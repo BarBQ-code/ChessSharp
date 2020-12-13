@@ -96,7 +96,17 @@ namespace ChessSharp.Pieces
 
         public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
         {
-            throw new NotImplementedException();
+            if (piecePos.piece.IsWhite)
+            {
+                if ((piecePos.X + 1 == destionation.X || piecePos.X - 1 == destionation.X) && piecePos.Y + 1 == destionation.Y)
+                    return true;
+            }
+            else
+            {
+                if ((piecePos.X + 1 == destionation.X || piecePos.X - 1 == destionation.X) && piecePos.Y - 1 == destionation.Y)
+                    return true;
+            }
+            return false;
         }
     }
 }
