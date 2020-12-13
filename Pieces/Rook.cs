@@ -45,7 +45,25 @@ namespace ChessSharp.Pieces
 
         public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
         {
-            throw new NotImplementedException();
+            if (piecePos.X == destionation.X)
+            {
+                var tiles = board.GetTilesInCol(piecePos, destionation);
+
+                if (IsPieceBlocking(tiles))
+                    return false;
+
+                return true;
+            }
+            else if (piecePos.Y == destionation.Y)
+            {
+                var tiles = board.GetTilesInRow(piecePos, destionation);
+
+                if (IsPieceBlocking(tiles))
+                    return false;
+
+            }
+            return true;
+
         }
     }
 }
