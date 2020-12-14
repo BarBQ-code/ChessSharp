@@ -58,8 +58,6 @@ namespace ChessSharp
             {
                 move = new Move(start, end, board.CurrentPlayer);
             }
-
-
             return move;
         }
 
