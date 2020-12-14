@@ -349,7 +349,7 @@ namespace ChessSharp
             }
             else
             {
-                Piece king = blackPieces.Find(piece => piece is King && piece.IsWhite);
+                Piece king = blackPieces.Find(piece => piece is King && !piece.IsWhite);
                 King blackKing = king as King;
 
                 if (blackKing == null)
