@@ -11,7 +11,10 @@ namespace ChessSharp
         Normal, 
         Capture,
         Castling,
-        Promotion
+        Promotion,
+        Check,
+        CheckMate,
+        EnPassant
     }
     public class Move
     {
@@ -20,8 +23,12 @@ namespace ChessSharp
 
         public Player Player { get; }
         public MoveType MoveType { get; }
-
+        
         private const char capturesChar = 'x';
+        private const char checkChar = '+';
+        private const char checkMateChar = '#';
+        private const string shortCastles = "0-0";
+        private const string longCastles = "0-0-0";
 
         public Move(Tile start, Tile end, Player player, MoveType moveType = MoveType.Normal)
         {
@@ -59,6 +66,15 @@ namespace ChessSharp
         public override string ToString()
         {
             string res = "";
+
+            if(this.MoveType == MoveType.Castling)
+            {
+                if (End.X == 6)
+                    return shortCastles;
+                else
+                    return longCastles;
+            }
+
             if(Start.piece != null)
             {
                 if(Start.piece is Pawn)
