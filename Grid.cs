@@ -9,8 +9,10 @@ namespace ChessSharp
     public class Grid
     {
         public Tile[,] Board { get; private set; }
-
         public Player CurrentPlayer { get; private set; }
+        public GameState gameState { get; private set; }
+        public List<Piece> whitePieces  { get; private set; }
+        public List<Piece> blackPieces { get; private set; }
         public Grid()
         {
             Init();
@@ -89,6 +91,7 @@ namespace ChessSharp
                 }
                 
             }
+            InitPieces();
 
         }
 
@@ -128,6 +131,7 @@ namespace ChessSharp
                 }
             }
 
+            InitPieces();
             CurrentPlayer = new Player(true);
 
         }
@@ -154,6 +158,7 @@ namespace ChessSharp
                 GetTile(end).piece = GetTile(start).piece;
                 GetTile(start).piece = null;
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
+                UpdateGameState();
                 return true;
             }
             return false;
@@ -189,6 +194,20 @@ namespace ChessSharp
         public Tile GetTile(Tile tile)
         {
             return GetTile(tile.X, tile.Y);
+        }
+        public Tile GetTile(Piece piece)
+        {
+            foreach (Tile tile in Board)
+            {
+                if(tile.piece != null)
+                {
+                    if(tile.piece == piece)
+                    {
+                        return tile;
+                    }
+                }
+            }
+            return null;
         }
 
         public List<Tile> GetTilesInRow(Tile pos1, Tile pos2) // get X axis
@@ -281,6 +300,76 @@ namespace ChessSharp
         {
             double res = Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2);
             return res;
+        }
+
+        private void InitPieces()
+        {
+            foreach(Tile tile in Board)
+            {
+                if(tile.piece != null)
+                {
+                    if (tile.piece.IsWhite)
+                    {
+                        whitePieces.Add(tile.piece);
+                    }
+                    else
+                    {
+                        blackPieces.Add(tile.piece);
+                    }
+                }
+            }
+        }
+        
+        private void UpdateGameState()
+        {
+            if(CurrentPlayer.IsWhite)
+            {
+                Piece king = whitePieces.Find(piece => piece is King && piece.IsWhite);
+                King whiteKing = king as King;
+
+                if(whiteKing == null)
+                {
+                    throw new MissingMemberException("White king is missing");
+                }
+                if (whiteKing.InCheck(this, GetTile(whiteKing), true))
+                {
+                    if(LegalMoves().Count == 0)
+                    {
+                        gameState = GameState.BLACK_WIN;
+                    }
+                }
+                else
+                {
+                    if(LegalMoves().Count == 0)
+                    {
+                        gameState = GameState.STALEMATE;
+                    }
+                }
+
+            }
+            else
+            {
+                Piece king = blackPieces.Find(piece => piece is King && piece.IsWhite);
+                King blackKing = king as King;
+
+                if (blackKing == null)
+                    throw new MissingMemberException("Black king is missing");
+
+                if (blackKing.InCheck(this, GetTile(blackKing), false))
+                {
+                    if (LegalMoves().Count == 0)
+                    {
+                        gameState = GameState.WHITE_WIN;
+                    }
+                }
+                else
+                {
+                    if(LegalMoves().Count == 0)
+                    {
+                        gameState = GameState.STALEMATE;
+                    }
+                }
+            }
         }
 
         public override string ToString()
