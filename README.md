@@ -75,12 +75,7 @@ Get All Possible Moves:
 
 ```csharp
 List<Move> moves = board.LegalMoves();
-
-foreach(Move move in moves)
-{
-	Console.WriteLine(move);
-}
-
+moves.ForEach(move => Console.WriteLine(move))
 ```
 
 Output:
