@@ -11,8 +11,8 @@ namespace ChessSharp
         public Tile[,] Board { get; private set; }
         public Player CurrentPlayer { get; private set; }
         public GameState gameState { get; private set; }
-        public List<Piece> whitePieces  { get; private set; }
-        public List<Piece> blackPieces { get; private set; }
+        public List<Piece> whitePieces { get; private set; } = new List<Piece>();
+        public List<Piece> blackPieces { get; private set; } = new List<Piece>();
         public Grid()
         {
             Init();
@@ -130,7 +130,7 @@ namespace ChessSharp
                     Board[j, i] = new Tile(null, i, j);
                 }
             }
-
+            gameState = GameState.ACTIVE;
             InitPieces();
             CurrentPlayer = new Player(true);
 
