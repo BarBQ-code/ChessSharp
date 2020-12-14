@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessSharp.Pieces;
+using System;
 using System.Collections.Generic;
 
 namespace ChessSharp
@@ -42,6 +43,16 @@ namespace ChessSharp
                 if (tile.piece == null)
                 {
                     move = new Move(piecePos, tile, board.CurrentPlayer);
+
+                    King king = piecePos.piece as King;
+
+                    if (king != null)
+                    {
+                        if (Grid.Distance(piecePos, tile) == 4 && piecePos.Y == tile.Y && piecePos.Y == king.startingRank)
+                        {
+                            move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Castling);
+                        }
+                    }
                 }
                 else if (tile.piece != null && tile.piece.IsWhite != piecePos.piece.IsWhite)
                 {
