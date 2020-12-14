@@ -12,7 +12,7 @@ namespace ChessSharp.Pieces
 
         public bool HasMoved { get; set; } = false;
 
-        private int startingRank;
+        public int startingRank;
 
         public King(bool isWhite) : base(isWhite)
         {
@@ -33,7 +33,7 @@ namespace ChessSharp.Pieces
                 if (Grid.Distance(start, end) == validDistance.Item1 ||
                     Grid.Distance(start, end) == validDistance.Item2)
                 {
-                    if (IsTileAttacked(board, end, start.piece.IsWhite))
+                    if (board.IsTileAttacked(end, start.piece.IsWhite))
                         return false;
 
                     return true;    
@@ -141,19 +141,6 @@ namespace ChessSharp.Pieces
             return false;
         }
 
-        public bool IsTileAttacked(Grid board, Tile tilePos, bool team)
-        {
-            foreach(Tile tile in board.Board)
-            {
-                if(tile.piece != null && tile.piece.IsWhite != team) // if enemy team
-                {
-                    if(tile.piece.IsAttackingTile(board, tile, tilePos))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+        
     }
 }
