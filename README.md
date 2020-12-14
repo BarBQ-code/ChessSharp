@@ -107,6 +107,8 @@ Simple UCI Is Available
 
 Things To Add:
 ```
+Before piece move check if piece moving resulsts in king being in check.
+
 En pessent
 Promotion
 Testing
