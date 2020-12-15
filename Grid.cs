@@ -371,6 +371,63 @@ namespace ChessSharp
                 }
             }
         }
+        //Fires up after every CanMove func to check if the king is in check after the move is made
+        public bool IsLegalMove(Move move)
+        {
+            Tile start = move.Start;
+            Tile end = move.End;
+
+            Piece temp = end.piece;
+
+            end.piece = start.piece;
+            start.piece = null;
+
+            if (CurrentPlayer.IsWhite)
+            {
+                Piece king = whitePieces.Find(piece => piece is King && piece.IsWhite);
+                King whiteKing = king as King;
+
+                if(whiteKing == null)
+                {
+                    throw new MissingMemberException("White king is missing");
+                }
+
+                if (whiteKing.InCheck(this, GetTile(whiteKing), whiteKing.IsWhite))
+                {
+                    start.piece = end.piece;
+                    end.piece = temp;
+                    return false;
+                }
+
+                start.piece = end.piece;
+                end.piece = temp;
+                return true;
+            }
+            else
+            {
+                Piece king = blackPieces.Find(piece => piece is King && !piece.IsWhite);
+                King blackKing = king as King;
+
+                if(blackKing == null)
+                {
+                    throw new MissingMemberException("Black king is missing");
+                }
+
+                if(blackKing.InCheck(this, GetTile(blackKing), blackKing.IsWhite))
+                {
+                    start.piece = end.piece;
+                    end.piece = temp;
+                    return false;
+                }
+
+                start.piece = end.piece;
+                end.piece = temp;
+                return true;
+            }
+
+        }
+
+        
 
         public override string ToString()
         {
