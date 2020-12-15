@@ -32,7 +32,7 @@ namespace ChessSharp.Pieces
                     {
                         if (Grid.Distance(start, end) == validDistances.normalMove && start.Y + 1 == end.Y)
                         {
-                            if (!board.IsLegalMove(move))
+                            if (!board.IsLegalMove(move, start.piece.IsWhite))
                                 return false;
 
                             return true;
@@ -48,7 +48,7 @@ namespace ChessSharp.Pieces
                             if (pawn.startingRank != start.Y)
                                 return false;
 
-                            if (!board.IsLegalMove(move))
+                            if (!board.IsLegalMove(move, start.piece.IsWhite))
                                 return false;
 
                             return true;
@@ -62,7 +62,7 @@ namespace ChessSharp.Pieces
 
                         if ((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y + 1 == end.Y)
                         {
-                            if (!board.IsLegalMove(move))
+                            if (!board.IsLegalMove(move, start.piece.IsWhite))
                                 return false;
 
                             return true;
@@ -77,7 +77,7 @@ namespace ChessSharp.Pieces
                     {
                         if (Grid.Distance(start, end) == validDistances.normalMove && start.Y - 1 == end.Y)
                         {
-                            if (!board.IsLegalMove(move))
+                            if (!board.IsLegalMove(move, start.piece.IsWhite))
                                 return false;
 
                             return true;
@@ -93,7 +93,7 @@ namespace ChessSharp.Pieces
                             if (pawn.startingRank != start.Y)
                                 return false;
 
-                            if (!board.IsLegalMove(move))
+                            if (!board.IsLegalMove(move, start.piece.IsWhite))
                                 return false;
 
                             return true;
@@ -107,7 +107,7 @@ namespace ChessSharp.Pieces
 
                         if ((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y - 1 == end.Y)
                         {
-                            if (!board.IsLegalMove(move))
+                            if (!board.IsLegalMove(move, start.piece.IsWhite))
                                 return false;
 
                             return true;

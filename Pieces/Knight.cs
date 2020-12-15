@@ -21,7 +21,7 @@ namespace ChessSharp.Pieces
                 if (Grid.Distance(start, end) != validDistance)
                     return false;
 
-                if (!board.IsLegalMove(move))
+                if (!board.IsLegalMove(move, start.piece.IsWhite))
                     return false;
 
                 return true;
