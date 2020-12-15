@@ -372,7 +372,7 @@ namespace ChessSharp
             }
         }
         //Fires up after every CanMove func to check if the king is in check after the move is made
-        public bool IsLegalMove(Move move)
+        public bool IsLegalMove(Move move, bool isWhite)
         {
             Tile start = move.Start;
             Tile end = move.End;
@@ -382,7 +382,7 @@ namespace ChessSharp
             end.piece = start.piece;
             start.piece = null;
 
-            if (CurrentPlayer.IsWhite)
+            if (isWhite)
             {
                 Piece king = whitePieces.Find(piece => piece is King && piece.IsWhite);
                 King whiteKing = king as King;
