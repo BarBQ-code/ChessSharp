@@ -51,25 +51,47 @@ P P . . . P P .
 ```
 
 
-To Create A Move:
+To Create A Move Use Move.FromUCI
 
 ```csharp
 Move e4 = Move.FromUCI(board, "e2e4");
-board.MakeMove(e4);
+```
+
+Use The Library:
+```csharp
+
+Grid board = new Grid();
+Console.WriteLine("Game state: " + board.gameState);
+
+board.MakeMove(Move.FromUCI(board, "e2e4"));
+board.MakeMove(Move.FromUCI(board, "e7e5"));
+board.MakeMove(Move.FromUCI(board, "f1c4"));
+board.MakeMove(Move.FromUCI(board, "b8c6"));
+board.MakeMove(Move.FromUCI(board, "d1h5"));
+board.MakeMove(Move.FromUCI(board, "g8f6"));
+board.MakeMove(Move.FromUCI(board, "h5f7"));
+
 Console.WriteLine(board);
+Console.WriteLine("Game state: " + board.gameState);
+
 ```
 
 Output:
-```
-r n b q k b n r
-p p p p p p p p
-. . . . . . . .
-. . . . . . . .
-. . . . P . . .
+```csharp
+ACTIVE
+
+r . b q k b . r
+p p p p . Q p p
+. . n . . n . .
+. . . . p . . .
+. . B . P . . .
 . . . . . . . .
 P P P P . P P P
-R N B Q K B N R
+R N B . K . N R
+
+WHITE_WIN
 ```
+
 
 Get All Possible Moves:
 
@@ -107,8 +129,6 @@ Simple UCI Is Available
 
 Things To Add:
 ```
-Before piece move check if piece moving resulsts in king being in check.
-
 En pessent
 Promotion
 Testing
