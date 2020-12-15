@@ -31,7 +31,12 @@ namespace ChessSharp.Pieces
                     if (end.piece == null) // normal move
                     {
                         if (Grid.Distance(start, end) == validDistances.normalMove && start.Y + 1 == end.Y)
+                        {
+                            if (!board.IsLegalMove(move))
+                                return false;
+
                             return true;
+                        }
 
                         else if (Grid.Distance(start, end) == validDistances.firstMove && start.Y + 2 == end.Y) // first move
                         {
@@ -41,6 +46,9 @@ namespace ChessSharp.Pieces
                                 return false;
 
                             if (pawn.startingRank != start.Y)
+                                return false;
+
+                            if (!board.IsLegalMove(move))
                                 return false;
 
                             return true;
@@ -53,17 +61,27 @@ namespace ChessSharp.Pieces
                             return false;
 
                         if ((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y + 1 == end.Y)
+                        {
+                            if (!board.IsLegalMove(move))
+                                return false;
+
                             return true;
+                        }
 
                         return false;
                     }
                 }
                 else
                 {
-                    if(end.piece == null) // normal moves
+                    if (end.piece == null) // normal moves
                     {
                         if (Grid.Distance(start, end) == validDistances.normalMove && start.Y - 1 == end.Y)
+                        {
+                            if (!board.IsLegalMove(move))
+                                return false;
+
                             return true;
+                        }
 
                         else if(Grid.Distance(start, end) == validDistances.firstMove && start.Y - 2 == end.Y)
                         {
@@ -73,6 +91,9 @@ namespace ChessSharp.Pieces
                                 return false;
 
                             if (pawn.startingRank != start.Y)
+                                return false;
+
+                            if (!board.IsLegalMove(move))
                                 return false;
 
                             return true;
@@ -85,7 +106,12 @@ namespace ChessSharp.Pieces
                             return false;
 
                         if ((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y - 1 == end.Y)
+                        {
+                            if (!board.IsLegalMove(move))
+                                return false;
+
                             return true;
+                        }
 
                         return false;
                     }

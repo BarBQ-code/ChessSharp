@@ -26,6 +26,9 @@ namespace ChessSharp.Pieces
                 if (IsPieceBlocking(tiles))
                     return false;
 
+                if (!board.IsLegalMove(move))
+                    return false;
+
                 return true;
             }
             return false;

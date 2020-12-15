@@ -26,6 +26,9 @@ namespace ChessSharp.Pieces
                     if (IsPieceBlocking(tiles))
                         return false;
 
+                    if (!board.IsLegalMove(move))
+                        return false;
+
                     return true;
                 }
                 else if(start.Y == end.Y)
@@ -33,6 +36,9 @@ namespace ChessSharp.Pieces
                     var tiles = board.GetTilesInRow(start, end);
 
                     if (IsPieceBlocking(tiles))
+                        return false;
+
+                    if(!board.IsLegalMove(move))
                         return false;
 
                     return true;

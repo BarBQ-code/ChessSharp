@@ -21,6 +21,9 @@ namespace ChessSharp.Pieces
                 if (Grid.Distance(start, end) != validDistance)
                     return false;
 
+                if (!board.IsLegalMove(move))
+                    return false;
+
                 return true;
             }
             return false;
