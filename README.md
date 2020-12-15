@@ -77,7 +77,7 @@ Console.WriteLine("Game state: " + board.gameState);
 ```
 
 Output:
-```csharp
+```
 Game state: ACTIVE
 
 r . b q k b . r
