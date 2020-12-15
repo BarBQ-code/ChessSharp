@@ -78,7 +78,7 @@ Console.WriteLine("Game state: " + board.gameState);
 
 Output:
 ```csharp
-ACTIVE
+Game state: ACTIVE
 
 r . b q k b . r
 p p p p . Q p p
@@ -89,7 +89,7 @@ p p p p . Q p p
 P P P P . P P P
 R N B . K . N R
 
-WHITE_WIN
+Game state: WHITE_WIN
 ```
 
 
