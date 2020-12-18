@@ -156,7 +156,25 @@ namespace ChessSharp
             if(start.piece.CanMove(this, move))
             {
                 GetTile(end).piece = GetTile(start).piece;
-                GetTile(start).piece = null;
+
+                if(move.MoveType == MoveType.Castling)
+                {
+                    if(end.X == 6) // short castle
+                    {
+                        GetTile(start.X - 1, start.Y).piece = GetTile(start.X + 1, start.Y).piece;
+                        GetTile(start.X + 1, start.Y).piece = null;
+                    }
+                    else // long castle
+                    {
+                        GetTile(start.X + 1, start.Y).piece = GetTile(start.X - 2, start.Y).piece;
+                        GetTile(start.X - 2, start.Y).piece = null;
+                    }
+                }
+                else
+                    GetTile(start).piece = null;
+
+
+
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
                 UpdateGameState();
                 return true;
