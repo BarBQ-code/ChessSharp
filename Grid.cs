@@ -1,8 +1,8 @@
 ﻿using ChessSharp.Pieces;
 using ChessSharp.Players;
+using ChessSharp.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ChessSharp
 {
@@ -145,12 +145,12 @@ namespace ChessSharp
             Tile end = move.End;
 
             if (start.piece == null)
-                throw new InvalidOperationException("Source tile has no piece");
+                throw new InvalidMoveException("Source tile has no piece");
 
             if (end.piece != null)
             {
                 if (start.piece.IsWhite == end.piece.IsWhite)
-                    throw new InvalidOperationException("Source tile piece and destination tile piece are of the same team");
+                    throw new InvalidMoveException("Source tile piece and destination tile piece are of the same team");
             }
 
             if(start.piece.CanMove(this, move))
