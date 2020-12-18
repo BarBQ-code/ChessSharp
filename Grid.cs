@@ -171,9 +171,6 @@ namespace ChessSharp
                     }
                 }    
                 GetTile(start).piece = null;
-
-
-
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
                 UpdateGameState();
                 return true;
