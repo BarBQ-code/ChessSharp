@@ -59,16 +59,44 @@ namespace ChessSharp
                     throw new InvalidOperationException("Source tile piece and destination tile piece are of the same team");
             }
 
-
-            if(end.piece != null)
-            {
-                move = new Move(start, end, board.CurrentPlayer, MoveType.Capture);
-            }
-            else
-            {
-                move = new Move(start, end, board.CurrentPlayer);
-            }
+            move = new Move(start, end, board.CurrentPlayer, Move.MoveTypeIdentifier(board, start, end));
             return move;
+        }
+
+        public static MoveType MoveTypeIdentifier(Grid board, Tile start, Tile end)
+        {
+            
+            King king = start.piece as King;
+            
+            if(king != null)
+            {
+                if(Grid.Distance(start, end) == 4 && start.Y == end.Y)
+                {
+                    if(end.X > start.X)
+                    {
+                        Rook rook = board.GetTile(end.X + 1, end.Y).piece as Rook;
+                        if(rook != null)
+                        {
+                            if (!king.HasMoved && !rook.HasMoved)
+                                return MoveType.Castling;
+                        }
+                    }
+                    else if(start.X > end.X)
+                    {
+                        Rook rook = board.GetTile(end.X - 2, end.Y).piece as Rook;
+                        if(rook != null)
+                        {
+                            if (!king.HasMoved && !rook.HasMoved)
+                                return MoveType.Castling;
+                        }
+                    }
+                }
+            }
+
+            if (end.piece != null)
+                return MoveType.Capture;
+
+            return MoveType.Normal;
         }
 
         public override string ToString()
