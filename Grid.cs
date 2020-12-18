@@ -169,9 +169,8 @@ namespace ChessSharp
                         GetTile(end.X + 1, start.Y).piece = GetTile(end.X - 2, start.Y).piece;
                         GetTile(end.X - 2, start.Y).piece = null;
                     }
-                }
-                else
-                    GetTile(start).piece = null;
+                }    
+                GetTile(start).piece = null;
 
 
 
