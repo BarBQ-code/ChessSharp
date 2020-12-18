@@ -161,13 +161,13 @@ namespace ChessSharp
                 {
                     if(end.X == 6) // short castle
                     {
-                        GetTile(start.X - 1, start.Y).piece = GetTile(start.X + 1, start.Y).piece;
-                        GetTile(start.X + 1, start.Y).piece = null;
+                        GetTile(end.X - 1, start.Y).piece = GetTile(end.X + 1, start.Y).piece;
+                        GetTile(end.X + 1, start.Y).piece = null;
                     }
                     else // long castle
                     {
-                        GetTile(start.X + 1, start.Y).piece = GetTile(start.X - 2, start.Y).piece;
-                        GetTile(start.X - 2, start.Y).piece = null;
+                        GetTile(end.X + 1, start.Y).piece = GetTile(end.X - 2, start.Y).piece;
+                        GetTile(end.X - 2, start.Y).piece = null;
                     }
                 }
                 else
