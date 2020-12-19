@@ -50,7 +50,10 @@ namespace ChessSharp
                     {
                         if (Grid.Distance(piecePos, tile) == 4 && piecePos.Y == tile.Y && piecePos.Y == king.startingRank)
                         {
-                            move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Castling);
+                            if (tile.X == 6)
+                                move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.ShortCastles);
+                            else
+                                move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.LongCastles);
                         }
                     }
                 }
