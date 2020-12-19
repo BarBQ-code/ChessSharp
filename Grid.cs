@@ -97,6 +97,7 @@ namespace ChessSharp
                 throw new InvalidFENBoardException("Invalid player turn argument");
             }
 
+            //Initialize castling rights section 
 
             string castlingRights = arr[2];
 
@@ -144,33 +145,38 @@ namespace ChessSharp
                 blackKing.queenSideCasltingDone = true;
             }
 
+            //Initialize enpassant section
             string enpassant = arr[3];
 
-            if (enpassant.Length != 2)
-                throw new InvalidFENBoardException("En passant argument must be 2 characters long");
-
-            int row = (int)enpassant[0] - (int)'a';
-            int col = (int)enpassant[1];
-
-            Tile pawnTile;
-
-            if (col == 6)
+            if(enpassant != "-")
             {
-                pawnTile = GetTile(row, col - 2);
+                if (enpassant.Length != 2)
+                    throw new InvalidFENBoardException("En passant argument must be 2 characters long");
+
+                int row = (int)enpassant[0] - (int)'a';
+                int col = (int)enpassant[1];
+
+                Tile pawnTile;
+
+                if (col == 6)
+                {
+                    pawnTile = GetTile(row, col - 2);
+                }
+                else if (col == 3)
+                {
+                    pawnTile = GetTile(row, col);
+                }
+                else
+                    throw new InvalidFENBoardException("En passant argument is invalid");
+
+                Pawn pawn = pawnTile.piece as Pawn;
+
+                if (pawn == null)
+                    throw new InvalidFENBoardException("En passant is invalid");
+
+                pawn.CanBeCapturedEnPassant = true;
             }
-            else if (col == 3)
-            {
-                pawnTile = GetTile(row, col);
-            }
-            else
-                throw new InvalidFENBoardException("En passant argument is invalid");
-
-            Pawn pawn = pawnTile.piece as Pawn;
-
-            if (pawn == null)
-                throw new InvalidFENBoardException("En passant is invalid");
-
-            pawn.CanBeCapturedEnPassant = true;
+            
             
 
         }
@@ -238,23 +244,21 @@ namespace ChessSharp
             {
                 GetTile(end).piece = GetTile(start).piece;
 
-                if(move.MoveType == MoveType.Castling)
+                if(move.MoveType == MoveType.ShortCastles)
                 {
-                    if(end.X == 6) // short castle
-                    {
-                        GetTile(end.X - 1, start.Y).piece = GetTile(end.X + 1, start.Y).piece;
-                        GetTile(end.X + 1, start.Y).piece = null;
-                        King king = GetTile(start).piece as King;
-                        king.HasMoved = true;
-                    }
-                    else // long castle
-                    {
-                        GetTile(end.X + 1, start.Y).piece = GetTile(end.X - 2, start.Y).piece;
-                        GetTile(end.X - 2, start.Y).piece = null;
-                        King king = GetTile(start).piece as King;
-                        king.HasMoved = true;
-                    }
-                }    
+                    
+                    GetTile(end.X - 1, start.Y).piece = GetTile(end.X + 1, start.Y).piece;
+                    GetTile(end.X + 1, start.Y).piece = null;
+                    King king = GetTile(start).piece as King;
+                    king.HasMoved = true;
+                } 
+                else if(move.MoveType == MoveType.LongCastles)
+                {
+                    GetTile(end.X + 1, start.Y).piece = GetTile(end.X - 2, start.Y).piece;
+                    GetTile(end.X - 2, start.Y).piece = null;
+                    King king = GetTile(start).piece as King;
+                    king.HasMoved = true;
+                }
                 GetTile(start).piece = null;
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
                 UpdateGameState();
