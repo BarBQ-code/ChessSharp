@@ -9,7 +9,8 @@ namespace ChessSharp
     {
         Normal, 
         Capture,
-        Castling,
+        ShortCastles,
+        LongCastles,
         Promotion,
         Check,
         CheckMate,
@@ -77,7 +78,7 @@ namespace ChessSharp
                         if(rook != null)
                         {
                             if (!king.HasMoved && !rook.HasMoved)
-                                return MoveType.Castling;
+                                return MoveType.ShortCastles;
                         }
                     }
                     else if(start.X > end.X)
@@ -86,7 +87,7 @@ namespace ChessSharp
                         if(rook != null)
                         {
                             if (!king.HasMoved && !rook.HasMoved)
-                                return MoveType.Castling;
+                                return MoveType.LongCastles;
                         }
                     }
                 }
@@ -102,13 +103,11 @@ namespace ChessSharp
         {
             string res = "";
 
-            if(this.MoveType == MoveType.Castling)
-            {
-                if (End.X == 6)
-                    return shortCastles;
-                else
-                    return longCastles;
-            }
+            if (this.MoveType == MoveType.ShortCastles)
+                return shortCastles;
+
+            if (this.MoveType == MoveType.LongCastles)
+                return longCastles;
 
             if(Start.piece != null)
             {
