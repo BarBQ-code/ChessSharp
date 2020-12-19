@@ -216,11 +216,15 @@ namespace ChessSharp
                     {
                         GetTile(end.X - 1, start.Y).piece = GetTile(end.X + 1, start.Y).piece;
                         GetTile(end.X + 1, start.Y).piece = null;
+                        King king = GetTile(start).piece as King;
+                        king.HasMoved = true;
                     }
                     else // long castle
                     {
                         GetTile(end.X + 1, start.Y).piece = GetTile(end.X - 2, start.Y).piece;
                         GetTile(end.X - 2, start.Y).piece = null;
+                        King king = GetTile(start).piece as King;
+                        king.HasMoved = true;
                     }
                 }    
                 GetTile(start).piece = null;
