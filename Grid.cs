@@ -25,23 +25,10 @@ namespace ChessSharp
 
             string[] arr = fen.Split(' ');
 
-            string teamFlag = arr[1];
+            if (arr.Length != 6)
+                throw new InvalidFENBoardException("FEN string must have six arguments");
 
-            if(teamFlag.Length != 1)
-                throw new ArgumentException("Invalid board state");
-
-            if(teamFlag[0] == 'w')
-            {
-                CurrentPlayer = new Player(true);
-            } 
-            else if(teamFlag[0] == 'b')
-            {
-                CurrentPlayer = new Player(false);
-            }
-            else
-            {
-                throw new ArgumentException("Invalid board state");
-            }
+            
             
 
             string[] boardState = arr[0].Split('/');
@@ -91,8 +78,73 @@ namespace ChessSharp
                 }
                 
             }
+
+            string teamFlag = arr[1];
+
+            if (teamFlag.Length != 1)
+                throw new InvalidFENBoardException("Invalid player turn argument");
+
+            if (teamFlag[0] == 'w')
+            {
+                CurrentPlayer = new Player(true);
+            }
+            else if (teamFlag[0] == 'b')
+            {
+                CurrentPlayer = new Player(false);
+            }
+            else
+            {
+                throw new InvalidFENBoardException("Invalid player turn argument");
+            }
+
             InitPieces();
 
+            string castlingRights = arr[2];
+
+            if (castlingRights.Length > 4 || castlingRights.Length < 0)
+                throw new InvalidFENBoardException("Invalid castling rights argument");
+
+            string temp = castlingRights.ToUpper();
+            foreach(char c in temp)
+            {
+                if (c != 'K' || c != 'Q' || c != '-')
+                    throw new InvalidFENBoardException("Invalid castling rights argument");
+            }
+
+            Piece wKing = whitePieces.Find(piece => piece is King && piece.IsWhite);
+            King whiteKing = wKing as King;
+
+            if (whiteKing == null)
+                throw new InvalidFENBoardException("Board missing white king");
+
+            Piece bKing = blackPieces.Find(piece => piece is King && !piece.IsWhite);
+            King blackKing = bKing as King;
+
+            if (blackKing == null)
+                throw new InvalidFENBoardException("Board missing black king");
+
+            if(castlingRights == "-")
+            {
+                whiteKing.HasMoved = true;
+                blackKing.HasMoved = true;
+            }
+            if(!castlingRights.Contains('K'))
+            {
+                whiteKing.kingSideCatlingDone = true;
+            }
+            if(!castlingRights.Contains('Q'))
+            {
+                whiteKing.queenSideCasltingDone = true;
+            }
+            if(!castlingRights.Contains('k'))
+            {
+                blackKing.kingSideCatlingDone = true;
+            }
+            if(!castlingRights.Contains('q'))
+            {
+                blackKing.queenSideCasltingDone = true;
+            }
+            
         }
 
         public void Init()
@@ -133,6 +185,7 @@ namespace ChessSharp
             gameState = GameState.ACTIVE;
             InitPieces();
             CurrentPlayer = new Player(true);
+
 
         }
 
