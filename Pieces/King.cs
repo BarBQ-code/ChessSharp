@@ -8,7 +8,6 @@ namespace ChessSharp.Pieces
     {
         private (int, int) validDistance = (1, 2);
         private const int castlingDistance = 4;
-        public bool CastlingDone { get; set; } = false;
         public bool kingSideCatlingDone { get; set; } = false;
         public bool queenSideCasltingDone { get; set; } = false;
         public bool HasMoved { get; set; } = false;
