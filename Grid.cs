@@ -107,7 +107,7 @@ namespace ChessSharp
             string temp = castlingRights.ToUpper();
             foreach(char c in temp)
             {
-                if (c != 'K' || c != 'Q' || c != '-')
+                if (c != 'K' && c != 'Q' && c != '-')
                     throw new InvalidFENBoardException("Invalid castling rights argument");
             }
 
