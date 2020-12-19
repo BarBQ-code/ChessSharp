@@ -7,6 +7,7 @@ namespace ChessSharp.Pieces
     public class Pawn : Piece
     {
         private (int normalMove, int firstMove) validDistances = (1, 4);
+        public bool CanBeCapturedEnPassant { get; set; } = false;
         private int startingRank { get; }
 
         public Pawn(bool isWhite) : base(isWhite)
