@@ -9,11 +9,11 @@ namespace ChessSharp.Pieces
         private (int, int) validDistance = (1, 2);
         private const int castlingDistance = 4;
         public bool CastlingDone { get; set; } = false;
-
+        public bool kingSideCatlingDone { get; set; } = false;
+        public bool queenSideCasltingDone { get; set; } = false;
         public bool HasMoved { get; set; } = false;
 
         public int startingRank;
-
         public King(bool isWhite) : base(isWhite)
         {
             pieceChar = 'K';
@@ -42,10 +42,12 @@ namespace ChessSharp.Pieces
                 {
                     if(end.X > start.X) // short castle
                     {
+                        if (kingSideCatlingDone)
+                            return false;
+
                         Rook rook = board.GetTile(end.X + 1, end.Y).piece as Rook;
                         King king = start.piece as King;
 
-                        
 
                         if (rook == null || king == null)
                         {
@@ -56,7 +58,7 @@ namespace ChessSharp.Pieces
                             return false;
 
                         if (rook.HasMoved || king.HasMoved)
-                        return false;
+                            return false;
 
                         var tiles = board.GetTilesInRow(start, end);
 
@@ -70,6 +72,9 @@ namespace ChessSharp.Pieces
                     }
                     else //long castle
                     {
+                        if (queenSideCasltingDone)
+                            return false;
+
                         Rook rook = board.GetTile(end.X - 2, end.Y).piece as Rook;
                         King king = start.piece as King;
 
