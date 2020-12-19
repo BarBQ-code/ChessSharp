@@ -28,9 +28,7 @@ namespace ChessSharp
             if (arr.Length != 6)
                 throw new InvalidFENBoardException("FEN string must have six arguments");
 
-            
-            
-
+            //Initalize pieces section
             string[] boardState = arr[0].Split('/');
 
             for(int i = 0; i < boardState.Length; i++)
@@ -78,7 +76,9 @@ namespace ChessSharp
                 }
                 
             }
+            InitPieces();
 
+            //initialize currentplayer section
             string teamFlag = arr[1];
 
             if (teamFlag.Length != 1)
@@ -97,7 +97,6 @@ namespace ChessSharp
                 throw new InvalidFENBoardException("Invalid player turn argument");
             }
 
-            InitPieces();
 
             string castlingRights = arr[2];
 
@@ -144,7 +143,36 @@ namespace ChessSharp
             {
                 blackKing.queenSideCasltingDone = true;
             }
+
+            string enpassant = arr[3];
+
+            if (enpassant.Length != 2)
+                throw new InvalidFENBoardException("En passant argument must be 2 characters long");
+
+            int row = (int)enpassant[0] - (int)'a';
+            int col = (int)enpassant[1];
+
+            Tile pawnTile;
+
+            if (col == 6)
+            {
+                pawnTile = GetTile(row, col - 2);
+            }
+            else if (col == 3)
+            {
+                pawnTile = GetTile(row, col);
+            }
+            else
+                throw new InvalidFENBoardException("En passant argument is invalid");
+
+            Pawn pawn = pawnTile.piece as Pawn;
+
+            if (pawn == null)
+                throw new InvalidFENBoardException("En passant is invalid");
+
+            pawn.CanBeCapturedEnPassant = true;
             
+
         }
 
         public void Init()
@@ -257,7 +285,7 @@ namespace ChessSharp
         public Tile GetTile(int x, int y)
         {
             if (x < 0 || x > 7 || y < 0 || y > 7)
-                throw new IndexOutOfRangeException();
+                throw new IndexOutOfRangeException("Coordinates must be between 0 and 7");
             
             return Board[y, x];
         }
