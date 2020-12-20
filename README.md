@@ -129,10 +129,8 @@ Simple UCI Is Available
 
 Things To Add:
 ```
-En pessent
 Promotion
 Testing
 Complex UCI
-FEN
 PGN
 ```
