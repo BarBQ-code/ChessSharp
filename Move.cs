@@ -20,11 +20,9 @@ namespace ChessSharp
     {
         public Tile Start { get; }
         public Tile End { get; }
-
         public Player Player { get; }
         public MoveType MoveType { get; }
-
-        public Piece PromotePiece { get; }
+        public Piece PromotionPiece { get; }
         
         private const char capturesChar = 'x';
         private const char checkChar = '+';
@@ -32,12 +30,12 @@ namespace ChessSharp
         private const string shortCastles = "0-0";
         private const string longCastles = "0-0-0";
 
-        public Move(Tile start, Tile end, Player player, MoveType moveType = MoveType.Normal, Piece promotePiece = null)
+        public Move(Tile start, Tile end, Player player, MoveType moveType = MoveType.Normal, Piece promotionPiece = null)
         {
-            (Start, End, Player, MoveType, PromotePiece) = (start, end, player, moveType, promotePiece);
+            (Start, End, Player, MoveType, PromotionPiece) = (start, end, player, moveType, promotionPiece);
         }
 
-        public static Move FromUCI(Grid board, string uci, Piece piece = null)
+        public static Move FromUCI(Grid board, string uci, Piece promotionPiece = null)
         {
             Move move = null;
 
@@ -61,8 +59,34 @@ namespace ChessSharp
                     throw new InvalidMoveException("Source tile piece and destination tile piece are of the same team");
             }
 
-            move = new Move(start, end, board.CurrentPlayer, Move.MoveTypeIdentifier(board, start, end));
+            if (promotionPiece == null)
+            {
+                move = new Move(start, end, board.CurrentPlayer, Move.MoveTypeIdentifier(board, start, end));
+                return move;
+            }
+
+            //promotion move
+            Pawn pawn = start.piece as Pawn;
+
+            if (pawn == null)
+                throw new InvalidMoveException("Source tile must contain pawn");
+
+            if(pawn.IsWhite)
+            {
+                if (end.Y != 7)
+                    throw new InvalidMoveException("Destination tile must be the last rank");
+            }
+            else
+            {
+                if(end.Y != 0)
+                {
+                    throw new InvalidMoveException("Destination tile must be the first rank");
+                }
+            }
+
+            move = new Move(start, end, board.CurrentPlayer, MoveType.Promotion, promotionPiece);
             return move;
+            
         }
 
         public static MoveType MoveTypeIdentifier(Grid board, Tile start, Tile end)
