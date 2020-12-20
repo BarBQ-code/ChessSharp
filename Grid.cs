@@ -13,6 +13,8 @@ namespace ChessSharp
         public GameState gameState { get; private set; }
         public List<Piece> whitePieces { get; private set; } = new List<Piece>();
         public List<Piece> blackPieces { get; private set; } = new List<Piece>();
+
+        public int FiftyMoveRuleCount { get; private set; } = 0;
         public Grid()
         {
             Init();
@@ -175,6 +177,22 @@ namespace ChessSharp
                     throw new InvalidFENBoardException("En passant is invalid");
 
                 pawn.CanBeCapturedEnPassant = true;
+            }
+
+            //Initialize 50 move rule count
+
+            string fiftyMoveRule = arr[4];
+
+            int fiftyMoveRuleCount;
+            bool isInt = int.TryParse(fiftyMoveRule, out fiftyMoveRuleCount);
+
+            if (isInt)
+            {
+                FiftyMoveRuleCount = fiftyMoveRuleCount;
+            }
+            else
+            {
+                throw new InvalidFENBoardException("Fifty move rule argument must be an integer");
             }
             
             
