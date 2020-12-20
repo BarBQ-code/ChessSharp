@@ -65,6 +65,9 @@ namespace ChessSharp.Pieces
                             if (!enpassantPawn.CanBeCapturedEnPassant)
                                 return false;
 
+                            if (!board.IsLegalMove(move, start.piece.IsWhite))
+                                return false;
+
                             return true;
                         }
                         return false;
@@ -120,6 +123,9 @@ namespace ChessSharp.Pieces
                                 return false;
 
                             if (!enpassantPawn.CanBeCapturedEnPassant)
+                                return false;
+
+                            if (!board.IsLegalMove(move, start.piece.IsWhite))
                                 return false;
 
                             return true;
