@@ -54,6 +54,19 @@ namespace ChessSharp.Pieces
 
                             return true;
                         }
+                        // en passant
+                        else if((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y + 1 == end.Y)
+                        {
+                            Pawn enpassantPawn = board.GetTile(end.X, start.Y).piece as Pawn; //get the beside "my" pawn
+                            
+                            if (enpassantPawn == null)
+                                return false;
+
+                            if (!enpassantPawn.CanBeCapturedEnPassant)
+                                return false;
+
+                            return true;
+                        }
                         return false;
                     }
                     else //capture logic
@@ -95,6 +108,18 @@ namespace ChessSharp.Pieces
                                 return false;
 
                             if (!board.IsLegalMove(move, start.piece.IsWhite))
+                                return false;
+
+                            return true;
+                        }
+                        else if((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y - 1 == end.Y)
+                        {
+                            Pawn enpassantPawn = board.GetTile(end.X, start.Y).piece as Pawn;
+
+                            if (enpassantPawn == null)
+                                return false;
+
+                            if (!enpassantPawn.CanBeCapturedEnPassant)
                                 return false;
 
                             return true;
