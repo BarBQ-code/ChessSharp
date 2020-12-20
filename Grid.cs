@@ -439,77 +439,6 @@ namespace ChessSharp
             double res = Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2);
             return res;
         }
-
-        private void InitPieces()
-        {
-            foreach(Tile tile in Board)
-            {
-                if(tile.piece != null)
-                {
-                    if (tile.piece.IsWhite)
-                    {
-                        whitePieces.Add(tile.piece);
-                    }
-                    else
-                    {
-                        blackPieces.Add(tile.piece);
-                    }
-                }
-            }
-        }
-        
-        private void UpdateGameState()
-        {
-            if(CurrentPlayer.IsWhite)
-            {
-                Piece king = whitePieces.Find(piece => piece is King && piece.IsWhite);
-                King whiteKing = king as King;
-
-                if(whiteKing == null)
-                {
-                    throw new MissingMemberException("White king is missing");
-                }
-                if (whiteKing.InCheck(this, GetTile(whiteKing), true))
-                {
-                    if(LegalMoves().Count == 0)
-                    {
-                        gameState = GameState.BLACK_WIN;
-                    }
-                }
-                else
-                {
-                    if(LegalMoves().Count == 0)
-                    {
-                        gameState = GameState.STALEMATE;
-                    }
-                }
-
-            }
-            else
-            {
-                Piece king = blackPieces.Find(piece => piece is King && !piece.IsWhite);
-                King blackKing = king as King;
-
-                if (blackKing == null)
-                    throw new MissingMemberException("Black king is missing");
-
-                if (blackKing.InCheck(this, GetTile(blackKing), false))
-                {
-                    if (LegalMoves().Count == 0)
-                    {
-                        gameState = GameState.WHITE_WIN;
-                    }
-                }
-                else
-                {
-                    if(LegalMoves().Count == 0)
-                    {
-                        gameState = GameState.STALEMATE;
-                    }
-                }
-            }
-        }
-        //Fires up after every CanMove func to check if the king is in check after the move is made
         public bool IsLegalMove(Move move, bool isWhite)
         {
             Tile start = move.Start;
@@ -564,9 +493,105 @@ namespace ChessSharp
             }
 
         }
+        private void InitPieces()
+        {
+            foreach(Tile tile in Board)
+            {
+                if(tile.piece != null)
+                {
+                    if (tile.piece.IsWhite)
+                    {
+                        whitePieces.Add(tile.piece);
+                    }
+                    else
+                    {
+                        blackPieces.Add(tile.piece);
+                    }
+                }
+            }
+        }
 
-        
+        //Fires up after every CanMove func to check if the king is in check after the move is made
+        private void UpdateGameState()
+        {
+            if(CurrentPlayer.IsWhite)
+            {
+                Piece king = whitePieces.Find(piece => piece is King && piece.IsWhite);
+                King whiteKing = king as King;
 
+                if(whiteKing == null)
+                {
+                    throw new MissingMemberException("White king is missing");
+                }
+                if (whiteKing.InCheck(this, GetTile(whiteKing), true))
+                {
+                    if(LegalMoves().Count == 0)
+                    {
+                        gameState = GameState.BLACK_WIN;
+                    }
+                }
+                else
+                {
+                    if(LegalMoves().Count == 0)
+                    {
+                        gameState = GameState.STALEMATE;
+                    }
+                }
+
+            }
+            else
+            {
+                Piece king = blackPieces.Find(piece => piece is King && !piece.IsWhite);
+                King blackKing = king as King;
+
+                if (blackKing == null)
+                    throw new MissingMemberException("Black king is missing");
+
+                if (blackKing.InCheck(this, GetTile(blackKing), false))
+                {
+                    if (LegalMoves().Count == 0)
+                    {
+                        gameState = GameState.WHITE_WIN;
+                    }
+                }
+                else
+                {
+                    if(LegalMoves().Count == 0)
+                    {
+                        gameState = GameState.STALEMATE;
+                    }
+                }
+            }
+        }
+        //Fires up after every CanMove func to reset pawns who have the prop CanBeCapturedEnPassant to true
+        private void ResetEnPassant()
+        {
+            List<Piece> pawns;
+            if(CurrentPlayer.IsWhite)
+            {
+                pawns = whitePieces.FindAll(piece => piece is Pawn);
+                foreach (Piece piece in pawns)
+                {
+                    Pawn pawn = piece as Pawn;
+                    if(pawn != null)
+                    {
+                        pawn.CanBeCapturedEnPassant = false;
+                    }
+                }
+            }
+            else
+            {
+                pawns = blackPieces.FindAll(piece => piece is Pawn);
+                foreach(Piece piece in pawns)
+                {
+                    Pawn pawn = piece as Pawn;
+                    if(pawn != null)
+                    {
+                        pawn.CanBeCapturedEnPassant = false;
+                    }
+                }
+            }
+        }
         public override string ToString()
         {
             string res = "";
