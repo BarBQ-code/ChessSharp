@@ -23,6 +23,8 @@ namespace ChessSharp
 
         public Player Player { get; }
         public MoveType MoveType { get; }
+
+        public Piece PromotePiece { get; }
         
         private const char capturesChar = 'x';
         private const char checkChar = '+';
@@ -30,9 +32,9 @@ namespace ChessSharp
         private const string shortCastles = "0-0";
         private const string longCastles = "0-0-0";
 
-        public Move(Tile start, Tile end, Player player, MoveType moveType = MoveType.Normal)
+        public Move(Tile start, Tile end, Player player, MoveType moveType = MoveType.Normal, Piece promotePiece = null)
         {
-            (Start, End, Player, MoveType) = (start, end, player, moveType);
+            (Start, End, Player, MoveType, PromotePiece) = (start, end, player, moveType, promotePiece);
         }
 
         public static Move FromUCI(Grid board, string uci, Piece piece = null)
