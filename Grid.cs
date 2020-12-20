@@ -296,6 +296,7 @@ namespace ChessSharp
                 }
                 GetTile(start).piece = null;
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
+                ResetEnPassant();
                 UpdateGameState();
                 return true;
             }
