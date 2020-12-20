@@ -156,7 +156,7 @@ namespace ChessSharp
                     throw new InvalidFENBoardException("En passant argument must be 2 characters long");
 
                 int row = (int)enpassant[0] - (int)'a';
-                int col = (int)enpassant[1];
+                int col = int.Parse(enpassant[1].ToString());
 
                 Tile pawnTile;
 
