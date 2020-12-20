@@ -13,8 +13,8 @@ namespace ChessSharp
         public GameState gameState { get; private set; }
         public List<Piece> whitePieces { get; private set; } = new List<Piece>();
         public List<Piece> blackPieces { get; private set; } = new List<Piece>();
-
         public int FiftyMoveRuleCount { get; private set; } = 0;
+        public int MoveCount { get; set; } = 0;
         public Grid()
         {
             Init();
@@ -188,15 +188,32 @@ namespace ChessSharp
 
             if (isInt)
             {
-                FiftyMoveRuleCount = fiftyMoveRuleCount;
+                if (fiftyMoveRuleCount >= 0)
+                    FiftyMoveRuleCount = fiftyMoveRuleCount;
+                else
+                    throw new InvalidFENBoardException("Fifty move rule argument must be a positive integer");
             }
             else
             {
                 throw new InvalidFENBoardException("Fifty move rule argument must be an integer");
             }
-            
-            
 
+            //Initialize move count
+            string FENMoveCount = arr[5];
+
+            int moveCount;
+            isInt = int.TryParse(FENMoveCount, out moveCount);
+            if(isInt)
+            {
+                if (moveCount > 0)
+                    MoveCount = moveCount;
+                else
+                    throw new InvalidFENBoardException("Move count argument must be greater than 0");
+            }
+            else
+            {
+                throw new InvalidFENBoardException("Move count argument must be an integer");
+            }
         }
 
         public void Init()
