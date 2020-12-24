@@ -84,6 +84,10 @@ namespace ChessSharp
                 }
             }
 
+            //check if promotion piece is not pawn
+            if (promotionPiece is Pawn)
+                throw new InvalidMoveException("Can't promote to pawn");
+
             move = new Move(start, end, board.CurrentPlayer, MoveType.Promotion, promotionPiece);
             return move;
             
