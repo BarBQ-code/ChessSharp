@@ -299,6 +299,14 @@ namespace ChessSharp
                         GetTile(end.X, end.Y + 1).piece = null;
                     }
                 }
+                else if(start.piece is Pawn) //check for first pawn moves to set CanCaptureEnPassant property
+                {
+                    Pawn pawn = start.piece as Pawn;
+                    if(Grid.Distance(start, end) == 4) //first move
+                    {
+                        pawn.CanBeCapturedEnPassant = true;
+                    }    
+                }
                 else
                 {
                     end.piece = start.piece;
