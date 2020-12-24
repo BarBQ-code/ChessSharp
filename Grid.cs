@@ -257,7 +257,6 @@ namespace ChessSharp
 
 
         }
-
         public bool MakeMove(Move move)
         {
             if (move == null)
@@ -302,7 +301,6 @@ namespace ChessSharp
             }
             return false;
         }
-
         public List<Move> LegalMoves()
         {
             List<Move> moves = new List<Move>();
@@ -321,7 +319,6 @@ namespace ChessSharp
 
             return moves;
         }
-
         public Tile GetTile(int x, int y)
         {
             if (x < 0 || x > 7 || y < 0 || y > 7)
@@ -329,7 +326,6 @@ namespace ChessSharp
             
             return Board[y, x];
         }
-
         public Tile GetTile(Tile tile)
         {
             return GetTile(tile.X, tile.Y);
@@ -348,155 +344,20 @@ namespace ChessSharp
             }
             return null;
         }
-
-        public List<Tile> GetTilesInRow(Tile pos1, Tile pos2) // get X axis
+        public override string ToString()
         {
-            List<Tile> res = new List<Tile>();
+            string res = "";
 
-            if(pos1.X == pos2.X)
+            for (int i = 7; i >= 0; i--)
             {
-                return res; //return empty list
-            }
-            else if(pos1.X > pos2.X)
-            {
-                for (int i = pos2.X + 1; i < pos1.X; i++)
+                for (int j = 0; j < 8; j++)
                 {
-                    res.Add(Board[pos1.Y, i]);
+                    res += Board[i, j].ToString() + " ";
                 }
-            }
-            else
-            {
-                for (int i = pos1.X + 1; i < pos2.X; i++)
-                {
-                    res.Add(Board[pos1.Y, i]);
-                }
+
+                res += Environment.NewLine;
             }
             return res;
-        }
-        public List<Tile> GetTilesInCol(Tile pos1, Tile pos2) //get Y axis
-        {
-            List<Tile> res = new List<Tile>();
-
-            if (pos1.Y == pos2.Y)
-            {
-                return res; //return empty list
-            }
-            else if (pos1.Y > pos2.Y)
-            {
-                for (int i = pos2.Y + 1; i < pos1.Y; i++)
-                {
-                    res.Add(Board[i, pos1.X]);
-                }
-            }
-            else
-            {
-                for (int i = pos1.Y + 1; i < pos2.Y; i++)
-                {
-                    res.Add(Board[i, pos1.X]);
-                }
-            }
-            return res;
-        }
-
-        public List<Tile> GetDiagonalTiles(Tile start, Tile end)
-        {
-            List<Tile> tiles = new List<Tile>();
-
-            int minX = Math.Min(start.X, end.X);
-            int maxX = Math.Max(start.X, end.X);
-            int minY = Math.Min(start.Y, end.Y);
-            int maxY = Math.Max(start.Y, end.Y);
-
-            for(int i = minX + 1; i < maxX; i++)
-            {
-                for (int j = minY + 1; j < maxY; j++)
-                {
-                    Tile tile = GetTile(i, j);
-                    if (Math.Abs(start.X - tile.X) == Math.Abs(start.Y - tile.Y))
-                        tiles.Add(tile);
-                }
-            }
-            return tiles;
-
-        }
-
-        public bool IsTileAttacked(Tile tilePos, bool team)
-        {
-            foreach (Tile tile in Board)
-            {
-                if(tile.piece != null && tile.piece.IsWhite != team) //if enemy piece
-                {
-                    if(tile.piece.IsAttackingTile(this, tile, tilePos))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        public static double Distance(Tile start, Tile end)
-        {
-            double res = Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2);
-            return res;
-        }
-        internal bool IsLegalMove(Move move, bool isWhite)
-        {
-            Tile start = move.Start;
-            Tile end = move.End;
-
-            Piece temp = end.piece;
-
-            end.piece = start.piece;
-            start.piece = null;
-
-            if (isWhite)
-            {
-                Piece king = whitePieces.Find(piece => piece is King && piece.IsWhite);
-                King whiteKing = king as King;
-
-                if(whiteKing == null)
-                {
-                    throw new MissingMemberException("White king is missing");
-                }
-
-                Tile kingTile = GetTile(whiteKing);
-
-                if (whiteKing.InCheck(this, kingTile, whiteKing.IsWhite))
-                {
-                    start.piece = end.piece;
-                    end.piece = temp;
-                    return false;
-                }
-
-                start.piece = end.piece;
-                end.piece = temp;
-                return true;
-            }
-            else
-            {
-                Piece king = blackPieces.Find(piece => piece is King && !piece.IsWhite);
-                King blackKing = king as King;
-
-                if(blackKing == null)
-                {
-                    throw new MissingMemberException("Black king is missing");
-                }
-
-                Tile kingTile = GetTile(blackKing);
-
-                if(blackKing.InCheck(this, kingTile, blackKing.IsWhite))
-                {
-                    start.piece = end.piece;
-                    end.piece = temp;
-                    return false;
-                }
-
-                start.piece = end.piece;
-                end.piece = temp;
-                return true;
-            }
-
         }
         private void InitPieces()
         {
@@ -597,22 +458,152 @@ namespace ChessSharp
                 }
             }
         }
-        public override string ToString()
+        internal List<Tile> GetTilesInRow(Tile pos1, Tile pos2) // get X axis
         {
-            string res = "";
+            List<Tile> res = new List<Tile>();
 
-            for (int i = 7 ; i >= 0; i--)
+            if (pos1.X == pos2.X)
             {
-                for (int j = 0; j < 8; j++)
+                return res; //return empty list
+            }
+            else if (pos1.X > pos2.X)
+            {
+                for (int i = pos2.X + 1; i < pos1.X; i++)
                 {
-                    res += Board[i, j].ToString() + " ";
+                    res.Add(Board[pos1.Y, i]);
                 }
-
-                res += Environment.NewLine;
+            }
+            else
+            {
+                for (int i = pos1.X + 1; i < pos2.X; i++)
+                {
+                    res.Add(Board[pos1.Y, i]);
+                }
             }
             return res;
         }
-        
+        internal List<Tile> GetTilesInCol(Tile pos1, Tile pos2) //get Y axis
+        {
+            List<Tile> res = new List<Tile>();
+
+            if (pos1.Y == pos2.Y)
+            {
+                return res; //return empty list
+            }
+            else if (pos1.Y > pos2.Y)
+            {
+                for (int i = pos2.Y + 1; i < pos1.Y; i++)
+                {
+                    res.Add(Board[i, pos1.X]);
+                }
+            }
+            else
+            {
+                for (int i = pos1.Y + 1; i < pos2.Y; i++)
+                {
+                    res.Add(Board[i, pos1.X]);
+                }
+            }
+            return res;
+        }
+        internal List<Tile> GetDiagonalTiles(Tile start, Tile end)
+        {
+            List<Tile> tiles = new List<Tile>();
+
+            int minX = Math.Min(start.X, end.X);
+            int maxX = Math.Max(start.X, end.X);
+            int minY = Math.Min(start.Y, end.Y);
+            int maxY = Math.Max(start.Y, end.Y);
+
+            for (int i = minX + 1; i < maxX; i++)
+            {
+                for (int j = minY + 1; j < maxY; j++)
+                {
+                    Tile tile = GetTile(i, j);
+                    if (Math.Abs(start.X - tile.X) == Math.Abs(start.Y - tile.Y))
+                        tiles.Add(tile);
+                }
+            }
+            return tiles;
+
+        }
+        internal bool IsTileAttacked(Tile tilePos, bool team)
+        {
+            foreach (Tile tile in Board)
+            {
+                if (tile.piece != null && tile.piece.IsWhite != team) //if enemy piece
+                {
+                    if (tile.piece.IsAttackingTile(this, tile, tilePos))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        internal static double Distance(Tile start, Tile end)
+        {
+            double res = Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2);
+            return res;
+        }
+        internal bool IsLegalMove(Move move, bool isWhite)
+        {
+            Tile start = move.Start;
+            Tile end = move.End;
+
+            Piece temp = end.piece;
+
+            end.piece = start.piece;
+            start.piece = null;
+
+            if (isWhite)
+            {
+                Piece king = whitePieces.Find(piece => piece is King && piece.IsWhite);
+                King whiteKing = king as King;
+
+                if (whiteKing == null)
+                {
+                    throw new MissingMemberException("White king is missing");
+                }
+
+                Tile kingTile = GetTile(whiteKing);
+
+                if (whiteKing.InCheck(this, kingTile, whiteKing.IsWhite))
+                {
+                    start.piece = end.piece;
+                    end.piece = temp;
+                    return false;
+                }
+
+                start.piece = end.piece;
+                end.piece = temp;
+                return true;
+            }
+            else
+            {
+                Piece king = blackPieces.Find(piece => piece is King && !piece.IsWhite);
+                King blackKing = king as King;
+
+                if (blackKing == null)
+                {
+                    throw new MissingMemberException("Black king is missing");
+                }
+
+                Tile kingTile = GetTile(blackKing);
+
+                if (blackKing.InCheck(this, kingTile, blackKing.IsWhite))
+                {
+                    start.piece = end.piece;
+                    end.piece = temp;
+                    return false;
+                }
+
+                start.piece = end.piece;
+                end.piece = temp;
+                return true;
+            }
+
+        }
 
     }
 }
