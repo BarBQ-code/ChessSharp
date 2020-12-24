@@ -286,6 +286,19 @@ namespace ChessSharp
 
                     end.piece = move.PromotionPiece;
                 }
+                else if(move.MoveType == MoveType.EnPassant)
+                {
+                    if(CurrentPlayer.IsWhite)
+                    {
+                        end.piece = start.piece;
+                        GetTile(end.X, end.Y - 1).piece = null;
+                    }
+                    else
+                    {
+                        end.piece = start.piece;
+                        GetTile(end.X, end.Y + 1).piece = null;
+                    }
+                }
                 else
                 {
                     end.piece = start.piece;
