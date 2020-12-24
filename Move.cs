@@ -95,7 +95,6 @@ namespace ChessSharp
 
         public static MoveType MoveTypeIdentifier(Grid board, Tile start, Tile end)
         {
-            
             King king = start.piece as King;
             
             if(king != null)
@@ -120,6 +119,17 @@ namespace ChessSharp
                                 return MoveType.LongCastles;
                         }
                     }
+                }
+            }
+            //check for en passant
+            Pawn pawn = start.piece as Pawn;
+            if(pawn != null)
+            {
+                if(pawn.CanMove(board, new Move(start, end, board.CurrentPlayer)))
+                {
+                    if (end.piece == null && end.X != start.X)
+                        return MoveType.EnPassant;
+                 
                 }
             }
 
