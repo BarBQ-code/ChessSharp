@@ -440,7 +440,7 @@ namespace ChessSharp
             double res = Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2);
             return res;
         }
-        public bool IsLegalMove(Move move, bool isWhite)
+        internal bool IsLegalMove(Move move, bool isWhite)
         {
             Tile start = move.Start;
             Tile end = move.End;
@@ -460,7 +460,9 @@ namespace ChessSharp
                     throw new MissingMemberException("White king is missing");
                 }
 
-                if (whiteKing.InCheck(this, GetTile(whiteKing), whiteKing.IsWhite))
+                Tile kingTile = GetTile(whiteKing);
+
+                if (whiteKing.InCheck(this, kingTile, whiteKing.IsWhite))
                 {
                     start.piece = end.piece;
                     end.piece = temp;
@@ -481,7 +483,9 @@ namespace ChessSharp
                     throw new MissingMemberException("Black king is missing");
                 }
 
-                if(blackKing.InCheck(this, GetTile(blackKing), blackKing.IsWhite))
+                Tile kingTile = GetTile(blackKing);
+
+                if(blackKing.InCheck(this, kingTile, blackKing.IsWhite))
                 {
                     start.piece = end.piece;
                     end.piece = temp;
