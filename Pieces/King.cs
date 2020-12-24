@@ -107,7 +107,7 @@ namespace ChessSharp.Pieces
             {
                 if(tile.piece != null && tile.piece.IsWhite != teamColor) //if enemy team piece
                 {
-                    if (tile.piece.CanMove(board, new Move(tile, kingLocation, board.CurrentPlayer)))
+                    if(tile.piece.IsAttackingTile(board, tile, kingLocation))
                     {
                         return true;
                     }
