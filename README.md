@@ -129,7 +129,6 @@ Simple UCI Is Available
 
 Things To Add:
 ```
-EnPassant In MakeMove
 Better Move Printing
 Board To FEN
 Testing
