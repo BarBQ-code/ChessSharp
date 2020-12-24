@@ -276,24 +276,39 @@ namespace ChessSharp
 
             if(start.piece.CanMove(this, move))
             {
-                GetTile(end).piece = GetTile(start).piece;
+                if(move.MoveType == MoveType.Promotion)
+                {
+                    if (!(start.piece is Pawn))
+                        throw new InvalidMoveException("Source tile must contain pawn in promotion move");
 
-                if(move.MoveType == MoveType.ShortCastles)
-                {
-                    
-                    GetTile(end.X - 1, start.Y).piece = GetTile(end.X + 1, start.Y).piece;
-                    GetTile(end.X + 1, start.Y).piece = null;
-                    King king = GetTile(start).piece as King;
-                    king.HasMoved = true;
-                } 
-                else if(move.MoveType == MoveType.LongCastles)
-                {
-                    GetTile(end.X + 1, start.Y).piece = GetTile(end.X - 2, start.Y).piece;
-                    GetTile(end.X - 2, start.Y).piece = null;
-                    King king = GetTile(start).piece as King;
-                    king.HasMoved = true;
+                    if(move.PromotionPiece is Pawn)
+                        throw new InvalidMoveException("Can't promote to pawn");
+
+                    end.piece = move.PromotionPiece;
                 }
-                GetTile(start).piece = null;
+                else
+                {
+                    end.piece = start.piece;
+
+                    if (move.MoveType == MoveType.ShortCastles)
+                    {
+
+                        GetTile(end.X - 1, start.Y).piece = GetTile(end.X + 1, start.Y).piece;
+                        GetTile(end.X + 1, start.Y).piece = null;
+                        King king = GetTile(start).piece as King;
+                        king.HasMoved = true;
+                    }
+                    else if (move.MoveType == MoveType.LongCastles)
+                    {
+                        GetTile(end.X + 1, start.Y).piece = GetTile(end.X - 2, start.Y).piece;
+                        GetTile(end.X - 2, start.Y).piece = null;
+                        King king = GetTile(start).piece as King;
+                        king.HasMoved = true;
+                    }
+                }
+
+                
+                start.piece = null;
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
                 ResetEnPassant();
                 UpdateGameState();
