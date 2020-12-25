@@ -15,16 +15,7 @@
 
         public override string ToString()
         {
-            if(piece != null)
-            {
-                if(!piece.IsWhite)
-                {
-                    return piece.ToString().ToLower();
-                }
-
-                return piece.ToString();
-            }
-            return ".";
+            return (char)('a' + X) + (Y + 1).ToString();
         }
     }
 }
