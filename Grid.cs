@@ -381,7 +381,7 @@ namespace ChessSharp
                         {
                             res += emptySpacesCount;
                         }
-                        res += tile.ToString();
+                        res += tile.piece.ToString();
                         emptySpacesCount = 0;
                     }
                     else
@@ -479,7 +479,13 @@ namespace ChessSharp
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    res += Board[i, j].ToString() + " ";
+                    Tile tile = Board[i, j];
+                    if (tile.piece != null)
+                    {
+                        res += tile.piece.ToString() + " ";
+                    }
+                    else
+                        res += ". ";
                 }
 
                 res += Environment.NewLine;
