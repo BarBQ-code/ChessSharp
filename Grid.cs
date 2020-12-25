@@ -433,16 +433,63 @@ namespace ChessSharp
             res += castlingRights + " ";
 
             //Init enpassant section
-            string enpassant = "";
             if(CurrentPlayer.IsWhite)
             {
                 Piece bPawn = blackPieces.Find(piece => piece is Pawn);
                 Pawn epPawn = bPawn as Pawn;
-                if(epPawn.CanBeCapturedEnPassant)
+                if (epPawn != null)
                 {
-                    
+                    if (epPawn.CanBeCapturedEnPassant)
+                    {
+                        Tile pawnTile = GetTile(epPawn);
+                        string pawnSquare = pawnTile.ToString();
+                        char file = pawnSquare[0];
+                        int rank = int.Parse(pawnSquare[1].ToString()) + 1;
+                        res += file + rank.ToString() + " ";
+                    }
+                    else
+                    {
+                        res += "- ";
+                    }
+                }
+                else
+                {
+                    res += "- ";
+                }
+
+            }
+            else
+            {
+                Piece wPawn = whitePieces.Find(piece => piece is Pawn);
+                Pawn epPawn = wPawn as Pawn;
+                if (epPawn != null)
+                {
+                    if (epPawn.CanBeCapturedEnPassant)
+                    {
+                        Tile pawnTile = GetTile(epPawn);
+                        string pawnSquare = pawnTile.ToString();
+                        char file = pawnSquare[0];
+                        int rank = int.Parse(pawnSquare[1].ToString()) - 1;
+                        res += file + rank.ToString() + " ";
+                    }
+                    else
+                    {
+                        res += "- ";
+                    }
+                }
+                else
+                {
+                    res += "- ";
                 }
             }
+
+            //Init fiftyMoveRuleCount
+
+            res += FiftyMoveRuleCount + " ";
+
+            //Init MoveCount
+
+            res += (MoveCount / 2) + 1 + " ";
 
             return res;
         }
