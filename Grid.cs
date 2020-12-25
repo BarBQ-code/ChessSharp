@@ -14,7 +14,8 @@ namespace ChessSharp
         public List<Piece> whitePieces { get; private set; } = new List<Piece>();
         public List<Piece> blackPieces { get; private set; } = new List<Piece>();
         public int FiftyMoveRuleCount { get; private set; } = 0;
-        public int MoveCount { get; set; } = 0;
+        public int MoveCount { get; private set; } = 0;
+        
         public Grid()
         {
             Init();
@@ -363,6 +364,87 @@ namespace ChessSharp
             }
 
             return moves;
+        }
+        public string FEN()
+        {
+            //Init board state section
+            string res = "";
+            int emptySpacesCount = 0;
+            for (int i = 7; i >= 0; i--)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    Tile tile = GetTile(j, i);
+                    if(tile.piece != null)
+                    {
+                        if (emptySpacesCount != 0)
+                        {
+                            res += emptySpacesCount;
+                        }
+                        res += tile.ToString();
+                        emptySpacesCount = 0;
+                    }
+                    else
+                    {
+                        emptySpacesCount++;
+                    }
+                }
+                if (emptySpacesCount != 0)
+                    res += emptySpacesCount;
+                emptySpacesCount = 0;
+                res += "/";
+            }
+
+            res = res.TrimEnd('/');
+
+            //Init current player section
+            if (CurrentPlayer.IsWhite)
+                res += " w ";
+            else
+                res += " b ";
+
+            //Init caslting right position
+            Piece wKing = whitePieces.Find(piece => piece is King);
+            King whiteKing = wKing as King;
+
+            if (whiteKing == null)
+                throw new InvalidBoardException("White king is missing");
+
+            Piece bKing = blackPieces.Find(piece => piece is King);
+            King blackKing = bKing as King;
+
+            if (blackKing == null)
+                throw new InvalidBoardException("Black king is missing");
+
+            string castlingRights = "";
+
+            if (!whiteKing.kingSideCatlingDone)
+                castlingRights += 'K';
+            if (!whiteKing.queenSideCasltingDone)
+                castlingRights += 'Q';
+            if (!blackKing.kingSideCatlingDone)
+                castlingRights += 'k';
+            if (!blackKing.queenSideCasltingDone)
+                castlingRights += 'q';
+
+            if (whiteKing.HasMoved && blackKing.HasMoved)
+                castlingRights = "-";
+
+            res += castlingRights + " ";
+
+            //Init enpassant section
+            string enpassant = "";
+            if(CurrentPlayer.IsWhite)
+            {
+                Piece bPawn = blackPieces.Find(piece => piece is Pawn);
+                Pawn epPawn = bPawn as Pawn;
+                if(epPawn.CanBeCapturedEnPassant)
+                {
+                    
+                }
+            }
+
+            return res;
         }
         public Tile GetTile(int x, int y)
         {
