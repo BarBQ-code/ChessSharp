@@ -130,7 +130,6 @@ Simple UCI Is Available
 Things To Add:
 ```
 Better Move Printing
-Board To FEN
 Testing
 Complex UCI
 PGN
