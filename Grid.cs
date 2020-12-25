@@ -8,13 +8,14 @@ namespace ChessSharp
 {
     public class Grid
     {
+        private int moveCount;
         public Tile[,] Board { get; private set; }
         public Player CurrentPlayer { get; private set; }
         public GameState gameState { get; private set; }
         public List<Piece> whitePieces { get; private set; } = new List<Piece>();
         public List<Piece> blackPieces { get; private set; } = new List<Piece>();
         public int FiftyMoveRuleCount { get; private set; } = 0;
-        public int MoveCount { get; set; } = 0;
+        public int MoveCount { get => moveCount / 2; set; } = 0;
         public Grid()
         {
             Init();
