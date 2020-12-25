@@ -73,6 +73,9 @@ namespace ChessSharp
 
         public override string ToString()
         {
+            if (!IsWhite)
+                return pieceChar.ToString().ToLower();
+
             return pieceChar.ToString();
         }
 
