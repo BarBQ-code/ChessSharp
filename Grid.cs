@@ -207,7 +207,7 @@ namespace ChessSharp
             if(isInt)
             {
                 if (moveCount > 0)
-                    MoveCount = moveCount;
+                    MoveCount = (moveCount * 2) - 1;
                 else
                     throw new InvalidFENBoardException("Move count argument must be greater than 0");
             }
