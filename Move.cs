@@ -154,7 +154,7 @@ namespace ChessSharp
                 if(Start.piece is Pawn)
                 {
                     res = End.ToString();
-                    if (MoveType == MoveType.Capture)
+                    if (MoveType == MoveType.Capture || MoveType == MoveType.EnPassant)
                         res = Start.ToString()[0].ToString() + capturesChar.ToString() + res;
                     return res;
                 }
