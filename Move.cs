@@ -40,7 +40,7 @@ namespace ChessSharp
             Move move = null;
 
             if (uci.Length != 4)
-                throw new ArgumentException("UCI must be 4 chararacthers");
+                throw new ArgumentException("UCI must be 4 characters");
 
             int startX = (int)(uci[0] - 'a');
             int startY = int.Parse(uci[1].ToString()) - 1;
@@ -153,17 +153,17 @@ namespace ChessSharp
             {
                 if(Start.piece is Pawn)
                 {
-                    res = (char)('a' + End.X) + (End.Y + 1).ToString();
+                    res = End.ToString();
                     if (MoveType == MoveType.Capture)
-                        res += capturesChar;
+                        res = Start.ToString()[0].ToString() + capturesChar.ToString() + res;
                     return res;
                 }
                 else
                 {
-                    res = Start.ToString();
+                    res = Start.piece.ToString();
                     if (MoveType == MoveType.Capture)
                         res += capturesChar;
-                    res += (char)('a' + End.X) + (End.Y + 1).ToString();
+                    res += End.ToString();
                 }
                 
             }
