@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ChessSharp.Players
 {
-    public abstract class Player
+    public class Player
     {
         public bool IsWhite { get; set; }
         public bool IsHuman { get; set; } = true;
