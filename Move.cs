@@ -156,6 +156,8 @@ namespace ChessSharp
                     res = End.ToString();
                     if (MoveType == MoveType.Capture || MoveType == MoveType.EnPassant)
                         res = Start.ToString()[0].ToString() + capturesChar.ToString() + res;
+                    else if (MoveType == MoveType.Promotion)
+                        res += "=" + PromotionPiece.ToString();
                     return res;
                 }
                 else
