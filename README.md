@@ -97,7 +97,7 @@ Get All Possible Moves:
 
 ```csharp
 List<Move> moves = board.LegalMoves();
-moves.ForEach(move => Console.WriteLine(move))
+moves.ForEach(Console.WriteLine);
 ```
 
 Output:
@@ -129,7 +129,6 @@ Simple UCI Is Available
 
 Things To Add:
 ```
-Better Move Printing
 Testing
 Complex UCI
 PGN
