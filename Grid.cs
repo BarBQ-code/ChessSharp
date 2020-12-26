@@ -306,7 +306,9 @@ namespace ChessSharp
                     if(Grid.Distance(start, end) == 4) //first move
                     {
                         pawn.CanBeCapturedEnPassant = true;
-                    }    
+                    }
+
+                    end.piece = start.piece;
                 }
                 else
                 {
