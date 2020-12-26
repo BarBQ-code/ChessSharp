@@ -56,6 +56,15 @@ namespace ChessSharp
                                 move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.LongCastles);
                         }
                     }
+
+                    Pawn pawn = piecePos.piece as Pawn;
+
+                    if (pawn != null) // check for enpassant
+                    {
+                        if (tile.X != board.GetTile(pawn).X)
+                            move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.EnPassant);
+                    }
+
                 }
                 else if (tile.piece != null && tile.piece.IsWhite != piecePos.piece.IsWhite)
                 {
