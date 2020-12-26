@@ -35,6 +35,9 @@ namespace ChessSharp.Pieces
                     if (board.IsTileAttacked(end, start.piece.IsWhite))
                         return false;
 
+                    if (!board.IsLegalMove(new Move(start, end, board.CurrentPlayer), start.piece.IsWhite))
+                        return false;
+
                     return true;    
                 }
                 else if(Grid.Distance(start, end) == castlingDistance && start.Y == end.Y && start.Y == startingRank) // same rank and castling distance
