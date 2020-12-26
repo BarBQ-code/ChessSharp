@@ -107,7 +107,7 @@ Na3 Nc3 Nf3 Nh3 a3 a4 b3 b4 c3 c4 d3 d4 e3 e4 f3 f4 g3 g4 h3 h4
 
 Inorder To Get Current Board Position In FEN:
 
-```
+```csharp
 Console.WriteLine(board.FEN());
 ```
 
