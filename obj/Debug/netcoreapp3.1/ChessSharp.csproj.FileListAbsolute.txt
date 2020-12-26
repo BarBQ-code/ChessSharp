@@ -1,9 +1,0 @@
-C:\Users\mishi\Desktop\ChessSharp\bin\Debug\netcoreapp3.1\ChessSharp.deps.json
-C:\Users\mishi\Desktop\ChessSharp\bin\Debug\netcoreapp3.1\ChessSharp.dll
-C:\Users\mishi\Desktop\ChessSharp\bin\Debug\netcoreapp3.1\ChessSharp.pdb
-C:\Users\mishi\Desktop\ChessSharp\obj\Debug\netcoreapp3.1\ChessSharp.csprojAssemblyReference.cache
-C:\Users\mishi\Desktop\ChessSharp\obj\Debug\netcoreapp3.1\ChessSharp.AssemblyInfoInputs.cache
-C:\Users\mishi\Desktop\ChessSharp\obj\Debug\netcoreapp3.1\ChessSharp.AssemblyInfo.cs
-C:\Users\mishi\Desktop\ChessSharp\obj\Debug\netcoreapp3.1\ChessSharp.csproj.CoreCompileInputs.cache
-C:\Users\mishi\Desktop\ChessSharp\obj\Debug\netcoreapp3.1\ChessSharp.dll
-C:\Users\mishi\Desktop\ChessSharp\obj\Debug\netcoreapp3.1\ChessSharp.pdb
