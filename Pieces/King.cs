@@ -29,8 +29,7 @@ namespace ChessSharp.Pieces
                 Tile start = move.Start;
                 Tile end = move.End;
 
-                if (Grid.Distance(start, end) == validDistance.Item1 ||
-                    Grid.Distance(start, end) == validDistance.Item2)
+                if (IsAttackingTile(board, start, end))
                 {
                     if (board.IsTileAttacked(end, start.piece.IsWhite))
                         return false;
