@@ -18,15 +18,7 @@ namespace ChessSharp.Pieces
                 Tile start = move.Start;
                 Tile end = move.End;
 
-                if (Math.Abs(start.X - end.X) != Math.Abs(start.Y - end.Y))
-                    return false;
-
-                var tiles = board.GetDiagonalTiles(start, end);
-
-                if (IsPieceBlocking(tiles))
-                    return false;
-
-                if (!board.IsLegalMove(move, start.piece.IsWhite))
+                if (!IsAttackingTile(board, start, end))
                     return false;
 
                 return true;
