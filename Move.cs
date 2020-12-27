@@ -129,7 +129,8 @@ namespace ChessSharp
                 {
                     if (end.piece == null && end.X != start.X)
                         return MoveType.EnPassant;
-                 
+                    if (end.Y == 0 || end.Y == 7)
+                        return MoveType.Promotion;
                 }
             }
 
