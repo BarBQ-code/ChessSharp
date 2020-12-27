@@ -18,7 +18,7 @@ namespace ChessSharp.Pieces
                 Tile start = move.Start;
                 Tile end = move.End;
 
-                if (Grid.Distance(start, end) != validDistance)
+                if (!IsAttackingTile(board, start, end))
                     return false;
 
                 if (!board.IsLegalMove(move, start.piece.IsWhite))
@@ -30,13 +30,11 @@ namespace ChessSharp.Pieces
         }
 
         public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
-        {
-
+        { 
             if (Grid.Distance(piecePos, destionation) == validDistance)
                 return true;
 
             return false;
-
         }
     }
 }
