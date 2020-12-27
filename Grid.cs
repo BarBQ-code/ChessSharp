@@ -21,7 +21,7 @@ namespace ChessSharp
             Init();
         }
 
-        // fen to board
+        // Fen constructor
         public Grid(string fen)
         {
             Board = new Tile[8, 8];
@@ -258,6 +258,7 @@ namespace ChessSharp
 
 
         }
+        //makes a move, returns true if move is legal, return false or throws exceptions when it's not
         public bool MakeMove(Move move)
         {
             if (move == null)
@@ -349,6 +350,7 @@ namespace ChessSharp
             }
             return false;
         }
+        //returns list of legal moves
         public List<Move> LegalMoves()
         {
             List<Move> moves = new List<Move>();
@@ -367,6 +369,7 @@ namespace ChessSharp
 
             return moves;
         }
+        //returns the board state in FEN format
         public string FEN()
         {
             //Init board state section
@@ -541,6 +544,7 @@ namespace ChessSharp
             }
             return res;
         }
+        //Intializes the whitePieces and blackPieces list in the start of each game
         private void InitPieces()
         {
             foreach(Tile tile in Board)
@@ -640,6 +644,7 @@ namespace ChessSharp
                 }
             }
         }
+        //Util func for rook CanMove func
         internal List<Tile> GetTilesInRow(Tile pos1, Tile pos2) // get X axis
         {
             List<Tile> res = new List<Tile>();
@@ -664,6 +669,7 @@ namespace ChessSharp
             }
             return res;
         }
+        //Util func for rook CanMove func
         internal List<Tile> GetTilesInCol(Tile pos1, Tile pos2) //get Y axis
         {
             List<Tile> res = new List<Tile>();
@@ -688,6 +694,7 @@ namespace ChessSharp
             }
             return res;
         }
+        //Util func for bishop CanMove func
         internal List<Tile> GetDiagonalTiles(Tile start, Tile end)
         {
             List<Tile> tiles = new List<Tile>();
@@ -709,6 +716,7 @@ namespace ChessSharp
             return tiles;
 
         }
+        //Util func for king is in check func
         internal bool IsTileAttacked(Tile tilePos, bool team)
         {
             foreach (Tile tile in Board)
@@ -723,11 +731,13 @@ namespace ChessSharp
             }
             return false;
         }
+        //Util func for calculating right moves
         internal static double Distance(Tile start, Tile end)
         {
             double res = Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2);
             return res;
         }
+        //Util func to check if move is legal (that king is not in check after moving the piece aka the piece is pinned"
         internal bool IsLegalMove(Move move, bool isWhite)
         {
             Tile start = move.Start;
