@@ -37,44 +37,10 @@ namespace ChessSharp
             List<Move> moves = new List<Move>();
             
             foreach(Tile tile in board.Board)
-            {
-                Move move = null;
-
-                if (tile.piece == null)
-                {
-                    move = new Move(piecePos, tile, board.CurrentPlayer);
-
-                    King king = piecePos.piece as King;
-
-                    if (king != null)
-                    {
-                        if (Grid.Distance(piecePos, tile) == 4 && piecePos.Y == tile.Y && piecePos.Y == king.startingRank)
-                        {
-                            if (tile.X == 6)
-                                move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.ShortCastles);
-                            else
-                                move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.LongCastles);
-                        }
-                    }
-
-                    Pawn pawn = piecePos.piece as Pawn;
-
-                    if (pawn != null) // check for enpassant
-                    {
-                        if (tile.X != board.GetTile(pawn).X)
-                            move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.EnPassant);
-                    }
-
-                }
-                else if (tile.piece != null && tile.piece.IsWhite != piecePos.piece.IsWhite)
-                {
-                    move = new Move(piecePos, tile, board.CurrentPlayer, MoveType.Capture);
-                }
-                
-                if(piecePos.piece.CanMove(board, move))
-                {
+            { 
+                Move move = new Move(piecePos, tile, board.CurrentPlayer, Move.MoveTypeIdentifier(board, piecePos, tile));
+                if (piecePos.piece.CanMove(board, move))
                     moves.Add(move);
-                }
             }
 
             return moves;
