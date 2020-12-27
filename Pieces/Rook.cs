@@ -21,9 +21,7 @@ namespace ChessSharp.Pieces
 
                 if (start.X == end.X)
                 {
-                    var tiles = board.GetTilesInCol(start, end);
-
-                    if (IsPieceBlocking(tiles))
+                    if (!IsAttackingTile(board, start, end))
                         return false;
 
                     if (!board.IsLegalMove(move, start.piece.IsWhite))
@@ -33,9 +31,7 @@ namespace ChessSharp.Pieces
                 }
                 else if(start.Y == end.Y)
                 {
-                    var tiles = board.GetTilesInRow(start, end);
-
-                    if (IsPieceBlocking(tiles))
+                    if (!IsAttackingTile(board, start, end))
                         return false;
 
                     if(!board.IsLegalMove(move, start.piece.IsWhite))
