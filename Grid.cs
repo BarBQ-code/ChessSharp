@@ -8,6 +8,9 @@ namespace ChessSharp
 {
     public class Grid
     {
+        #region Properties
+
+
         public Tile[,] Board { get; private set; }
         public Player CurrentPlayer { get; private set; }
         public GameState gameState { get; private set; }
@@ -15,7 +18,11 @@ namespace ChessSharp
         public List<Piece> blackPieces { get; private set; } = new List<Piece>();
         public int FiftyMoveRuleCount { get; private set; } = 0;
         public int MoveCount { get; private set; } = 0;
-        
+
+        #endregion
+
+        #region Constructers
+
         public Grid()
         {
             Init();
@@ -216,7 +223,6 @@ namespace ChessSharp
                 throw new InvalidFENBoardException("Move count argument must be an integer");
             }
         }
-
         public void Init()
         {
             Board = new Tile[8, 8];
@@ -258,6 +264,10 @@ namespace ChessSharp
 
 
         }
+        #endregion
+
+        #region Public Methods
+
         //makes a move, returns true if move is legal, return false or throws exceptions when it's not
         public bool MakeMove(Move move)
         {
@@ -544,6 +554,9 @@ namespace ChessSharp
             }
             return res;
         }
+        #endregion
+
+        #region Private Methods
         //Intializes the whitePieces and blackPieces list in the start of each game
         private void InitPieces()
         {
@@ -644,6 +657,10 @@ namespace ChessSharp
                 }
             }
         }
+        #endregion
+
+        #region Internal Methods
+
         //Util func for rook CanMove func
         internal List<Tile> GetTilesInRow(Tile pos1, Tile pos2) // get X axis
         {
@@ -796,6 +813,7 @@ namespace ChessSharp
             }
 
         }
-
+        
+        #endregion
     }
 }
