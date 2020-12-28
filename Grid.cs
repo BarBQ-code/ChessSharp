@@ -21,11 +21,6 @@ namespace ChessSharp
         public List<Piece> KilledBlackPieces { get; set; } = new List<Piece>();
         public int FiftyMoveRuleCount { get; private set; } = 0;
         public int MoveCount { get; private set; } = 0;
-        
-        private List<Piece> DefaultWhitePieces = new List<Piece>();
-        private List<Piece> DefaultBlackPieces = new List<Piece>();
-
-
         #endregion
 
         #region Constructers
