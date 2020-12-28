@@ -14,8 +14,10 @@ namespace ChessSharp
         public Tile[,] Board { get; private set; }
         public Player CurrentPlayer { get; private set; }
         public GameState gameState { get; private set; }
-        public List<Piece> whitePieces { get; private set; } = new List<Piece>();
-        public List<Piece> blackPieces { get; private set; } = new List<Piece>();
+        public List<Piece> WhitePieces { get; private set; } = new List<Piece>();
+        public List<Piece> KilledWhitePieces { get; private set; } = new List<Piece>();
+        public List<Piece> BlackPieces { get; private set; } = new List<Piece>();
+        public List<Piece> KilledBlackPieces { get; set; } = new List<Piece>();
         public int FiftyMoveRuleCount { get; private set; } = 0;
         public int MoveCount { get; private set; } = 0;
 
@@ -121,13 +123,13 @@ namespace ChessSharp
                     throw new InvalidFENBoardException("Invalid castling rights argument");
             }
 
-            Piece wKing = whitePieces.Find(piece => piece is King && piece.IsWhite);
+            Piece wKing = WhitePieces.Find(piece => piece is King && piece.IsWhite);
             King whiteKing = wKing as King;
 
             if (whiteKing == null)
                 throw new InvalidFENBoardException("Board missing white king");
 
-            Piece bKing = blackPieces.Find(piece => piece is King && !piece.IsWhite);
+            Piece bKing = BlackPieces.Find(piece => piece is King && !piece.IsWhite);
             King blackKing = bKing as King;
 
             if (blackKing == null)
@@ -288,6 +290,11 @@ namespace ChessSharp
 
             if(start.piece.CanMove(this, move))
             {
+                if(end.piece != null) 
+                {
+                    end.piece.IsKilled = true;
+                }
+
                 if(move.MoveType == MoveType.Promotion)
                 {
                     if (!(start.piece is Pawn))
@@ -355,6 +362,7 @@ namespace ChessSharp
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
                 MoveCount++;
                 ResetEnPassant();
+                UpdateKilledPieces();
                 UpdateGameState();
                 return true;
             }
@@ -419,13 +427,13 @@ namespace ChessSharp
                 res += " b ";
 
             //Init caslting right position
-            Piece wKing = whitePieces.Find(piece => piece is King);
+            Piece wKing = WhitePieces.Find(piece => piece is King);
             King whiteKing = wKing as King;
 
             if (whiteKing == null)
                 throw new InvalidBoardException("White king is missing");
 
-            Piece bKing = blackPieces.Find(piece => piece is King);
+            Piece bKing = BlackPieces.Find(piece => piece is King);
             King blackKing = bKing as King;
 
             if (blackKing == null)
@@ -450,7 +458,7 @@ namespace ChessSharp
             //Init enpassant section
             if(CurrentPlayer.IsWhite)
             {
-                Piece bPawn = blackPieces.Find(piece => piece is Pawn);
+                Piece bPawn = BlackPieces.Find(piece => piece is Pawn);
                 Pawn epPawn = bPawn as Pawn;
                 if (epPawn != null)
                 {
@@ -475,7 +483,7 @@ namespace ChessSharp
             }
             else
             {
-                Piece wPawn = whitePieces.Find(piece => piece is Pawn);
+                Piece wPawn = WhitePieces.Find(piece => piece is Pawn);
                 Pawn epPawn = wPawn as Pawn;
                 if (epPawn != null)
                 {
@@ -566,11 +574,11 @@ namespace ChessSharp
                 {
                     if (tile.piece.IsWhite)
                     {
-                        whitePieces.Add(tile.piece);
+                        WhitePieces.Add(tile.piece);
                     }
                     else
                     {
-                        blackPieces.Add(tile.piece);
+                        BlackPieces.Add(tile.piece);
                     }
                 }
             }
@@ -581,7 +589,7 @@ namespace ChessSharp
         {
             if(CurrentPlayer.IsWhite)
             {
-                Piece king = whitePieces.Find(piece => piece is King && piece.IsWhite);
+                Piece king = WhitePieces.Find(piece => piece is King && piece.IsWhite);
                 King whiteKing = king as King;
 
                 if(whiteKing == null)
@@ -606,7 +614,7 @@ namespace ChessSharp
             }
             else
             {
-                Piece king = blackPieces.Find(piece => piece is King && !piece.IsWhite);
+                Piece king = BlackPieces.Find(piece => piece is King && !piece.IsWhite);
                 King blackKing = king as King;
 
                 if (blackKing == null)
@@ -628,13 +636,18 @@ namespace ChessSharp
                 }
             }
         }
+
+        private void UpdateKilledPieces()
+        {
+            
+        }
         //Fires up after every CanMove func to reset pawns who have the prop CanBeCapturedEnPassant to true
         private void ResetEnPassant()
         {
             List<Piece> pawns;
             if(CurrentPlayer.IsWhite)
             {
-                pawns = whitePieces.FindAll(piece => piece is Pawn);
+                pawns = WhitePieces.FindAll(piece => piece is Pawn);
                 foreach (Piece piece in pawns)
                 {
                     Pawn pawn = piece as Pawn;
@@ -646,7 +659,7 @@ namespace ChessSharp
             }
             else
             {
-                pawns = blackPieces.FindAll(piece => piece is Pawn);
+                pawns = BlackPieces.FindAll(piece => piece is Pawn);
                 foreach(Piece piece in pawns)
                 {
                     Pawn pawn = piece as Pawn;
@@ -767,7 +780,7 @@ namespace ChessSharp
 
             if (isWhite)
             {
-                Piece king = whitePieces.Find(piece => piece is King && piece.IsWhite);
+                Piece king = WhitePieces.Find(piece => piece is King && piece.IsWhite);
                 King whiteKing = king as King;
 
                 if (whiteKing == null)
@@ -790,7 +803,7 @@ namespace ChessSharp
             }
             else
             {
-                Piece king = blackPieces.Find(piece => piece is King && !piece.IsWhite);
+                Piece king = BlackPieces.Find(piece => piece is King && !piece.IsWhite);
                 King blackKing = king as King;
 
                 if (blackKing == null)
