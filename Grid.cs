@@ -21,6 +21,8 @@ namespace ChessSharp
         public List<Piece> KilledBlackPieces { get; set; } = new List<Piece>();
         public int FiftyMoveRuleCount { get; private set; } = 0;
         public int MoveCount { get; private set; } = 0;
+        public List<Move> MoveHistory { get; private set; } = new List<Move>();
+
         #endregion
 
         #region Constructers
@@ -288,9 +290,9 @@ namespace ChessSharp
                     throw new InvalidMoveException("Source tile piece and destination tile piece are of the same team");
             }
 
-            if(start.piece.CanMove(this, move))
+            if (start.piece.CanMove(this, move))
             {
-                if(end.piece != null) 
+                if (end.piece != null) 
                 {
                     end.piece.IsKilled = true;
                 }
@@ -357,10 +359,11 @@ namespace ChessSharp
                 {
                     FiftyMoveRuleCount++;
                 }
-                
+
                 start.piece = null;
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
                 MoveCount++;
+                MoveHistory.Add(move);
                 ResetEnPassant();
                 UpdateKilledPieces();
                 UpdateGameState();
