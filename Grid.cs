@@ -20,6 +20,10 @@ namespace ChessSharp
         public List<Piece> KilledBlackPieces { get; set; } = new List<Piece>();
         public int FiftyMoveRuleCount { get; private set; } = 0;
         public int MoveCount { get; private set; } = 0;
+        
+        private List<Piece> DefaultWhitePieces = new List<Piece>();
+        private List<Piece> DefaultBlackPieces = new List<Piece>();
+
 
         #endregion
 
@@ -582,6 +586,35 @@ namespace ChessSharp
                     }
                 }
             }
+
+            for (int i = 0; i < 8; i++)
+            {
+                DefaultWhitePieces.Add(new Pawn(true));
+                DefaultBlackPieces.Add(new Pawn(false));
+            }
+
+            DefaultWhitePieces.Add(new Rook(true));
+            DefaultWhitePieces.Add(new Rook(true));
+            DefaultBlackPieces.Add(new Rook(false));
+            DefaultBlackPieces.Add(new Rook(false));
+
+            DefaultWhitePieces.Add(new Knight(true));
+            DefaultWhitePieces.Add(new Knight(true));
+            DefaultBlackPieces.Add(new Knight(false));
+            DefaultBlackPieces.Add(new Knight(false));
+
+            DefaultWhitePieces.Add(new Bishop(true));
+            DefaultWhitePieces.Add(new Bishop(true));
+            DefaultBlackPieces.Add(new Bishop(false));
+            DefaultBlackPieces.Add(new Bishop(false));
+
+            DefaultWhitePieces.Add(new Queen(true));
+            DefaultBlackPieces.Add(new Queen(false));
+
+            DefaultWhitePieces.Add(new King(true));
+            DefaultBlackPieces.Add(new King(false));
+
+
         }
 
         //Fires up after every CanMove func to check if the king is in check after the move is made
