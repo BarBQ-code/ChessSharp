@@ -3,6 +3,7 @@ using ChessSharp.Players;
 using ChessSharp.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ChessSharp
 {
@@ -586,35 +587,7 @@ namespace ChessSharp
                     }
                 }
             }
-
-            for (int i = 0; i < 8; i++)
-            {
-                DefaultWhitePieces.Add(new Pawn(true));
-                DefaultBlackPieces.Add(new Pawn(false));
-            }
-
-            DefaultWhitePieces.Add(new Rook(true));
-            DefaultWhitePieces.Add(new Rook(true));
-            DefaultBlackPieces.Add(new Rook(false));
-            DefaultBlackPieces.Add(new Rook(false));
-
-            DefaultWhitePieces.Add(new Knight(true));
-            DefaultWhitePieces.Add(new Knight(true));
-            DefaultBlackPieces.Add(new Knight(false));
-            DefaultBlackPieces.Add(new Knight(false));
-
-            DefaultWhitePieces.Add(new Bishop(true));
-            DefaultWhitePieces.Add(new Bishop(true));
-            DefaultBlackPieces.Add(new Bishop(false));
-            DefaultBlackPieces.Add(new Bishop(false));
-
-            DefaultWhitePieces.Add(new Queen(true));
-            DefaultBlackPieces.Add(new Queen(false));
-
-            DefaultWhitePieces.Add(new King(true));
-            DefaultBlackPieces.Add(new King(false));
-
-
+            UpdateKilledPieces();
         }
 
         //Fires up after every CanMove func to check if the king is in check after the move is made
@@ -669,10 +642,95 @@ namespace ChessSharp
                 }
             }
         }
-
+        //Fires up after every move and start in any Init Pieces calls horrible function
         private void UpdateKilledPieces()
         {
+            KilledWhitePieces.Clear();
+
+            int whitePawnCount = 0;
+            int whiteRookCount = 0;
+            int whiteKnightCount = 0;
+            int whiteBishopCount = 0;
+            int whiteQueenCount = 0;
+
+            foreach (Piece piece in WhitePieces)
+            {
+                if (piece is Pawn)
+                    whitePawnCount++;
+                else if (piece is Rook)
+                    whiteRookCount++;
+                else if (piece is Knight)
+                    whiteKnightCount++;
+                else if (piece is Bishop)
+                    whiteBishopCount++;
+                else if (piece is Queen)
+                    whiteQueenCount++;
+            }
             
+            for (int i = 0; i < 8 - whitePawnCount; i++)
+            {
+                KilledWhitePieces.Add(new Pawn(true));
+            }
+            for (int i = 0; i < 2 - whiteRookCount; i++)
+            {
+                KilledWhitePieces.Add(new Rook(true));
+            }
+            for (int i = 0; i < 2 - whiteKnightCount; i++)
+            {
+                KilledWhitePieces.Add(new Knight(true));
+            }
+            for (int i = 0; i < 2 - whiteBishopCount; i++)
+            {
+                KilledWhitePieces.Add(new Bishop(true));
+            }
+            for (int i = 0; i < 1 - whiteQueenCount; i++)
+            {
+                KilledWhitePieces.Add(new Queen(true));
+            }
+
+            KilledBlackPieces.Clear();
+
+            int blackPawnCount = 0;
+            int blackRookCount = 0;
+            int blackKnightCount = 0;
+            int blackBishopCount = 0;
+            int blackQueenCount = 0;
+
+            foreach (Piece piece in BlackPieces)
+            {
+                if (piece is Pawn)
+                    blackPawnCount++;
+                else if (piece is Rook)
+                    blackRookCount++;
+                else if (piece is Knight)
+                    blackKnightCount++;
+                else if (piece is Bishop)
+                    blackBishopCount++;
+                else if (piece is Queen)
+                    blackQueenCount++;
+            }
+
+            for (int i = 0; i < 8 - blackPawnCount; i++)
+            {
+                KilledBlackPieces.Add(new Pawn(false));
+            }
+            for (int i = 0; i < 2 - blackRookCount; i++)
+            {
+                KilledBlackPieces.Add(new Rook(false));
+            }
+            for (int i = 0; i < 2 - blackKnightCount; i++)
+            {
+                KilledBlackPieces.Add(new Knight(false));
+            }
+            for (int i = 0; i < 2 - blackBishopCount; i++)
+            {
+                KilledBlackPieces.Add(new Bishop(false));
+            }
+            for (int i = 0; i < 1 - blackQueenCount; i++)
+            {
+                KilledBlackPieces.Add(new Queen(false));
+            }
+
         }
         //Fires up after every CanMove func to reset pawns who have the prop CanBeCapturedEnPassant to true
         private void ResetEnPassant()
