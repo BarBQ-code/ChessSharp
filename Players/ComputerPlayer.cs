@@ -7,5 +7,6 @@ namespace ChessSharp.Players
     public class ComputerPlayer : Player
     {
         public ComputerPlayer(bool whiteSide) : base(whiteSide) {}
+        public ComputerPlayer(bool whiteSide, string name) : base(whiteSide, name) {}
     }
 }
