@@ -64,22 +64,7 @@ namespace ChessSharp
                     }
                     else
                     {
-                        Piece piece = ch switch 
-                        { 
-                            'p' => new Pawn(false),
-                            'r' => new Rook(false),
-                            'n' => new Knight(false),
-                            'b' => new Bishop(false),
-                            'q' => new Queen(false),
-                            'k' => new King(false),
-                            'P' => new Pawn(true),
-                            'R' => new Rook(true),
-                            'N' => new Knight(true),
-                            'B' => new Bishop(true),
-                            'Q' => new Queen(true),
-                            'K' => new King(true),
-                            _ => null
-                        };
+                        Piece piece = Piece.PieceIdentifier(ch);
 
                         if (piece == null)
                             throw new ArgumentException("Invalid board state");
