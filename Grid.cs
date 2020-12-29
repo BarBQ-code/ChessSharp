@@ -212,6 +212,14 @@ namespace ChessSharp
                 throw new InvalidFENBoardException("Move count argument must be an integer");
             }
         }
+        //Move history to board constructor
+        public Grid(Stack<Move> moves)
+        {
+            foreach (Move move in moves.Reverse())
+            {
+                MakeMove(move);
+            }
+        }
         public void Init()
         {
             Board = new Tile[8, 8];
