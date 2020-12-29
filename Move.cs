@@ -37,13 +37,13 @@ namespace ChessSharp
         //Cloning a move
         public Move(Move move)
         {
-            Piece startPiece = Piece.PieceIdentifier(move.Start.piece.pieceChar);
+            Piece startPiece = Piece.PieceIdentifier(move.Start.piece.ToString()[0]);
             Tile start = new Tile(startPiece, move.Start.X, move.Start.Y);
 
             Piece endPiece = null;
             if(move.End.piece != null)
             {
-                endPiece = Piece.PieceIdentifier(move.End.piece.pieceChar);
+                endPiece = Piece.PieceIdentifier(move.End.piece.ToString()[0]);
             }
 
             Tile end = new Tile(endPiece, move.End.X, move.End.Y);
@@ -54,7 +54,7 @@ namespace ChessSharp
             Piece promotionPiece = null;
             if(move.PromotionPiece != null)
             {
-                promotionPiece = Piece.PieceIdentifier(promotionPiece.pieceChar);
+                promotionPiece = Piece.PieceIdentifier(promotionPiece.ToString()[0]);
             }
 
             Start = start;
