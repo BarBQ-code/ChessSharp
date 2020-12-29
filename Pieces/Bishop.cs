@@ -21,6 +21,9 @@ namespace ChessSharp.Pieces
                 if (!IsAttackingTile(board, start, end))
                     return false;
 
+                if (!board.IsLegalMove(move, start.piece.IsWhite))
+                    return false;
+
                 return true;
             }
             return false;
