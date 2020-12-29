@@ -34,7 +34,35 @@ namespace ChessSharp
         {
             (Start, End, Player, MoveType, PromotionPiece) = (start, end, player, moveType, promotionPiece);
         }
+        //Cloning a move
+        public Move(Move move)
+        {
+            Piece startPiece = Piece.PieceIdentifier(move.Start.piece.pieceChar);
+            Tile start = new Tile(startPiece, move.Start.X, move.Start.Y);
 
+            Piece endPiece = null;
+            if(move.End.piece != null)
+            {
+                endPiece = Piece.PieceIdentifier(move.End.piece.pieceChar);
+            }
+
+            Tile end = new Tile(endPiece, move.End.X, move.End.Y);
+            Player player = new Player(move.Player.IsWhite);
+
+            MoveType moveType = move.MoveType;
+
+            Piece promotionPiece = null;
+            if(move.PromotionPiece != null)
+            {
+                promotionPiece = Piece.PieceIdentifier(promotionPiece.pieceChar);
+            }
+
+            Start = start;
+            End = end;
+            Player = player;
+            MoveType = moveType;
+            PromotionPiece = promotionPiece;
+        }
         public static Move FromUCI(Grid board, string uci, Piece promotionPiece = null)
         {
             Move move = null;
