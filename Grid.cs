@@ -277,6 +277,7 @@ namespace ChessSharp
 
             if (start.piece.CanMove(this, move))
             {
+                Move temp = new Move(move);
                 if (end.piece != null) 
                 {
                     end.piece.IsKilled = true;
@@ -348,7 +349,7 @@ namespace ChessSharp
                 start.piece = null;
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
                 MoveCount++;
-                MoveHistory.Add(move);
+                MoveHistory.Add(temp);
                 ResetEnPassant();
                 UpdateKilledPieces();
                 UpdateGameState();
