@@ -21,7 +21,7 @@ namespace ChessSharp
         public List<Piece> KilledBlackPieces { get; set; } = new List<Piece>();
         public int FiftyMoveRuleCount { get; private set; } = 0;
         public int MoveCount { get; private set; } = 0;
-        public List<Move> MoveHistory { get; private set; } = new List<Move>();
+        public Stack<Move> MoveHistory { get; private set; } = new Stack<Move>();
 
         #endregion
 
@@ -349,7 +349,7 @@ namespace ChessSharp
                 start.piece = null;
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
                 MoveCount++;
-                MoveHistory.Add(temp);
+                MoveHistory.Push(temp);
                 ResetEnPassant();
                 UpdateKilledPieces();
                 UpdateGameState();
