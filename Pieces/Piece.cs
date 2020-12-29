@@ -47,6 +47,27 @@ namespace ChessSharp
             return moves;
         }
 
+        public static Piece PieceIdentifier(char pieceChar)
+        {
+            Piece piece = pieceChar switch
+            {
+                'p' => new Pawn(false),
+                'r' => new Rook(false),
+                'n' => new Knight(false),
+                'b' => new Bishop(false),
+                'q' => new Queen(false),
+                'k' => new King(false),
+                'P' => new Pawn(true),
+                'R' => new Rook(true),
+                'N' => new Knight(true),
+                'B' => new Bishop(true),
+                'Q' => new Queen(true),
+                'K' => new King(true),
+                _ => null
+            };
+            return piece;
+        }
+
         public override string ToString()
         {
             if (!IsWhite)
