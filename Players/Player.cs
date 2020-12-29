@@ -8,7 +8,7 @@ namespace ChessSharp.Players
     {
         public bool IsWhite { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = "Anonymous";
         public bool IsHuman { get; set; } = true;
 
         public Player(bool isWhite)
