@@ -93,6 +93,10 @@ namespace ChessSharp
             if (promotionPiece == null)
             {
                 move = new Move(start, end, board.CurrentPlayer, Move.MoveTypeIdentifier(board, start, end));
+
+                if (Move.IsMoveCheck(board, new Move(start, end, board.CurrentPlayer)))
+                    move.isMoveCheck = true;
+
                 return move;
             }
 
@@ -120,6 +124,10 @@ namespace ChessSharp
                 throw new InvalidMoveException("Can't promote to pawn");
 
             move = new Move(start, end, board.CurrentPlayer, MoveType.Promotion, promotionPiece);
+
+            if (Move.IsMoveCheck(board, new Move(start, end, board.CurrentPlayer)))
+                move.isMoveCheck = true;
+
             return move;
             
         }
@@ -201,7 +209,11 @@ namespace ChessSharp
                 }
                 
             }
-            
+
+            if (isMoveCheckMate)
+                res += checkMateChar;
+            else if (isMoveCheck)
+                res += checkChar;
 
             return res;
         }
@@ -212,7 +224,7 @@ namespace ChessSharp
 
             Tile start = move.Start;
             Tile end = move.End;
-            Piece temp = start.piece;
+            Piece temp = end.piece;
 
             end.piece = start.piece;
             start.piece = null;
@@ -225,7 +237,11 @@ namespace ChessSharp
                 if(king != null)
                 {
                     if (king.InCheck(board, board.GetTile(king), king.IsWhite))
+                    {
+                        start.piece = end.piece;
+                        end.piece = temp;
                         return true;
+                    }
                 }
             }
             else
@@ -236,10 +252,15 @@ namespace ChessSharp
                 if(king != null)
                 {
                     if (king.InCheck(board, board.GetTile(king), king.IsWhite))
+                    {
+                        start.piece = end.piece;
+                        end.piece = temp;
                         return true;
+                    }
                 }
             }
-
+            start.piece = end.piece;
+            end.piece = temp;
             return false;
         }
     }
