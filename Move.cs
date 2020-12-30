@@ -23,6 +23,9 @@ namespace ChessSharp
         public Player Player { get; }
         public MoveType MoveType { get; }
         public Piece PromotionPiece { get; }
+
+        private bool isMoveCheck = false;
+        private bool isMoveCheckMate = false;
         
         private const char capturesChar = 'x';
         private const char checkChar = '+';
@@ -124,8 +127,8 @@ namespace ChessSharp
         public static MoveType MoveTypeIdentifier(Grid board, Tile start, Tile end)
         {
             King king = start.piece as King;
-            
-            if(king != null)
+      
+            if (king != null)
             {
                 if(Grid.Distance(start, end) == 4 && start.Y == end.Y)
                 {
@@ -198,7 +201,46 @@ namespace ChessSharp
                 }
                 
             }
+            
+
             return res;
+        }
+
+        private static bool IsMoveCheck(Grid board, Move move)
+        {
+            bool player = !board.CurrentPlayer.IsWhite;
+
+            Tile start = move.Start;
+            Tile end = move.End;
+            Piece temp = start.piece;
+
+            end.piece = start.piece;
+            start.piece = null;
+
+            if(player)
+            {
+                Piece bKing = board.BlackPieces.Find(piece => piece is King);
+                King king = bKing as King;
+                
+                if(king != null)
+                {
+                    if (king.InCheck(board, board.GetTile(king), king.IsWhite))
+                        return true;
+                }
+            }
+            else
+            {
+                Piece wKing = board.WhitePieces.Find(piece => piece is King);
+                King king = wKing as King;
+
+                if(king != null)
+                {
+                    if (king.InCheck(board, board.GetTile(king), king.IsWhite))
+                        return true;
+                }
+            }
+
+            return false;
         }
     }
 }
