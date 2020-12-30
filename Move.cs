@@ -27,8 +27,8 @@ namespace ChessSharp
         private const char capturesChar = 'x';
         private const char checkChar = '+';
         private const char checkMateChar = '#';
-        private const string shortCastles = "0-0";
-        private const string longCastles = "0-0-0";
+        private const string shortCastles = "O-O";
+        private const string longCastles = "O-O-O";
 
         public Move(Tile start, Tile end, Player player, MoveType moveType = MoveType.Normal, Piece promotionPiece = null)
         {
