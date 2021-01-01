@@ -119,6 +119,44 @@ namespace ChessSharp.Pieces
             return false;
         }
 
+        public bool InCheckMate(Grid board, Tile kingLocation)
+        {
+            if(kingLocation.piece.IsWhite)
+            {
+                foreach(Piece piece in board.WhitePieces)
+                {
+                    foreach(Tile tile in board.Board)
+                    {
+                        if (board.GetTile(piece) != null)
+                        {
+                            if (piece.CanMove(board, new Move(board.GetTile(piece), tile, board.CurrentPlayer)))
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            else   
+            {
+                foreach (Piece piece in board.BlackPieces)
+                {
+                    foreach (Tile tile in board.Board)
+                    {
+                        if(board.GetTile(piece) != null)
+                        {
+                            if (piece.CanMove(board, new Move(board.GetTile(piece), tile, board.CurrentPlayer)))
+                            {
+                                return false;
+                            }
+                        }
+                        
+                    }
+                }
+            }
+            return true;
+        }
+
         private bool CheckTilesInCheck(Grid board, List<Tile> tiles, bool teamColor)
         {
             foreach (Tile tile in tiles)
