@@ -242,7 +242,11 @@ namespace ChessSharp
                 King king = wKing as King;
 
                 if (king == null)
+                {
+                    start.piece = end.piece;
+                    end.piece = temp;
                     throw new InvalidBoardException("White king is missing");
+                }
 
                 if (king.InCheck(board, board.GetTile(king), king.IsWhite))
                 {
@@ -261,7 +265,11 @@ namespace ChessSharp
                 King king = bKing as King;
 
                 if (king == null)
+                {
+                    start.piece = end.piece;
+                    end.piece = temp;
                     throw new InvalidBoardException("Black king is missing");
+                }
 
                 if (king.InCheck(board, board.GetTile(king), king.IsWhite))
                 {
@@ -283,20 +291,49 @@ namespace ChessSharp
             Tile end = move.End;
             Piece temp = end.piece;
 
-            if(IsMoveCheck(board, move))
-            {
-                end.piece = start.piece;
-                start.piece = null;
+            end.piece = start.piece;
+            start.piece = null;
 
-                if (board.LegalMoves().Count == 0)
+            if (player)
+            {
+                Piece wKing = board.WhitePieces.Find(piece => piece is King);
+                King king = wKing as King;
+
+                if(king == null)
+                {
+                    start.piece = end.piece;
+                    end.piece = temp;
+                    throw new InvalidBoardException("White king is missing");
+                }
+
+                if (king.InCheckMate(board, board.GetTile(king)))
                 {
                     start.piece = end.piece;
                     end.piece = temp;
                     return true;
                 }
-                start.piece = end.piece;
-                end.piece = temp;
             }
+            else
+            {
+                Piece bKing = board.BlackPieces.Find(piece => piece is King);
+                King king = bKing as King;
+
+                if(king == null)
+                {
+                    start.piece = end.piece;
+                    end.piece = temp;
+                    throw new InvalidBoardException("Black king is missing");
+                }
+
+                if (king.InCheckMate(board, board.GetTile(king)))
+                {
+                    start.piece = end.piece;
+                    end.piece = temp;
+                    return true;
+                }
+            }
+            start.piece = end.piece;
+            end.piece = temp;
             return false;
         }
     }
