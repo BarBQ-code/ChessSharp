@@ -513,6 +513,14 @@ namespace ChessSharp
 
             return res;
         }
+
+        public void Pop()
+        {
+            Move move = MoveHistory.Last();
+            GetTile(move.Start).piece = move.Start.piece;
+            GetTile(move.End).piece = move.End.piece;
+            MoveCount--;
+        }
         public Tile GetTile(int x, int y)
         {
             if (x < 0 || x > 7 || y < 0 || y > 7)
