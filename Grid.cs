@@ -602,16 +602,14 @@ namespace ChessSharp
                 {
                     throw new MissingMemberException("White king is missing");
                 }
-                if (whiteKing.InCheck(this, GetTile(whiteKing), true))
+
+                if(whiteKing.InCheckMate(this, GetTile(whiteKing)))
                 {
-                    if(LegalMoves().Count == 0)
-                    {
-                        gameState = GameState.BLACK_WIN;
-                    }
+                    gameState = GameState.BLACK_WIN;
                 }
-                else
+                else if (whiteKing.InCheck(this, GetTile(whiteKing), true))
                 {
-                    if(LegalMoves().Count == 0)
+                    if (LegalMoves().Count == 0)
                     {
                         gameState = GameState.STALEMATE;
                     }
@@ -626,16 +624,13 @@ namespace ChessSharp
                 if (blackKing == null)
                     throw new MissingMemberException("Black king is missing");
 
-                if (blackKing.InCheck(this, GetTile(blackKing), false))
+                if(blackKing.InCheckMate(this, GetTile(blackKing)))
+                {
+                    gameState = GameState.WHITE_WIN;
+                }
+                else if (blackKing.InCheck(this, GetTile(blackKing), false))
                 {
                     if (LegalMoves().Count == 0)
-                    {
-                        gameState = GameState.WHITE_WIN;
-                    }
-                }
-                else
-                {
-                    if(LegalMoves().Count == 0)
                     {
                         gameState = GameState.STALEMATE;
                     }
