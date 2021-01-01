@@ -61,7 +61,7 @@ Use The Library:
 ```csharp
 
 Grid board = new Grid();
-Console.WriteLine("Game state: " + board.gameState);
+Console.WriteLine("Game state: " + board.GameState);
 
 board.MakeMove(Move.FromUCI(board, "e2e4"));
 board.MakeMove(Move.FromUCI(board, "e7e5"));
@@ -72,7 +72,7 @@ board.MakeMove(Move.FromUCI(board, "g8f6"));
 board.MakeMove(Move.FromUCI(board, "h5f7"));
 
 Console.WriteLine(board);
-Console.WriteLine("Game state: " + board.gameState);
+Console.WriteLine("Game state: " + board.GameState);
 
 ```
 
