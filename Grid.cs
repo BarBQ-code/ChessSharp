@@ -868,7 +868,7 @@ namespace ChessSharp
 
                 if (whiteKing == null)
                 {
-                    throw new MissingMemberException("White king is missing");
+                    throw new InvalidBoardException("White king is missing");
                 }
 
                 Tile kingTile = GetTile(whiteKing);
@@ -891,7 +891,7 @@ namespace ChessSharp
 
                 if (blackKing == null)
                 {
-                    throw new MissingMemberException("Black king is missing");
+                    throw new InvalidBoardException("Black king is missing");
                 }
 
                 Tile kingTile = GetTile(blackKing);
