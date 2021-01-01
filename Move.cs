@@ -224,7 +224,7 @@ namespace ChessSharp
 
             return res;
         }
-
+        //Used to determine if move is check for corresponding printing
         private static bool IsMoveCheck(Grid board, Move move)
         {
             bool player = !board.CurrentPlayer.IsWhite;
@@ -283,6 +283,7 @@ namespace ChessSharp
                 return false;   
             }
         }
+        //Used to determine if move is checkmate for corresponding printing
         private static bool IsMoveCheckMate(Grid board, Move move)
         {
             bool player = !board.CurrentPlayer.IsWhite;
