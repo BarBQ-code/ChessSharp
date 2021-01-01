@@ -14,7 +14,7 @@ namespace ChessSharp
 
         public Tile[,] Board { get; private set; }
         public Player CurrentPlayer { get; private set; }
-        public GameState gameState { get; private set; }
+        public GameState GameState { get; private set; }
         public List<Piece> WhitePieces { get; private set; } = new List<Piece>();
         public List<Piece> KilledWhitePieces { get; private set; } = new List<Piece>();
         public List<Piece> BlackPieces { get; private set; } = new List<Piece>();
@@ -255,7 +255,7 @@ namespace ChessSharp
                     Board[j, i] = new Tile(null, i, j);
                 }
             }
-            gameState = GameState.ACTIVE;
+            GameState = GameState.ACTIVE;
             InitPieces();
             CurrentPlayer = new Player(true);
 
@@ -605,13 +605,13 @@ namespace ChessSharp
 
                 if(whiteKing.InCheckMate(this, GetTile(whiteKing)))
                 {
-                    gameState = GameState.BLACK_WIN;
+                    GameState = GameState.BLACK_WIN;
                 }
                 else if (whiteKing.InCheck(this, GetTile(whiteKing), true))
                 {
                     if (LegalMoves().Count == 0)
                     {
-                        gameState = GameState.STALEMATE;
+                        GameState = GameState.STALEMATE;
                     }
                 }
 
@@ -626,13 +626,13 @@ namespace ChessSharp
 
                 if(blackKing.InCheckMate(this, GetTile(blackKing)))
                 {
-                    gameState = GameState.WHITE_WIN;
+                    GameState = GameState.WHITE_WIN;
                 }
                 else if (blackKing.InCheck(this, GetTile(blackKing), false))
                 {
                     if (LegalMoves().Count == 0)
                     {
-                        gameState = GameState.STALEMATE;
+                        GameState = GameState.STALEMATE;
                     }
                 }
             }
