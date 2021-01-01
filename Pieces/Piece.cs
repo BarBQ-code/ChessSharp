@@ -38,8 +38,10 @@ namespace ChessSharp
             List<Move> moves = new List<Move>();
             
             foreach(Tile tile in board.Board)
-            { 
-                Move move = new Move(piecePos, tile, board.CurrentPlayer, Move.MoveTypeIdentifier(board, piecePos, tile));
+            {
+                MoveType temp = MoveType.Normal;
+                Move move = new Move(piecePos, tile, board.CurrentPlayer, Move.MoveTypeIdentifier(board, piecePos, tile, ref temp));
+                move.additionalMoveType = temp;
                 if (piecePos.piece.CanMove(board, move))
                     moves.Add(move);
             }
