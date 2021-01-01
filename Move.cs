@@ -24,7 +24,7 @@ namespace ChessSharp
         public MoveType MoveType { get; }
         public Piece PromotionPiece { get; }
 
-        private MoveType additionalMoveType = MoveType.Normal;
+        public MoveType additionalMoveType = MoveType.Normal;
 
         private const char capturesChar = 'x';
         private const char checkChar = '+';
@@ -176,13 +176,13 @@ namespace ChessSharp
         //work aroung for ref default value
         public static MoveType MoveTypeIdentifier(Grid board, Tile start, Tile end, ref MoveType additionalMoveType)
         {
-
             if(!(end.piece is King))
             {
-                if (IsMoveCheck(board, new Move(start, end, board.CurrentPlayer)))
+                if (IsMoveCheckMate(board, new Move(start, end, board.CurrentPlayer)))
+                    additionalMoveType = MoveType.CheckMate;
+                else if (IsMoveCheck(board, new Move(start, end, board.CurrentPlayer)))
                     additionalMoveType = MoveType.Check;
             }
-
             return MoveTypeIdentifier(board, start, end);
             
         }
@@ -274,6 +274,30 @@ namespace ChessSharp
                 end.piece = temp;
                 return false;   
             }
+        }
+        private static bool IsMoveCheckMate(Grid board, Move move)
+        {
+            bool player = !board.CurrentPlayer.IsWhite;
+
+            Tile start = move.Start;
+            Tile end = move.End;
+            Piece temp = end.piece;
+
+            if(IsMoveCheck(board, move))
+            {
+                end.piece = start.piece;
+                start.piece = null;
+
+                if (board.LegalMoves().Count == 0)
+                {
+                    start.piece = end.piece;
+                    end.piece = temp;
+                    return true;
+                }
+                start.piece = end.piece;
+                end.piece = temp;
+            }
+            return false;
         }
     }
 }
