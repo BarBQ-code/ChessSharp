@@ -14,7 +14,7 @@ namespace ChessSharp
 
         public Tile[,] Board { get; private set; }
         public Player CurrentPlayer { get; private set; }
-        public GameState GameState { get; private set; }
+        public GameState GameState { get; private set; } = GameState.ACTIVE;
         public List<Piece> WhitePieces { get; private set; } = new List<Piece>();
         public List<Piece> KilledWhitePieces { get; private set; } = new List<Piece>();
         public List<Piece> BlackPieces { get; private set; } = new List<Piece>();
@@ -76,7 +76,8 @@ namespace ChessSharp
                 
             }
             InitPieces();
-
+            UpdateGameState();
+            UpdateKilledPieces();
             //initialize currentplayer section
             string teamFlag = arr[1];
 
@@ -219,6 +220,17 @@ namespace ChessSharp
             {
                 MakeMove(move);
             }
+            InitPieces();
+            if(moves.Count % 2 == 0)
+            {
+                CurrentPlayer = new Player(true);
+            }
+            else
+            {
+                CurrentPlayer = new Player(false);
+            }
+            UpdateGameState();
+            UpdateKilledPieces();
         }
         public void Init()
         {
@@ -258,8 +270,8 @@ namespace ChessSharp
             GameState = GameState.ACTIVE;
             InitPieces();
             CurrentPlayer = new Player(true);
-
-
+            UpdateGameState();
+            UpdateKilledPieces();
         }
         #endregion
 
