@@ -23,6 +23,8 @@ namespace ChessSharp
         public int MoveCount { get; private set; } = 0;
         public Stack<Move> MoveHistory { get; private set; } = new Stack<Move>();
 
+        private List<Tile[,]> AllBoards = new List<Tile[,]>();
+
         #endregion
 
         #region Constructers
@@ -35,6 +37,7 @@ namespace ChessSharp
             CurrentPlayer = new Player(true);
             UpdateGameState();
             UpdateKilledPieces();
+            AllBoards.Add(CreateCopyOfBoard());
         }
 
         // Fen constructor
@@ -217,6 +220,8 @@ namespace ChessSharp
             {
                 throw new InvalidFENBoardException("Move count argument must be an integer");
             }
+
+            AllBoards.Add(CreateCopyOfBoard());
         }
         //Move history to board constructor
         public void Init()
@@ -352,6 +357,7 @@ namespace ChessSharp
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
                 MoveCount++;
                 MoveHistory.Push(temp);
+                AllBoards.Add(CreateCopyOfBoard());
                 ResetEnPassant();
                 UpdateKilledPieces();
                 UpdateGameState();
@@ -642,7 +648,51 @@ namespace ChessSharp
         }
         public bool CanClaimThreeFoldRepitition()
         {
-            
+            int count = 0;
+            for (int i = 0; i < AllBoards.Count; i++)
+            {
+                for (int j = i + 1; j < AllBoards.Count; j++)
+                {
+                    if (FEN(AllBoards[i]) == FEN(AllBoards[j]))
+                        count++;
+                }
+                if (count >= 3)
+                    return true;
+                count = 0;
+            }
+            //Copy of fen to make equality easier
+            string FEN(Tile[,] board)
+            {
+                string res = "";
+                int emptySpacesCount = 0;
+                for (int i = 7; i >= 0; i--)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        Tile tile = board[i, j];
+                        if (tile.piece != null)
+                        {
+                            if (emptySpacesCount != 0)
+                            {
+                                res += emptySpacesCount;
+                            }
+                            res += tile.piece.ToString();
+                            emptySpacesCount = 0;
+                        }
+                        else
+                        {
+                            emptySpacesCount++;
+                        }
+                    }
+                    if (emptySpacesCount != 0)
+                        res += emptySpacesCount;
+                    emptySpacesCount = 0;
+                    res += "/";
+                }
+
+                res = res.TrimEnd('/');
+                return res;
+            }
 
             return false;
         }
@@ -810,6 +860,30 @@ namespace ChessSharp
                     }
                 }
             }
+        }
+
+        private Tile[,] CreateCopyOfBoard()
+        {
+            Tile[,] res = new Tile[8, 8];
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    Tile tile;
+                    if(GetTile(j, i).piece != null)
+                    {
+                        tile = new Tile(Piece.PieceIdentifier(GetTile(j, i).piece.ToString()[0]), j, i);
+                    }
+                    else
+                    {
+                        tile = new Tile(null, j, i);
+                    }
+                    res[i, j] = tile;
+                }
+            }
+
+            return res;
         }
         #endregion
 
