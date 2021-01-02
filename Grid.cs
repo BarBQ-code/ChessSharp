@@ -232,6 +232,25 @@ namespace ChessSharp
             UpdateGameState();
             UpdateKilledPieces();
         }
+
+        public Grid(List<Move> moves)
+        {
+            foreach (Move move in moves)
+            {
+                MakeMove(move);
+            }
+            InitPieces();
+            if (moves.Count % 2 == 0)
+            {
+                CurrentPlayer = new Player(true);
+            }
+            else
+            {
+                CurrentPlayer = new Player(false);
+            }
+            UpdateGameState();
+            UpdateKilledPieces();
+        }
         public void Init()
         {
             Board = new Tile[8, 8];
