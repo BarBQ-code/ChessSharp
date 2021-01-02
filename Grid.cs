@@ -612,6 +612,47 @@ namespace ChessSharp
             }
             return false;
         }
+        public bool IsStaleMate()
+        {
+            if(CurrentPlayer.IsWhite)
+            {
+                Piece wKing = WhitePieces.Find(piece => piece is King);
+                King whiteKing = wKing as King;
+
+                if (whiteKing == null)
+                {
+                    throw new InvalidBoardException("White king is missing");
+                }
+
+                if (whiteKing.InCheck(this, GetTile(whiteKing), true))
+                {
+                    if (LegalMoves().Count == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                Piece bKing = BlackPieces.Find(piece => piece is King);
+                King blackKing = bKing as King;
+
+
+                if (blackKing == null)
+                {
+                    throw new InvalidBoardException("Black king is missing");
+                }
+
+                if (blackKing.InCheck(this, GetTile(blackKing), false))
+                {
+                    if (LegalMoves().Count == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
         #region Private Methods
         //Intializes the whitePieces and blackPieces list in the start of each game
         private void InitPieces()
@@ -636,48 +677,20 @@ namespace ChessSharp
         //Fires up after every CanMove func to check if the king is in check after the move is made
         private void UpdateGameState()
         {
-            if(CurrentPlayer.IsWhite)
+            if (IsKingInCheckMate(true))
             {
-                Piece king = WhitePieces.Find(piece => piece is King && piece.IsWhite);
-                King whiteKing = king as King;
-
-                if(whiteKing == null)
-                {
-                    throw new InvalidBoardException("White king is missing");
-                }
-
-                if(whiteKing.InCheckMate(this, GetTile(whiteKing)))
-                {
-                    GameState = GameState.BLACK_WIN;
-                }
-                else if (whiteKing.InCheck(this, GetTile(whiteKing), true))
-                {
-                    if (LegalMoves().Count == 0)
-                    {
-                        GameState = GameState.STALEMATE;
-                    }
-                }
-
+                GameState = GameState.BLACK_WIN;
+                return;
             }
-            else
+            if(IsKingInCheckMate(false))
             {
-                Piece king = BlackPieces.Find(piece => piece is King && !piece.IsWhite);
-                King blackKing = king as King;
-
-                if (blackKing == null)
-                    throw new InvalidBoardException("Black king is missing");
-
-                if(blackKing.InCheckMate(this, GetTile(blackKing)))
-                {
-                    GameState = GameState.WHITE_WIN;
-                }
-                else if (blackKing.InCheck(this, GetTile(blackKing), false))
-                {
-                    if (LegalMoves().Count == 0)
-                    {
-                        GameState = GameState.STALEMATE;
-                    }
-                }
+                GameState = GameState.WHITE_WIN;
+                return;
+            }
+            if(IsStaleMate())
+            {
+                GameState = GameState.STALEMATE;
+                return;
             }
         }
         //Fires up after every move and start in any Init Pieces calls horrible function
