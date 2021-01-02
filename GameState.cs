@@ -8,5 +8,7 @@ public enum GameState
     WHITE_WIN,
     BLACK_WIN,
     STALEMATE,
-    RESIGNATION
+    RESIGNATION,
+    THREE_FOLD_REPITION,
+    FIFTY_MOVE_RULE
 }
