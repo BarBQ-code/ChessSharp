@@ -84,8 +84,7 @@ namespace ChessSharp
                 
             }
             InitPieces();
-            UpdateGameState();
-            UpdateKilledPieces();
+            
             //initialize currentplayer section
             string teamFlag = arr[1];
 
@@ -220,7 +219,8 @@ namespace ChessSharp
             {
                 throw new InvalidFENBoardException("Move count argument must be an integer");
             }
-
+            UpdateGameState();
+            UpdateKilledPieces();
             AllBoards.Add(CreateCopyOfBoard());
         }
         //Move history to board constructor
@@ -567,12 +567,11 @@ namespace ChessSharp
             }
             return res;
         }
-        #endregion
         public bool IsKingInCheckMate(bool teamColor)
         {
             if (teamColor)
             {
-                Piece king = WhitePieces.Find(piece => piece is King && piece.IsWhite);
+                Piece king = WhitePieces.Find(piece => piece is King);
                 King whiteKing = king as King;
 
                 if (whiteKing == null)
@@ -587,7 +586,7 @@ namespace ChessSharp
             }
             else
             {
-                Piece king = BlackPieces.Find(piece => piece is King && !piece.IsWhite);
+                Piece king = BlackPieces.Find(piece => piece is King);
                 King blackKing = king as King;
 
                 if (blackKing == null)
@@ -612,7 +611,7 @@ namespace ChessSharp
                     throw new InvalidBoardException("White king is missing");
                 }
 
-                if (whiteKing.InCheck(this, GetTile(whiteKing)))
+                if (!whiteKing.InCheck(this, GetTile(whiteKing)))
                 {
                     if (LegalMoves().Count == 0)
                     {
@@ -631,7 +630,7 @@ namespace ChessSharp
                     throw new InvalidBoardException("Black king is missing");
                 }
 
-                if (blackKing.InCheck(this, GetTile(blackKing)))
+                if (!blackKing.InCheck(this, GetTile(blackKing)))
                 {
                     if (LegalMoves().Count == 0)
                     {
@@ -696,6 +695,7 @@ namespace ChessSharp
 
             return false;
         }
+        #endregion
 
         #region Private Methods
         //Intializes the whitePieces and blackPieces list in the start of each game
