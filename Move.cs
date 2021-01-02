@@ -248,7 +248,7 @@ namespace ChessSharp
                     throw new InvalidBoardException("White king is missing");
                 }
 
-                if (king.InCheck(board, board.GetTile(king), king.IsWhite))
+                if (king.InCheck(board, board.GetTile(king)))
                 {
                     start.piece = end.piece;
                     end.piece = temp;
@@ -271,7 +271,7 @@ namespace ChessSharp
                     throw new InvalidBoardException("Black king is missing");
                 }
 
-                if (king.InCheck(board, board.GetTile(king), king.IsWhite))
+                if (king.InCheck(board, board.GetTile(king)))
                 {
                     start.piece = end.piece;
                     end.piece = temp;

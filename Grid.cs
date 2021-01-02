@@ -624,7 +624,7 @@ namespace ChessSharp
                     throw new InvalidBoardException("White king is missing");
                 }
 
-                if (whiteKing.InCheck(this, GetTile(whiteKing), true))
+                if (whiteKing.InCheck(this, GetTile(whiteKing)))
                 {
                     if (LegalMoves().Count == 0)
                     {
@@ -643,7 +643,7 @@ namespace ChessSharp
                     throw new InvalidBoardException("Black king is missing");
                 }
 
-                if (blackKing.InCheck(this, GetTile(blackKing), false))
+                if (blackKing.InCheck(this, GetTile(blackKing)))
                 {
                     if (LegalMoves().Count == 0)
                     {
@@ -652,6 +652,11 @@ namespace ChessSharp
                 }
             }
             return false;
+        }
+
+        public bool IsFiftyMoveRule()
+        {
+            return FiftyMoveRuleCount / 2 >= 50;
         }
         #region Private Methods
         //Intializes the whitePieces and blackPieces list in the start of each game
@@ -690,6 +695,11 @@ namespace ChessSharp
             if(IsStaleMate())
             {
                 GameState = GameState.STALEMATE;
+                return;
+            }
+            if(IsFiftyMoveRule())
+            {
+                GameState = GameState.FIFTY_MOVE_RULE;
                 return;
             }
         }
@@ -932,7 +942,7 @@ namespace ChessSharp
 
                 Tile kingTile = GetTile(whiteKing);
 
-                if (whiteKing.InCheck(this, kingTile, whiteKing.IsWhite))
+                if (whiteKing.InCheck(this, kingTile))
                 {
                     start.piece = end.piece;
                     end.piece = temp;
@@ -955,7 +965,7 @@ namespace ChessSharp
 
                 Tile kingTile = GetTile(blackKing);
 
-                if (blackKing.InCheck(this, kingTile, blackKing.IsWhite))
+                if (blackKing.InCheck(this, kingTile))
                 {
                     start.piece = end.piece;
                     end.piece = temp;
