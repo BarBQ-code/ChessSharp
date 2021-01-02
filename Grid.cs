@@ -30,6 +30,11 @@ namespace ChessSharp
         public Grid()
         {
             Init();
+            GameState = GameState.ACTIVE;
+            InitPieces();
+            CurrentPlayer = new Player(true);
+            UpdateGameState();
+            UpdateKilledPieces();
         }
 
         // Fen constructor
@@ -214,43 +219,6 @@ namespace ChessSharp
             }
         }
         //Move history to board constructor
-        public Grid(Stack<Move> moves)
-        {
-            foreach (Move move in moves.Reverse())
-            {
-                MakeMove(move);
-            }
-            InitPieces();
-            if(moves.Count % 2 == 0)
-            {
-                CurrentPlayer = new Player(true);
-            }
-            else
-            {
-                CurrentPlayer = new Player(false);
-            }
-            UpdateGameState();
-            UpdateKilledPieces();
-        }
-
-        public Grid(List<Move> moves)
-        {
-            foreach (Move move in moves)
-            {
-                MakeMove(move);
-            }
-            InitPieces();
-            if (moves.Count % 2 == 0)
-            {
-                CurrentPlayer = new Player(true);
-            }
-            else
-            {
-                CurrentPlayer = new Player(false);
-            }
-            UpdateGameState();
-            UpdateKilledPieces();
-        }
         public void Init()
         {
             Board = new Tile[8, 8];
@@ -286,11 +254,6 @@ namespace ChessSharp
                     Board[j, i] = new Tile(null, i, j);
                 }
             }
-            GameState = GameState.ACTIVE;
-            InitPieces();
-            CurrentPlayer = new Player(true);
-            UpdateGameState();
-            UpdateKilledPieces();
         }
         #endregion
 
@@ -677,6 +640,13 @@ namespace ChessSharp
         {
             return FiftyMoveRuleCount / 2 >= 50;
         }
+        public bool CanClaimThreeFoldRepitition()
+        {
+            
+
+            return false;
+        }
+
         #region Private Methods
         //Intializes the whitePieces and blackPieces list in the start of each game
         private void InitPieces()
