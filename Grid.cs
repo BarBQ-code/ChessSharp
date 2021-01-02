@@ -612,7 +612,7 @@ namespace ChessSharp
 
                 if(whiteKing == null)
                 {
-                    throw new MissingMemberException("White king is missing");
+                    throw new InvalidBoardException("White king is missing");
                 }
 
                 if(whiteKing.InCheckMate(this, GetTile(whiteKing)))
@@ -634,7 +634,7 @@ namespace ChessSharp
                 King blackKing = king as King;
 
                 if (blackKing == null)
-                    throw new MissingMemberException("Black king is missing");
+                    throw new InvalidBoardException("Black king is missing");
 
                 if(blackKing.InCheckMate(this, GetTile(blackKing)))
                 {
