@@ -741,6 +741,11 @@ namespace ChessSharp
                 GameState = GameState.FIFTY_MOVE_RULE;
                 return;
             }
+            if(CanClaimThreeFoldRepitition())
+            {
+                GameState = GameState.THREE_FOLD_REPITION;
+                return;
+            }
         }
         //Fires up after every move and start in any Init Pieces calls horrible function
         private void UpdateKilledPieces()
