@@ -55,7 +55,7 @@ namespace ChessSharp.Pieces
                             return false;
                         }
 
-                        if (king.InCheck(board, start, king.IsWhite))
+                        if (king.InCheck(board, start))
                             return false;
 
                         if (rook.HasMoved || king.HasMoved)
@@ -82,7 +82,7 @@ namespace ChessSharp.Pieces
                         if (rook == null || king == null)
                             return false;
 
-                        if (king.InCheck(board, start, king.IsWhite))
+                        if (king.InCheck(board, start))
                             return false;
 
                         if (rook.HasMoved || king.HasMoved)
@@ -103,11 +103,11 @@ namespace ChessSharp.Pieces
             return false;
         }
 
-        public bool InCheck(Grid board, Tile kingLocation, bool teamColor)
+        public bool InCheck(Grid board, Tile kingLocation)
         {
             foreach(Tile tile in board.Board)
             {
-                if(tile.piece != null && tile.piece.IsWhite != teamColor) //if enemy team piece
+                if(tile.piece != null && tile.piece.IsWhite != kingLocation.piece.IsWhite) //if enemy team piece
                 {
                     if(tile.piece.IsAttackingTile(board, tile, kingLocation))
                     {
