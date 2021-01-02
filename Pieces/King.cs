@@ -121,6 +121,14 @@ namespace ChessSharp.Pieces
 
         public bool InCheckMate(Grid board, Tile kingLocation)
         {
+            King king = kingLocation.piece as King;
+
+            if (king == null)
+                throw new ArgumentException("Tile provided doesn't contain a king");
+
+            if (!king.InCheck(board, kingLocation))
+                return false;
+
             if(kingLocation.piece.IsWhite)
             {
                 foreach(Piece piece in board.WhitePieces)
