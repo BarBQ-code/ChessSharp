@@ -580,7 +580,38 @@ namespace ChessSharp
             return res;
         }
         #endregion
+        public bool IsKingInCheckMate(bool teamColor)
+        {
+            if (teamColor)
+            {
+                Piece king = WhitePieces.Find(piece => piece is King && piece.IsWhite);
+                King whiteKing = king as King;
 
+                if (whiteKing == null)
+                {
+                    throw new InvalidBoardException("White king is missing");
+                }
+
+                if (whiteKing.InCheckMate(this, GetTile(whiteKing)))
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                Piece king = BlackPieces.Find(piece => piece is King && !piece.IsWhite);
+                King blackKing = king as King;
+
+                if (blackKing == null)
+                    throw new InvalidBoardException("Black king is missing");
+
+                if (blackKing.InCheckMate(this, GetTile(blackKing)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         #region Private Methods
         //Intializes the whitePieces and blackPieces list in the start of each game
         private void InitPieces()
