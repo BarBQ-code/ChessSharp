@@ -300,7 +300,17 @@ namespace ChessSharp
 
         #region Public Methods
 
-        //makes a move, returns true if move is legal, return false or throws exceptions when it's not
+        /// <summary>
+        ///  Makes a move, returns true if move is legal, returns false or throws an exception if it's illegal.
+        /// </summary>
+        /// <param name="move">The wanted move</param>
+        /// <returns>A boolean if succeded or not, can also throw Exceptions</returns>
+        /// <exception cref="ArgumentNullException">When the param move is null</exception>
+        /// <exception cref="InvalidMoveException">
+        /// When the source tile has no piece or
+        /// When the source tile piece and destination tile piece are of the same team or
+        /// If MoveType <see cref="MoveType"/> is of type promotion, but the move is invalid/the promotion piece is invalied
+        /// </exception>
         public bool MakeMove(Move move)
         {
             if (move == null)
@@ -401,7 +411,11 @@ namespace ChessSharp
             }
             return false;
         }
-        //returns list of legal moves
+        /// <summary>
+        /// Returns A list of all legal moves for the current player <see cref="Move"/>
+        /// </summary>
+        /// <returns>A list of legal moves for the current player <see cref="Move"/></returns>
+
         public List<Move> LegalMoves()
         {
             List<Move> moves = new List<Move>();
@@ -420,7 +434,11 @@ namespace ChessSharp
 
             return moves;
         }
-        //returns the board state in FEN format
+        /// <summary>
+        /// Returns the fen representation of the current board position
+        /// <see cref="Board"/>
+        /// </summary>
+        /// <returns>The corresponding FEN string of the current board position</returns>
         public string FEN()
         {
             //Init board state section
@@ -549,7 +567,9 @@ namespace ChessSharp
 
             return res;
         }
-
+        /// <summary> 
+        /// Returns for the last board position (pops the last move) <see cref="Board"/>
+        /// </summary>
         public void Pop()
         {
             Move move = MoveHistory.Last();
@@ -557,6 +577,11 @@ namespace ChessSharp
             GetTile(move.End).piece = move.End.piece;
             MoveCount--;
         }
+        /// <summary>Returns the tile in the x and y position of the board</summary>
+        /// <param name="x">X positon on board</param>
+        /// <param name="y">Y position on board</param>
+        /// <returns>Tile in that position <see cref="Tile"/></returns>
+        /// <exception cref="IndexOutOfRangeException">Coordinates must be between 0 and 7</exception>
         public Tile GetTile(int x, int y)
         {
             if (x < 0 || x > 7 || y < 0 || y > 7)
@@ -564,10 +589,20 @@ namespace ChessSharp
             
             return Board[y, x];
         }
+        /// <summary>Returns the tile with the same X and Y in the board <see cref="Board" cref="Tile"/>
+        /// <see cref="GetTile(int, int)"/>
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <returns>Tile <see cref="Tile"/></returns>
         public Tile GetTile(Tile tile)
         {
             return GetTile(tile.X, tile.Y);
         }
+        /// <summary>
+        /// Gets tile by piece <see cref="Tile" cref="Board" cref="Piece"/>
+        /// </summary>
+        /// <param name="piece">The piece you want to find</param>
+        /// <returns>The tile on which the piece is on, or null if not found</returns>
         public Tile GetTile(Piece piece)
         {
             foreach (Tile tile in Board)
@@ -582,6 +617,10 @@ namespace ChessSharp
             }
             return null;
         }
+        /// <summary>
+        /// Returns string of the current board position in a console like representation
+        /// </summary>
+        /// <returns>Returns string of the current board position in a console like representation</returns>
         public override string ToString()
         {
             string res = "";
@@ -603,6 +642,14 @@ namespace ChessSharp
             }
             return res;
         }
+        /// <summary>
+        /// Returns if a king is in checkmate <see cref="King.InCheckMate(Grid, Tile)"/>
+        /// </summary>
+        /// <param name="teamColor">The king you want to find (white or black)</param>
+        /// <returns>True if it's in checkmate false if it isn't</returns>
+        /// <exception cref="InvalidBoardException">
+        /// Gets thrown if king can't be found
+        /// </exception>
         public bool IsKingInCheckMate(bool teamColor)
         {
             if (teamColor)
@@ -635,6 +682,15 @@ namespace ChessSharp
             }
             return false;
         }
+        /// <summary>
+        /// Checks if the current player's pieces has no moves and is not in check
+        /// <see cref="King.InCheck(Grid, Tile)"/>
+        /// <see cref="LegalMoves"/>
+        /// </summary>
+        /// <returns>Returns true if CurrentPlayer <see cref="CurrentPlayer"/> Is in stalemate</returns>
+        /// <exception cref="InvalidBoardException">
+        /// Gets thrown if king can't be found
+        /// </exception>
         public bool IsStaleMate()
         {
             if(CurrentPlayer.IsWhite)
@@ -676,11 +732,20 @@ namespace ChessSharp
             }
             return false;
         }
-
+        /// <summary>
+        /// Checks if player can claim draw by the fifty move rule
+        /// </summary>
+        /// <returns>True if the statement is met</returns>
         public bool IsFiftyMoveRule()
         {
             return FiftyMoveRuleCount / 2 >= 50;
         }
+        /// <summary>
+        /// Checks if player can claim draw by three fold repitition
+        /// Method imitates the FEN method <see cref="FEN"/>
+        /// Need to find a  better solution for this
+        /// </summary>
+        /// <returns>True if the statement is met</returns>
         public bool CanClaimThreeFoldRepitition()
         {
             int count = 0;
