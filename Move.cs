@@ -5,6 +5,9 @@ using System;
 
 namespace ChessSharp
 {
+    /// <summary>Enum for identifying moves, used alot in MakeMove various Move functions</summary>
+    /// <see cref="Grid.MakeMove(Move)"/>
+    /// <see cref="Move"/>
     public enum MoveType
     {
         Normal, 
@@ -18,26 +21,46 @@ namespace ChessSharp
     }
     public class Move
     {
+        ///<summary>Gets start tile <see cref="Tile"/> </summary>
         public Tile Start { get; }
+        ///<summary>Gets end tile <see cref="Tile"/> </summary>
         public Tile End { get; }
+        /// <summary>Gets player that made the move <see cref="Player"/></summary>
         public Player Player { get; }
+        /// <summary>Gets the Move MoveType <see cref="MoveType"/></summary>
         public MoveType MoveType { get; }
+        /// <summary>Gets the promtionpiece if it exists <see cref="Piece"/></summary>
         public Piece PromotionPiece { get; }
-
+        /// <summary>An additional MoveType for printing check and mate <see cref="MoveType"/></summary>
         public MoveType additionalMoveType = MoveType.Normal;
-
+        /// <summary>Characters for move printing <see cref="ToString"/></summary>
         private const char capturesChar = 'x';
         private const char checkChar = '+';
         private const char checkMateChar = '#';
         private const string shortCastles = "O-O";
         private const string longCastles = "O-O-O";
 
+        /// <summary>
+        /// Constructor, should not be used by extern user, rather use <see cref="Move.FromUCI(Grid, string, Piece)
+        /// </summary>
+        /// <param name="start">Start tile <see cref="Tile"/></param>
+        /// <param name="end">End tile <see cref="Tile"/></param>
+        /// <param name="player">Player who made the move <see cref="Player"/></param>
+        /// <param name="moveType">The Move movetype <see cref="MoveType"/></param>
+        /// <param name="promotionPiece">A promotion piece if the movetype is Promotion</param>
+
         public Move(Tile start, Tile end, Player player, MoveType moveType = MoveType.Normal, Piece promotionPiece = null)
         {
             (Start, End, Player, MoveType, PromotionPiece) = (start, end, player, moveType, promotionPiece);
         }
-        //Cloning a move
-        public Move(Move move)
+        /// <summary>
+        /// Internal constrcutor for cloning purposes
+        /// It's used in the MoveHistory in the <see cref="Grid"/> class
+        /// <see cref="Grid.MoveHistory"/>
+        /// For cloning a piece it uses the <see cref="Piece.PieceIdentifier(char)"/> method
+        /// </summary>
+        /// <param name="move">A move to clone</param>
+        internal Move(Move move)
         {
             Piece startPiece = Piece.PieceIdentifier(move.Start.piece.ToString()[0]);
             Tile start = new Tile(startPiece, move.Start.X, move.Start.Y);
@@ -65,6 +88,32 @@ namespace ChessSharp
             MoveType = moveType;
             PromotionPiece = promotionPiece;
         }
+        /// <summary>
+        /// The "main" method of this class, returns a correct move from a string essentially
+        /// <example>
+        /// <code>
+        /// Grid board = new Grid();
+        /// Move e4 = Move.FromUCI(board, "e2e4");
+        /// </code>
+        /// The example above will return a move with all the features that containst:
+        /// Good move printing
+        /// MoveType detection
+        /// Promotion pieces
+        /// Castltes
+        /// </example>
+        /// <see cref="Grid"/>
+        /// <see cref="Piece"/>
+        /// <see cref="Move.MoveTypeIdentifier(Grid, Tile, Tile)"
+        /// </summary>
+        /// <param name="board">The current board <see cref="Grid"/></param>
+        /// <param name="uci">A uci string <example>"e2e4"</example> (must be lower case)</param>
+        /// <param name="promotionPiece">Optional paramter for promotion piece, the MakeMove in <see cref="Grid"/> will handle it automatically</param>
+        /// <returns>A move <see cref="Move"/></returns>
+        /// <exception cref="ArgumentException">Will be thrown if the uci string length is different from 4</exception>
+        /// <exception cref="InvalidMoveException">
+        /// Will be thrown from a few reasons, mainly Invalid moves, like source tile has no piece etc'
+        /// And also from wrong promotion
+        /// </exception>
         public static Move FromUCI(Grid board, string uci, Piece promotionPiece = null)
         {
             Move move = null;
@@ -88,8 +137,6 @@ namespace ChessSharp
                 if (start.piece.IsWhite == end.piece.IsWhite)
                     throw new InvalidMoveException("Source tile piece and destination tile piece are of the same team");
             }
-            
-
 
             if (promotionPiece == null)
             {
@@ -98,7 +145,6 @@ namespace ChessSharp
                 move.additionalMoveType = temp;
                 return move;
             }
-
             //promotion move
             Pawn pawn = start.piece as Pawn;
 
@@ -126,7 +172,15 @@ namespace ChessSharp
             return move;
             
         }
-
+        /// <summary>
+        /// This method identifies the MoveType and returns the correct MoveType
+        /// It's called by it's overload <see cref="Move.MoveTypeIdentifier(Grid, Tile, Tile, ref MoveType)"/>
+        /// <see cref="Move.FromUCI(Grid, string, Piece)"/> and <see cref="Piece.GetAllMoves(Grid, Tile)"/> Highly rely on this mehtod
+        /// </summary>
+        /// <param name="board">The board <see cref="Grid"/></param>
+        /// <param name="start">The starting tile <see cref="Tile"/></param>
+        /// <param name="end">The end tile <see cref="Tile"/></param>
+        /// <returns>A MoveType <see cref="MoveType"/></returns>
         public static MoveType MoveTypeIdentifier(Grid board, Tile start, Tile end)
         {
             King king = start.piece as King;
@@ -173,7 +227,16 @@ namespace ChessSharp
 
             return MoveType.Normal;
         }
-        //work aroung for ref default value
+        /// <summary>
+        /// Workaround for printing additionalMoveType which can be either check or checkmate
+        /// It wasn't possible with using only the method above
+        /// This method uses two other methods <see cref="IsMoveCheck(Grid, Move)"/> and <see cref="IsMoveCheckMate(Grid, Move)"/>
+        /// </summary>
+        /// <param name="board">The board <see cref="Grid"/></param>
+        /// <param name="start">The first tile <see cref="Tile"/>"/></param>
+        /// <param name="end">The second tile <see cref="Tile"/></param>
+        /// <param name="additionalMoveType">An additional movetype for better move printing, <see cref="additionalMoveType"/></param>
+        /// <returns>A MoveType <see cref="MoveType"/></returns>
         public static MoveType MoveTypeIdentifier(Grid board, Tile start, Tile end, ref MoveType additionalMoveType)
         {
             if(!(end.piece is King))
@@ -186,7 +249,12 @@ namespace ChessSharp
             return MoveTypeIdentifier(board, start, end);
             
         }
-
+        /// <summary>
+        /// The ToString method
+        /// It Highly relies on correct MoveType idenfication
+        /// To get the best move printing possible use <see cref="Move.FromUCI(Grid, string, Piece)"/> method
+        /// </summary>
+        /// <returns>Chess notation move</returns>
         public override string ToString()
         {
             string res = "";
@@ -224,7 +292,14 @@ namespace ChessSharp
 
             return res;
         }
-        //Used to determine if move is check for corresponding printing
+        /// <summary>
+        /// Used in <see cref="Move.MoveTypeIdentifier(Grid, Tile, Tile, ref MoveType)"/> for better move printing
+        /// Uses <see cref="King.InCheck(Grid, Tile)"/> method to determine if move is check
+        /// </summary>
+        /// <param name="board">The board <see cref="Grid"/></param>
+        /// <param name="move">The move <see cref="Move"/></param>
+        /// <returns>true if the move is check, false if it's not</returns>
+        /// <exception cref="InvalidBoardException">If either kings is missing</exception>
         private static bool IsMoveCheck(Grid board, Move move)
         {
             bool player = !board.CurrentPlayer.IsWhite;
@@ -283,7 +358,14 @@ namespace ChessSharp
                 return false;   
             }
         }
-        //Used to determine if move is checkmate for corresponding printing
+        /// <summary>
+        /// Used in <see cref="Move.MoveTypeIdentifier(Grid, Tile, Tile, ref MoveType)"/> for better move printing
+        /// Uses <see cref="King.InCheckMate(Grid, Tile)"/> method to determine if move is checkmate
+        /// </summary>
+        /// <param name="board">The board <see cref="Grid"/></param>
+        /// <param name="move">The move to check <see cref="Grid"/></param>
+        /// <returns>True if the move is checkmate, false if it's not</returns>
+        /// <exception cref="InvalidBoardException">If either king's is missing</exception>
         private static bool IsMoveCheckMate(Grid board, Move move)
         {
             bool player = !board.CurrentPlayer.IsWhite;
