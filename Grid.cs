@@ -1030,8 +1030,14 @@ namespace ChessSharp
         #endregion
 
         #region Internal Methods
-
-        //Util func for rook CanMove func
+        /// <summary>
+        /// Util function for Rook CanMove func
+        /// Used to get the tiles between to tiles
+        /// <see cref="Rook.CanMove(Grid, Move)"/>
+        /// </summary>
+        /// <param name="pos1">First Tile <see cref="Tile"/></param>
+        /// <param name="pos2">Second Tile <see cref="Tile"/></param>
+        /// <returns>A list of tile between the given two tiles <see cref="Tile"/></returns>
         internal List<Tile> GetTilesInRow(Tile pos1, Tile pos2) // get X axis
         {
             List<Tile> res = new List<Tile>();
@@ -1056,7 +1062,14 @@ namespace ChessSharp
             }
             return res;
         }
-        //Util func for rook CanMove func
+        /// <summary>
+        /// Util function for Rook CanMove func
+        /// Used to get the tiles between to tiles
+        /// <see cref="Rook.CanMove(Grid, Move)"/>
+        /// </summary>
+        /// <param name="pos1">First Tile <see cref="Tile"/></param>
+        /// <param name="pos2">Second Tile <see cref="Tile"/></param>
+        /// <returns>A list of tile between the given two tiles <see cref="Tile"/></returns>
         internal List<Tile> GetTilesInCol(Tile pos1, Tile pos2) //get Y axis
         {
             List<Tile> res = new List<Tile>();
@@ -1081,7 +1094,14 @@ namespace ChessSharp
             }
             return res;
         }
-        //Util func for bishop CanMove func
+        /// <summary>
+        /// Util function for Bishop CanMove func
+        /// Returns list of tiles between two tiles (diagonaly)
+        /// <see cref="Bishop.CanMove(Grid, Move)"/>
+        /// </summary>
+        /// <param name="start">First tile <see cref="Tile"/></param>
+        /// <param name="end">Second tile <see cref="Tile"/></param>
+        /// <returns>List of diagonal tiles between start and end <see cref="Tile"/></returns>
         internal List<Tile> GetDiagonalTiles(Tile start, Tile end)
         {
             List<Tile> tiles = new List<Tile>();
@@ -1103,7 +1123,14 @@ namespace ChessSharp
             return tiles;
 
         }
-        //Util func for king is in check func
+        /// <summary>
+        /// Util func for king InCheck func
+        /// <see cref="King.InCheck(Grid, Tile)"/>
+        /// <see cref="Piece.IsAttackingTile(Grid, Tile, Tile)"/>
+        /// </summary>
+        /// <param name="tilePos">Tile to check if is attacked</param>
+        /// <param name="team">Identify correct pieces</param>
+        /// <returns>True if tile is attacked by any of the enemy pieces, false if not</returns>
         internal bool IsTileAttacked(Tile tilePos, bool team)
         {
             foreach (Tile tile in Board)
@@ -1118,13 +1145,27 @@ namespace ChessSharp
             }
             return false;
         }
-        //Util func for calculating right moves
+        /// <summary>
+        /// Util func for calculating the right moves
+        /// Used for calculating distances
+        /// <see cref="Piece.CanMove(Grid, Move)"/>
+        /// </summary>
+        /// <param name="start">First tile <see cref="Tile"/></param>
+        /// <param name="end">Second tile <see cref="Tile"/></param>
+        /// <returns>The distance between both tiles</returns>
         internal static double Distance(Tile start, Tile end)
         {
             double res = Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2);
             return res;
         }
-        //Util func to check if move is legal (that king is not in check after moving the piece aka the piece is pinned"
+        /// <summary>
+        /// Checks to see if after move is made the king isn't in check
+        /// Used in any piece CanMove func
+        /// <see cref="Piece.CanMove(Grid, Move)"/>
+        /// </summary>
+        /// <param name="move">The move to check <see cref="Move"/></param>
+        /// <param name="isWhite">The team to check</param>
+        /// <returns>True if move is legal, false if it's not</returns>
         internal bool IsLegalMove(Move move, bool isWhite)
         {
             Tile start = move.Start;
@@ -1183,7 +1224,6 @@ namespace ChessSharp
             }
 
         }
-        
         #endregion
     }
 }
