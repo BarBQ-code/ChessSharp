@@ -7,21 +7,46 @@ using System.Linq;
 
 namespace ChessSharp
 {
+    /// <summary> Represents the chess board </summary>
     public class Grid
     {
         #region Properties
-
-
+        /// <summary>Holds the informaiton of the pieces position</summary>
+        /// <see cref="Tile"/>
         public Tile[,] Board { get; private set; }
+        /// <summary>Holds the current player (is white or black) </summary>
+        /// <see cref="Player"/>
         public Player CurrentPlayer { get; private set; }
+        /// <summary>Holds The current GameState  </summary>
+        /// <see cref="GameState"/>
         public GameState GameState { get; private set; } = GameState.ACTIVE;
+        /// <summary>Holds All the white pieces (either dead or not)  </summary>
+        /// <see cref="Piece"/>
         public List<Piece> WhitePieces { get; private set; } = new List<Piece>();
+        /// <summary>Holds all of the white killed pieces  </summary>
+        /// <see cref="Piece"/>
         public List<Piece> KilledWhitePieces { get; private set; } = new List<Piece>();
+        /// <summary>Holds all the black pieces (either dead or not)  </summary>
+        /// <see cref="Piece"/>
         public List<Piece> BlackPieces { get; private set; } = new List<Piece>();
+        /// <summary>Holds all the black killed pieces  </summary>
+        /// <see cref="Piece"/>
         public List<Piece> KilledBlackPieces { get; set; } = new List<Piece>();
+        /// <summary>Gets the fifty move rule count (need to be divisible by two  </summary>
+        /// <example>
+        /// <code> 
+        ///     Grid board = new Grid();
+        ///     if(board.FiftyMoveRuleCount / 2 >= 50)
+        /// </code>
+        /// </example>
         public int FiftyMoveRuleCount { get; private set; } = 0;
+        /// <summary>Gets the move count (need to be divisible by two) </summary>
         public int MoveCount { get; private set; } = 0;
+        /// <summary> Holds the information of all the moves made </summary>
+        /// <see cref="Move"/>
         public Stack<Move> MoveHistory { get; private set; } = new Stack<Move>();
+        /// <summary> Holds all the boards position used for 3 fold repition detection  </summary>
+        /// <see cref="Tile"/>
 
         private List<Tile[,]> AllBoards = new List<Tile[,]>();
 
