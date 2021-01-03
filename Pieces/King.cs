@@ -6,13 +6,18 @@ namespace ChessSharp.Pieces
 {
     public class King : Piece
     {
-        private (int, int) validDistance = (1, 2);
-        private const int castlingDistance = 4;
+        /// <summary>Gets and sets if king has castled to the right side </summary>
         public bool kingSideCatlingDone { get; set; } = false;
+        /// <summary>Gets and sets if king has castled to the left side </summary>
         public bool queenSideCasltingDone { get; set; } = false;
+        /// <summary>Gets and sets if the king has moved </summary>
         public bool HasMoved { get; set; } = false;
 
+        /// <summary>Util props for movement purposes </summary>
         public int startingRank;
+        private (int, int) validDistance = (1, 2);
+        private const int castlingDistance = 4;
+        /// <summary>Just a constuctor </summary>
         public King(bool isWhite) : base(isWhite)
         {
             pieceChar = 'K';
@@ -21,7 +26,20 @@ namespace ChessSharp.Pieces
             else
                 startingRank = 7;
         }
-
+        /// <summary>
+        /// The king's Implementation of <see cref="Piece.CanMove(Grid, Move)"/> method
+        /// It handles all of the kings movement, regular and castling
+        /// It uses the <see cref="Piece"/> implementaion of Can Move
+        /// And:
+        /// <see cref="IsAttackingTile(Grid, Tile, Tile)"/>
+        /// <see cref="Grid.IsLegalMove(Move, bool)"/>
+        /// <see cref="InCheck(Grid, Tile)"/>
+        /// <see cref="CheckTilesInCheck(Grid, List{Tile}, bool)"/>
+        /// <see cref="Piece.IsPieceBlocking(List{Tile})"/>
+        /// </summary>
+        /// <param name="board">The board <see cref="Grid"/></param>
+        /// <param name="move">The move to check <see cref="Move"/></param>
+        /// <returns>True if the move is valid, false if it isn't</returns>
         public override bool CanMove(Grid board, Move move)
         {
             if(base.CanMove(board, move))
@@ -102,9 +120,19 @@ namespace ChessSharp.Pieces
             }
             return false;
         }
-
+        /// <summary>
+        /// Check to see if the king is in check
+        /// Uses the <see cref="IsAttackingTile(Grid, Tile, Tile)"/> method
+        /// </summary>
+        /// <param name="board">The board</param>
+        /// <param name="kingLocation">The king location to check</param>
+        /// <returns>True if the given tile is hit, false if it's not</returns>
+        /// <exception cref="ArgumentException">If the provided tile doesn't contain a king</exception>
         public bool InCheck(Grid board, Tile kingLocation)
         {
+            if (!(kingLocation.piece is King))
+                throw new ArgumentException("Tile provided doesn't contain a king");
+
             foreach(Tile tile in board.Board)
             {
                 if(tile.piece != null && tile.piece.IsWhite != kingLocation.piece.IsWhite) //if enemy team piece
@@ -118,7 +146,14 @@ namespace ChessSharp.Pieces
 
             return false;
         }
-
+        /// <summary>
+        /// Checks to see if the king is in checkmate
+        /// Uses the <see cref="InCheck(Grid, Tile)"/> 
+        /// </summary>
+        /// <param name="board">The board <see cref="Grid"/></param>
+        /// <param name="kingLocation">The king's location <see cref="Tile"/></param>
+        /// <returns>True if king's in checkmate, false if it's not</returns>
+        /// <exception cref="ArgumentException">If tile provided doesn't contaion a king</exception>
         public bool InCheckMate(Grid board, Tile kingLocation)
         {
             King king = kingLocation.piece as King;
@@ -164,26 +199,40 @@ namespace ChessSharp.Pieces
             }
             return true;
         }
-
+        /// <summary>
+        /// Used in <see cref="CanMove(Grid, Move)"/> to determine if castles is possible
+        /// It is using the <see cref="IsAttackingTile(Grid, Tile, Tile)"/> method
+        /// </summary>
+        /// <param name="board">The board <see cref="Grid"/></param>
+        /// <param name="tiles">The tiles to check <see cref="Tile"/></param>
+        /// <param name="teamColor">The team color</param>
+        /// <returns>True if any of the tiles are in check, false if not</returns>
         private bool CheckTilesInCheck(Grid board, List<Tile> tiles, bool teamColor)
         {
             foreach (Tile tile in tiles)
             {
-                foreach(Tile cell in board.Board)
+                foreach (Tile cell in board.Board)
                 {
-                    if(cell.piece != null && cell.piece.IsWhite != teamColor) // if enemy team
+                    if (cell.piece != null && cell.piece.IsWhite != teamColor) // if enemy team
                     {
-                        if(cell.piece.IsAttackingTile(board, cell, tile))
+                        if (cell.piece.IsAttackingTile(board, cell, tile))
                         {
                             return true;
-                        }    
+                        }
                     }
                 }
             }
 
             return false;
         }
-
+        /// <summary>
+        /// Checks to see if king is attacking a tile
+        /// Uses the <see cref="Grid.Distance(Tile, Tile)"/> method to determine that
+        /// </summary>
+        /// <param name="board">The board <see cref="Grid"/></param>
+        /// <param name="piecePos">The king's tile <see cref="Tile"/></param>
+        /// <param name="destionation">The dest <see cref="Tile"/></param>
+        /// <returns>True if the king is attacking the tile, false if not</returns>
         public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
         {
             if (Grid.Distance(piecePos, destionation) == validDistance.Item1 ||
