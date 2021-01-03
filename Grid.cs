@@ -53,7 +53,9 @@ namespace ChessSharp
         #endregion
 
         #region Constructers
-
+        /// <summary> Initializes the board to his defualt position</summary>
+        /// <see cref="Board"/>
+        /// <see cref="Init"/>
         public Grid()
         {
             Init();
@@ -64,8 +66,14 @@ namespace ChessSharp
             UpdateKilledPieces();
             AllBoards.Add(CreateCopyOfBoard());
         }
-
-        // Fen constructor
+        /// <summary>Constructor using fen string </summary>
+        /// <see cref="Board"/>
+        /// <param name="fen">FEN string that will be parsed to a corresponding board position</param>
+        /// <exception cref="InvalidBoardException">
+        /// Invlalid strings
+        /// The fen string is interpeted as an array of string, if the array isn't in the correct length (6)
+        /// It can and will throw an exception if any of the arguments provided is not by the fen standart
+        /// </exception>
         public Grid(string fen)
         {
             Board = new Tile[8, 8];
@@ -100,7 +108,7 @@ namespace ChessSharp
                         Piece piece = Piece.PieceIdentifier(ch);
 
                         if (piece == null)
-                            throw new ArgumentException("Invalid board state");
+                            throw new InvalidFENBoardException("Invalid board state");
 
                         Board[7 - i, xPos] = new Tile(piece, xPos, 7 - i);
                         xPos++;
@@ -248,7 +256,10 @@ namespace ChessSharp
             UpdateKilledPieces();
             AllBoards.Add(CreateCopyOfBoard());
         }
-        //Move history to board constructor
+
+        /// <summary>Used for Initializing the board</summary>
+        /// <see cref="Grid"/>
+        /// <see cref="Board"/>
         public void Init()
         {
             Board = new Tile[8, 8];
