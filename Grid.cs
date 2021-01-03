@@ -799,7 +799,14 @@ namespace ChessSharp
         #endregion
 
         #region Private Methods
-        //Intializes the whitePieces and blackPieces list in the start of each game
+        /// <summary>
+        /// Initializes the WhitePiece and BlackPieces properties in the start of each game and the killed
+        /// <see cref="WhitePieces"/>
+        /// <see cref="BlackPieces"/>
+        /// <see cref="KilledWhitePieces"/>
+        /// <see cref="KilledBlackPieces"/>
+        /// <see cref="UpdateKilledPieces"/>
+        /// </summary>
         private void InitPieces()
         {
             foreach(Tile tile in Board)
@@ -818,8 +825,15 @@ namespace ChessSharp
             }
             UpdateKilledPieces();
         }
-
-        //Fires up after every CanMove func to check if the king is in check after the move is made
+        /// <summary>
+        /// Mehtod is called after every MaeMove func to change the GameState
+        /// <see cref="GameState"/>
+        /// <see cref="MakeMove(Move)"/>
+        /// <see cref="IsKingInCheckMate(bool)"/>
+        /// <see cref="IsStaleMate"/>
+        /// <see cref="IsFiftyMoveRule"/>
+        /// <see cref="CanClaimThreeFoldRepitition"/>
+        /// </summary>
         private void UpdateGameState()
         {
             if (IsKingInCheckMate(true))
@@ -848,7 +862,14 @@ namespace ChessSharp
                 return;
             }
         }
-        //Fires up after every move and start in any Init Pieces calls horrible function
+        /// <summary>
+        /// Method is called after every MakeMove and Init mehtod call
+        /// Very bad method, I need to find a better solution for this.
+        /// <see cref="MakeMove(Move)"/>
+        /// <see cref="Init"/>
+        /// <see cref="KilledWhitePieces"/>
+        /// <see cref="KilledBlackPieces"/>
+        /// </summary>
         private void UpdateKilledPieces()
         {
             KilledWhitePieces.Clear();
@@ -938,7 +959,11 @@ namespace ChessSharp
             }
 
         }
-        //Fires up after every CanMove func to reset pawns who have the prop CanBeCapturedEnPassant to true
+        /// <summary>
+        /// Method is called after every MakeMove call to reset pawn who have the prop CanBeCapturedEnPassant to true
+        /// <see cref="MakeMove(Move)"/>
+        /// <see cref="Pawn.CanBeCapturedEnPassant"/>
+        /// </summary>
         private void ResetEnPassant()
         {
             List<Piece> pawns;
@@ -967,7 +992,18 @@ namespace ChessSharp
                 }
             }
         }
-
+        /// <summary>
+        /// Creates A copy of the board it's called after every MakeMove and saved in AllBoard prop
+        /// It's used to identify if CanClaimThreeFoldRepition is valid
+        /// <see cref="MakeMove(Move)"/>
+        /// <see cref="AllBoards"/>
+        /// <see cref="CanClaimThreeFoldRepitition"/>
+        /// <see cref="Piece.PieceIdentifier(char)"/>
+        /// </summary>
+        /// <returns>
+        /// A copy of the board 
+        /// <see cref="Tile"/>
+        /// </returns>
         private Tile[,] CreateCopyOfBoard()
         {
             Tile[,] res = new Tile[8, 8];
