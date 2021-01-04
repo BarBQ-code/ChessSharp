@@ -250,49 +250,6 @@ namespace ChessSharp
             
         }
         /// <summary>
-        /// The ToString method
-        /// It Highly relies on correct MoveType idenfication
-        /// To get the best move printing possible use <see cref="Move.FromUCI(Grid, string, Piece)"/> method
-        /// </summary>
-        /// <returns>Chess notation move</returns>
-        public override string ToString()
-        {
-            string res = "";
-
-            if (this.MoveType == MoveType.ShortCastles)
-                return shortCastles;
-
-            if (this.MoveType == MoveType.LongCastles)
-                return longCastles;
-
-            if(Start.Piece != null)
-            {
-                if(Start.Piece is Pawn)
-                {
-                    res = End.ToString();
-                    if (MoveType == MoveType.Capture || MoveType == MoveType.EnPassant)
-                        res = Start.ToString()[0].ToString() + capturesChar.ToString() + res;
-                    else if (MoveType == MoveType.Promotion)
-                        res += "=" + PromotionPiece.ToString();
-                }
-                else
-                {
-                    res = Start.Piece.ToString();
-                    if (MoveType == MoveType.Capture)
-                        res += capturesChar;
-                    res += End.ToString();
-                }
-                
-            }
-
-            if (additionalMoveType == MoveType.CheckMate)
-                res += checkMateChar;
-            else if (additionalMoveType == MoveType.Check)
-                res += checkChar;
-
-            return res;
-        }
-        /// <summary>
         /// Used in <see cref="Move.MoveTypeIdentifier(Grid, Tile, Tile, ref MoveType)"/> for better move printing
         /// Uses <see cref="King.InCheck(Grid, Tile)"/> method to determine if move is check
         /// </summary>
@@ -418,6 +375,92 @@ namespace ChessSharp
             start.Piece = end.Piece;
             end.Piece = temp;
             return false;
+        }
+        /// <summary>
+        /// The ToString method
+        /// It Highly relies on correct MoveType idenfication
+        /// To get the best move printing possible use <see cref="Move.FromUCI(Grid, string, Piece)"/> method
+        /// </summary>
+        /// <returns>Chess notation move</returns>
+        public override string ToString()
+        {
+            string res = "";
+
+            if (this.MoveType == MoveType.ShortCastles)
+                return shortCastles;
+
+            if (this.MoveType == MoveType.LongCastles)
+                return longCastles;
+
+            if (Start.Piece != null)
+            {
+                if (Start.Piece is Pawn)
+                {
+                    res = End.ToString();
+                    if (MoveType == MoveType.Capture || MoveType == MoveType.EnPassant)
+                        res = Start.ToString()[0].ToString() + capturesChar.ToString() + res;
+                    else if (MoveType == MoveType.Promotion)
+                        res += "=" + PromotionPiece.ToString();
+                }
+                else
+                {
+                    res = Start.Piece.ToString();
+                    if (MoveType == MoveType.Capture)
+                        res += capturesChar;
+                    res += End.ToString();
+                }
+
+            }
+
+            if (additionalMoveType == MoveType.CheckMate)
+                res += checkMateChar;
+            else if (additionalMoveType == MoveType.Check)
+                res += checkChar;
+
+            return res;
+        }
+        /// <summary>
+        /// All the methods below are for equality checks and convinience.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            Move move1 = obj as Move;
+
+            return move1.Start == Start
+                   && move1.End == End
+                   && move1.Player == Player
+                   && move1.MoveType == MoveType
+                   && move1.PromotionPiece == PromotionPiece
+                   && move1.additionalMoveType == additionalMoveType;
+        }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Start, End, Player, MoveType, PromotionPiece, additionalMoveType);
+        }
+
+        public static bool operator ==(Move m1, Move m2)
+        {
+            if (ReferenceEquals(m1, m2))
+                return true;
+            if ((object)m1 == null || (object)m2 == null)
+                return false;
+
+            return m1.Equals(m2);
+        }
+
+        public static bool operator !=(Move m1, Move m2)
+        {
+            if (ReferenceEquals(m1, m2))
+                return false;
+            if ((object)m1 == null || (object)m2 == null)
+                return false;
+
+            return !m1.Equals(m2);
         }
     }
 }

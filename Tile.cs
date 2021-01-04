@@ -64,7 +64,7 @@ namespace ChessSharp
         public static bool operator !=(Tile t1, Tile t2)
         {
             if (ReferenceEquals(t1, t2))
-                return true;
+                return false;
             if ((object)t1 == null || (object)t2 == null)
                 return false;
 

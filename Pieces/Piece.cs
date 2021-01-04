@@ -172,7 +172,7 @@ namespace ChessSharp
         public static bool operator !=(Piece p1, Piece p2)
         {
             if (ReferenceEquals(p1, p2))
-                return true;
+                return false;
             if ((object)p1 == null || (object)p2 == null)
                 return false;
 
