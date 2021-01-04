@@ -6,8 +6,28 @@ using System.Text;
 
 namespace ChessSharp
 {
+    /// <summary>
+    /// The static class PGN Generates a pgn string from the move history
+    /// It uses the following classes and enums:
+    /// <see cref="Move"/>
+    /// <see cref="Player"/>
+    /// <see cref="GameState"/>
+    /// </summary>
     public static class PGN
     {
+        /// <summary>
+        /// The GeneratePGN method is currently the only one in the PGN class, maybe I'll add more in the future
+        /// It gets a lot of information and Generates a PGN string according to the FIDE standard
+        /// You can check out the example below to see a possible output
+        /// </summary>
+        /// <param name="moveHistory">The move history of a certain game <see cref="Move"/></param>
+        /// <param name="whitePlayer">The white player in the match <see cref="Player"/></param>
+        /// <param name="blackPlayer">The black player in the match <see cref="Player"/></param>
+        /// <param name="round">The round this game was played in</param>
+        /// <param name="gameState">The game state (who won) <see cref="GameState"/></param>
+        /// <param name="Event">The event in which the game was played in</param>
+        /// <param name="site">The site in which the game was played in</param>
+        /// <returns>A PGN string according to the FIDE format</returns>
         public static string GeneratePGN(Stack<Move> moveHistory, Player whitePlayer, Player blackPlayer, int round, GameState gameState, string Event, string site)
         {
             string pgnHeader = "";
