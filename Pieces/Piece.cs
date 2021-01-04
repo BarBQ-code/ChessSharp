@@ -15,7 +15,7 @@ namespace ChessSharp
         /// <summary>Gets and sets wether or not the piece is killed </summary>
         public bool IsKilled { get; set; } = false;
         /// <summary>Each piece has a pieceChar for board printing <see cref="Grid.ToString"/> </summary>
-        public char pieceChar { get; protected set;}
+        public char pieceChar { get; protected set; }
         /// <summary>
         /// Simple constuctor
         /// </summary>
@@ -33,7 +33,7 @@ namespace ChessSharp
         /// <param name="piecePos">The piece position to check if the piece is attacking the dest<see cref="Tile"/></param>
         /// <param name="destionation">The tile to check if it's attacked <see cref="Tile"/></param>
         /// <returns>True if the condition is met, false if it's not</returns>
-        public abstract bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation); 
+        public abstract bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation);
         /// <summary>
         /// The "main" method of the class, this method can be overrided
         /// Every piece overrides this method, but also uses this implementation to rule out any bad moves
@@ -50,7 +50,7 @@ namespace ChessSharp
             if (move.Start.piece == null)
                 return false;
 
-            if(move.End.piece != null)
+            if (move.End.piece != null)
             {
                 if (move.Start.piece.IsWhite == move.End.piece.IsWhite)
                     return false;
@@ -69,8 +69,8 @@ namespace ChessSharp
         public List<Move> GetAllMoves(Grid board, Tile piecePos)
         {
             List<Move> moves = new List<Move>();
-            
-            foreach(Tile tile in board.Board)
+
+            foreach (Tile tile in board.Board)
             {
                 MoveType temp = MoveType.Normal;
                 Move move = new Move(piecePos, tile, board.CurrentPlayer, Move.MoveTypeIdentifier(board, piecePos, tile, ref temp));
@@ -140,6 +140,43 @@ namespace ChessSharp
             }
 
             return false;
+        }
+        /// <summary>
+        /// All the methods below are for equality checks and convinience.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            if (ReferenceEquals(this, obj))
+                return true;
+            Piece p = obj as Piece;
+            return p.ToString() == ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(IsWhite, IsKilled, pieceChar);
+        }
+
+        public static bool operator ==(Piece p1, Piece p2)
+        {
+            if (ReferenceEquals(p1, p2))
+                return true;
+            if ((object)p1 == null || (object)p2 == null)
+                return false;
+
+            return p1.Equals(p2);
+        }
+
+        public static bool operator !=(Piece p1, Piece p2)
+        {
+            if (ReferenceEquals(p1, p2))
+                return true;
+            if ((object)p1 == null || (object)p2 == null)
+                return false;
+
+            return !p1.Equals(p2);
         }
     }
 }
