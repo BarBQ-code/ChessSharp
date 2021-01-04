@@ -49,10 +49,10 @@ namespace ChessSharp.Pieces
 
                 if (IsAttackingTile(board, start, end))
                 {
-                    if (board.IsTileAttacked(end, start.piece.IsWhite))
+                    if (board.IsTileAttacked(end, start.Piece.IsWhite))
                         return false;
 
-                    if (!board.IsLegalMove(new Move(start, end, board.CurrentPlayer), start.piece.IsWhite))
+                    if (!board.IsLegalMove(new Move(start, end, board.CurrentPlayer), start.Piece.IsWhite))
                         return false;
 
                     return true;    
@@ -64,8 +64,8 @@ namespace ChessSharp.Pieces
                         if (kingSideCatlingDone)
                             return false;
 
-                        Rook rook = board.GetTile(end.X + 1, end.Y).piece as Rook;
-                        King king = start.piece as King;
+                        Rook rook = board.GetTile(end.X + 1, end.Y).Piece as Rook;
+                        King king = start.Piece as King;
 
 
                         if (rook == null || king == null)
@@ -94,8 +94,8 @@ namespace ChessSharp.Pieces
                         if (queenSideCasltingDone)
                             return false;
 
-                        Rook rook = board.GetTile(end.X - 2, end.Y).piece as Rook;
-                        King king = start.piece as King;
+                        Rook rook = board.GetTile(end.X - 2, end.Y).Piece as Rook;
+                        King king = start.Piece as King;
 
                         if (rook == null || king == null)
                             return false;
@@ -130,14 +130,14 @@ namespace ChessSharp.Pieces
         /// <exception cref="ArgumentException">If the provided tile doesn't contain a king</exception>
         public bool InCheck(Grid board, Tile kingLocation)
         {
-            if (!(kingLocation.piece is King))
+            if (!(kingLocation.Piece is King))
                 throw new ArgumentException("Tile provided doesn't contain a king");
 
             foreach(Tile tile in board.Board)
             {
-                if(tile.piece != null && tile.piece.IsWhite != kingLocation.piece.IsWhite) //if enemy team piece
+                if(tile.Piece != null && tile.Piece.IsWhite != kingLocation.Piece.IsWhite) //if enemy team piece
                 {
-                    if(tile.piece.IsAttackingTile(board, tile, kingLocation))
+                    if(tile.Piece.IsAttackingTile(board, tile, kingLocation))
                     {
                         return true;
                     }
@@ -156,7 +156,7 @@ namespace ChessSharp.Pieces
         /// <exception cref="ArgumentException">If tile provided doesn't contaion a king</exception>
         public bool InCheckMate(Grid board, Tile kingLocation)
         {
-            King king = kingLocation.piece as King;
+            King king = kingLocation.Piece as King;
 
             if (king == null)
                 throw new ArgumentException("Tile provided doesn't contain a king");
@@ -164,7 +164,7 @@ namespace ChessSharp.Pieces
             if (!king.InCheck(board, kingLocation))
                 return false;
 
-            if(kingLocation.piece.IsWhite)
+            if(kingLocation.Piece.IsWhite)
             {
                 foreach(Piece piece in board.WhitePieces)
                 {
@@ -213,9 +213,9 @@ namespace ChessSharp.Pieces
             {
                 foreach (Tile cell in board.Board)
                 {
-                    if (cell.piece != null && cell.piece.IsWhite != teamColor) // if enemy team
+                    if (cell.Piece != null && cell.Piece.IsWhite != teamColor) // if enemy team
                     {
-                        if (cell.piece.IsAttackingTile(board, cell, tile))
+                        if (cell.Piece.IsAttackingTile(board, cell, tile))
                         {
                             return true;
                         }

@@ -77,7 +77,7 @@ namespace ChessSharp
 
             foreach (Move move in moveHistory.Reverse())
             {
-                if(move.Start.piece.IsWhite)
+                if(move.Start.Piece.IsWhite)
                 {
                     pgn += count + ". ";
                     pgn += move.ToString() + " ";

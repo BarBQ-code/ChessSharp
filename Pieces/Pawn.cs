@@ -40,13 +40,13 @@ namespace ChessSharp.Pieces
                 Tile start = move.Start;
                 Tile end = move.End;
 
-                if(start.piece.IsWhite)
+                if(start.Piece.IsWhite)
                 {
-                    if (end.piece == null) // normal move
+                    if (end.Piece == null) // normal move
                     {
                         if (Grid.Distance(start, end) == validDistances.normalMove && start.Y + 1 == end.Y)
                         {
-                            if (!board.IsLegalMove(move, start.piece.IsWhite))
+                            if (!board.IsLegalMove(move, start.Piece.IsWhite))
                                 return false;
 
                             return true;
@@ -54,7 +54,7 @@ namespace ChessSharp.Pieces
 
                         else if (Grid.Distance(start, end) == validDistances.firstMove && start.Y + 2 == end.Y) // first move
                         {
-                            Pawn pawn = start.piece as Pawn;
+                            Pawn pawn = start.Piece as Pawn;
 
                             if (pawn == null)
                                 return false;
@@ -62,7 +62,7 @@ namespace ChessSharp.Pieces
                             if (pawn.startingRank != start.Y)
                                 return false;
 
-                            if (!board.IsLegalMove(move, start.piece.IsWhite))
+                            if (!board.IsLegalMove(move, start.Piece.IsWhite))
                                 return false;
 
                             return true;
@@ -70,7 +70,7 @@ namespace ChessSharp.Pieces
                         // en passant
                         else if((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y + 1 == end.Y)
                         {
-                            Pawn enpassantPawn = board.GetTile(end.X, start.Y).piece as Pawn; //get the beside "my" pawn
+                            Pawn enpassantPawn = board.GetTile(end.X, start.Y).Piece as Pawn; //get the beside "my" pawn
                             
                             if (enpassantPawn == null)
                                 return false;
@@ -78,7 +78,7 @@ namespace ChessSharp.Pieces
                             if (!enpassantPawn.CanBeCapturedEnPassant)
                                 return false;
 
-                            if (!board.IsLegalMove(move, start.piece.IsWhite))
+                            if (!board.IsLegalMove(move, start.Piece.IsWhite))
                                 return false;
 
                             return true;
@@ -87,12 +87,12 @@ namespace ChessSharp.Pieces
                     }
                     else //capture logic
                     {
-                        if (start.piece.IsWhite == end.piece.IsWhite)
+                        if (start.Piece.IsWhite == end.Piece.IsWhite)
                             return false;
 
                         if ((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y + 1 == end.Y)
                         {
-                            if (!board.IsLegalMove(move, start.piece.IsWhite))
+                            if (!board.IsLegalMove(move, start.Piece.IsWhite))
                                 return false;
 
                             return true;
@@ -103,11 +103,11 @@ namespace ChessSharp.Pieces
                 }
                 else
                 {
-                    if (end.piece == null) // normal moves
+                    if (end.Piece == null) // normal moves
                     {
                         if (Grid.Distance(start, end) == validDistances.normalMove && start.Y - 1 == end.Y)
                         {
-                            if (!board.IsLegalMove(move, start.piece.IsWhite))
+                            if (!board.IsLegalMove(move, start.Piece.IsWhite))
                                 return false;
 
                             return true;
@@ -115,7 +115,7 @@ namespace ChessSharp.Pieces
 
                         else if(Grid.Distance(start, end) == validDistances.firstMove && start.Y - 2 == end.Y)
                         {
-                            Pawn pawn = start.piece as Pawn;
+                            Pawn pawn = start.Piece as Pawn;
 
                             if (pawn == null)
                                 return false;
@@ -123,14 +123,14 @@ namespace ChessSharp.Pieces
                             if (pawn.startingRank != start.Y)
                                 return false;
 
-                            if (!board.IsLegalMove(move, start.piece.IsWhite))
+                            if (!board.IsLegalMove(move, start.Piece.IsWhite))
                                 return false;
 
                             return true;
                         }
                         else if((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y - 1 == end.Y)
                         {
-                            Pawn enpassantPawn = board.GetTile(end.X, start.Y).piece as Pawn;
+                            Pawn enpassantPawn = board.GetTile(end.X, start.Y).Piece as Pawn;
 
                             if (enpassantPawn == null)
                                 return false;
@@ -138,7 +138,7 @@ namespace ChessSharp.Pieces
                             if (!enpassantPawn.CanBeCapturedEnPassant)
                                 return false;
 
-                            if (!board.IsLegalMove(move, start.piece.IsWhite))
+                            if (!board.IsLegalMove(move, start.Piece.IsWhite))
                                 return false;
 
                             return true;
@@ -147,12 +147,12 @@ namespace ChessSharp.Pieces
                     }
                     else //capture logic
                     {
-                        if (start.piece.IsWhite == end.piece.IsWhite)
+                        if (start.Piece.IsWhite == end.Piece.IsWhite)
                             return false;
 
                         if ((start.X + 1 == end.X || start.X - 1 == end.X) && start.Y - 1 == end.Y)
                         {
-                            if (!board.IsLegalMove(move, start.piece.IsWhite))
+                            if (!board.IsLegalMove(move, start.Piece.IsWhite))
                                 return false;
 
                             return true;
@@ -174,7 +174,7 @@ namespace ChessSharp.Pieces
         /// <returns>True if the condition is met, false if not</returns>
         public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
         {
-            if (piecePos.piece.IsWhite)
+            if (piecePos.Piece.IsWhite)
             {
                 if ((piecePos.X + 1 == destionation.X || piecePos.X - 1 == destionation.X) && piecePos.Y + 1 == destionation.Y)
                     return true;

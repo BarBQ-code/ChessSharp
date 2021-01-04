@@ -62,13 +62,13 @@ namespace ChessSharp
         /// <param name="move">A move to clone</param>
         internal Move(Move move)
         {
-            Piece startPiece = Piece.PieceIdentifier(move.Start.piece.ToString()[0]);
+            Piece startPiece = Piece.PieceIdentifier(move.Start.Piece.ToString()[0]);
             Tile start = new Tile(startPiece, move.Start.X, move.Start.Y);
 
             Piece endPiece = null;
-            if(move.End.piece != null)
+            if(move.End.Piece != null)
             {
-                endPiece = Piece.PieceIdentifier(move.End.piece.ToString()[0]);
+                endPiece = Piece.PieceIdentifier(move.End.Piece.ToString()[0]);
             }
 
             Tile end = new Tile(endPiece, move.End.X, move.End.Y);
@@ -129,12 +129,12 @@ namespace ChessSharp
             Tile start = board.GetTile(startX, startY);
             Tile end = board.GetTile(endX, endY);
 
-            if (start.piece == null)
+            if (start.Piece == null)
                 throw new InvalidMoveException("Source tile has no piece");
 
-            if (end.piece != null)
+            if (end.Piece != null)
             {
-                if (start.piece.IsWhite == end.piece.IsWhite)
+                if (start.Piece.IsWhite == end.Piece.IsWhite)
                     throw new InvalidMoveException("Source tile piece and destination tile piece are of the same team");
             }
 
@@ -146,7 +146,7 @@ namespace ChessSharp
                 return move;
             }
             //promotion move
-            Pawn pawn = start.piece as Pawn;
+            Pawn pawn = start.Piece as Pawn;
 
             if (pawn == null)
                 throw new InvalidMoveException("Source tile must contain pawn");
@@ -183,7 +183,7 @@ namespace ChessSharp
         /// <returns>A MoveType <see cref="MoveType"/></returns>
         public static MoveType MoveTypeIdentifier(Grid board, Tile start, Tile end)
         {
-            King king = start.piece as King;
+            King king = start.Piece as King;
 
             if (king != null)
             {
@@ -191,7 +191,7 @@ namespace ChessSharp
                 {
                     if (end.X > start.X)
                     {
-                        Rook rook = board.GetTile(end.X + 1, end.Y).piece as Rook;
+                        Rook rook = board.GetTile(end.X + 1, end.Y).Piece as Rook;
                         if (rook != null)
                         {
                             if (!king.HasMoved && !rook.HasMoved)
@@ -200,7 +200,7 @@ namespace ChessSharp
                     }
                     else if (start.X > end.X)
                     {
-                        Rook rook = board.GetTile(end.X - 2, end.Y).piece as Rook;
+                        Rook rook = board.GetTile(end.X - 2, end.Y).Piece as Rook;
                         if (rook != null)
                         {
                             if (!king.HasMoved && !rook.HasMoved)
@@ -210,19 +210,19 @@ namespace ChessSharp
                 }
             }
             //check for en passant
-            Pawn pawn = start.piece as Pawn;
+            Pawn pawn = start.Piece as Pawn;
             if (pawn != null)
             {
                 if (pawn.CanMove(board, new Move(start, end, board.CurrentPlayer)))
                 {
-                    if (end.piece == null && end.X != start.X)
+                    if (end.Piece == null && end.X != start.X)
                         return MoveType.EnPassant;
                     if (end.Y == 0 || end.Y == 7)
                         return MoveType.Promotion;
                 }
             }
 
-            if (end.piece != null)
+            if (end.Piece != null)
                 return MoveType.Capture;
 
             return MoveType.Normal;
@@ -239,7 +239,7 @@ namespace ChessSharp
         /// <returns>A MoveType <see cref="MoveType"/></returns>
         public static MoveType MoveTypeIdentifier(Grid board, Tile start, Tile end, ref MoveType additionalMoveType)
         {
-            if(!(end.piece is King))
+            if(!(end.Piece is King))
             {
                 if (IsMoveCheckMate(board, new Move(start, end, board.CurrentPlayer)))
                     additionalMoveType = MoveType.CheckMate;
@@ -265,9 +265,9 @@ namespace ChessSharp
             if (this.MoveType == MoveType.LongCastles)
                 return longCastles;
 
-            if(Start.piece != null)
+            if(Start.Piece != null)
             {
-                if(Start.piece is Pawn)
+                if(Start.Piece is Pawn)
                 {
                     res = End.ToString();
                     if (MoveType == MoveType.Capture || MoveType == MoveType.EnPassant)
@@ -277,7 +277,7 @@ namespace ChessSharp
                 }
                 else
                 {
-                    res = Start.piece.ToString();
+                    res = Start.Piece.ToString();
                     if (MoveType == MoveType.Capture)
                         res += capturesChar;
                     res += End.ToString();
@@ -306,10 +306,10 @@ namespace ChessSharp
 
             Tile start = move.Start;
             Tile end = move.End;
-            Piece temp = end.piece;
+            Piece temp = end.Piece;
 
-            end.piece = start.piece;
-            start.piece = null;
+            end.Piece = start.Piece;
+            start.Piece = null;
 
             if(player)
             {
@@ -318,20 +318,20 @@ namespace ChessSharp
 
                 if (king == null)
                 {
-                    start.piece = end.piece;
-                    end.piece = temp;
+                    start.Piece = end.Piece;
+                    end.Piece = temp;
                     throw new InvalidBoardException("White king is missing");
                 }
 
                 if (king.InCheck(board, board.GetTile(king)))
                 {
-                    start.piece = end.piece;
-                    end.piece = temp;
+                    start.Piece = end.Piece;
+                    end.Piece = temp;
                     return true;
                 }
 
-                start.piece = end.piece;
-                end.piece = temp;
+                start.Piece = end.Piece;
+                end.Piece = temp;
                 return false;
             }
             else
@@ -341,20 +341,20 @@ namespace ChessSharp
 
                 if (king == null)
                 {
-                    start.piece = end.piece;
-                    end.piece = temp;
+                    start.Piece = end.Piece;
+                    end.Piece = temp;
                     throw new InvalidBoardException("Black king is missing");
                 }
 
                 if (king.InCheck(board, board.GetTile(king)))
                 {
-                    start.piece = end.piece;
-                    end.piece = temp;
+                    start.Piece = end.Piece;
+                    end.Piece = temp;
                     return true;
                 }
 
-                start.piece = end.piece;
-                end.piece = temp;
+                start.Piece = end.Piece;
+                end.Piece = temp;
                 return false;   
             }
         }
@@ -372,10 +372,10 @@ namespace ChessSharp
 
             Tile start = move.Start;
             Tile end = move.End;
-            Piece temp = end.piece;
+            Piece temp = end.Piece;
 
-            end.piece = start.piece;
-            start.piece = null;
+            end.Piece = start.Piece;
+            start.Piece = null;
 
             if (player)
             {
@@ -384,15 +384,15 @@ namespace ChessSharp
 
                 if(king == null)
                 {
-                    start.piece = end.piece;
-                    end.piece = temp;
+                    start.Piece = end.Piece;
+                    end.Piece = temp;
                     throw new InvalidBoardException("White king is missing");
                 }
 
                 if (king.InCheckMate(board, board.GetTile(king)))
                 {
-                    start.piece = end.piece;
-                    end.piece = temp;
+                    start.Piece = end.Piece;
+                    end.Piece = temp;
                     return true;
                 }
             }
@@ -403,20 +403,20 @@ namespace ChessSharp
 
                 if(king == null)
                 {
-                    start.piece = end.piece;
-                    end.piece = temp;
+                    start.Piece = end.Piece;
+                    end.Piece = temp;
                     throw new InvalidBoardException("Black king is missing");
                 }
 
                 if (king.InCheckMate(board, board.GetTile(king)))
                 {
-                    start.piece = end.piece;
-                    end.piece = temp;
+                    start.Piece = end.Piece;
+                    end.Piece = temp;
                     return true;
                 }
             }
-            start.piece = end.piece;
-            end.piece = temp;
+            start.Piece = end.Piece;
+            end.Piece = temp;
             return false;
         }
     }

@@ -47,12 +47,12 @@ namespace ChessSharp
             if (move == null)
                 return false;
 
-            if (move.Start.piece == null)
+            if (move.Start.Piece == null)
                 return false;
 
-            if (move.End.piece != null)
+            if (move.End.Piece != null)
             {
-                if (move.Start.piece.IsWhite == move.End.piece.IsWhite)
+                if (move.Start.Piece.IsWhite == move.End.Piece.IsWhite)
                     return false;
             }
             return true;
@@ -75,7 +75,7 @@ namespace ChessSharp
                 MoveType temp = MoveType.Normal;
                 Move move = new Move(piecePos, tile, board.CurrentPlayer, Move.MoveTypeIdentifier(board, piecePos, tile, ref temp));
                 move.additionalMoveType = temp;
-                if (piecePos.piece.CanMove(board, move))
+                if (piecePos.Piece.CanMove(board, move))
                     moves.Add(move);
             }
             return moves;
@@ -135,7 +135,7 @@ namespace ChessSharp
         {
             foreach (Tile tile in tiles)
             {
-                if (tile.piece != null)
+                if (tile.Piece != null)
                     return true;
             }
 

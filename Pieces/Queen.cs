@@ -26,8 +26,8 @@ namespace ChessSharp.Pieces
             {
                 Tile start = move.Start;
 
-                if (!new Rook(start.piece.IsWhite).CanMove(board, move) &&
-                    !new Bishop(start.piece.IsWhite).CanMove(board, move))
+                if (!new Rook(start.Piece.IsWhite).CanMove(board, move) &&
+                    !new Bishop(start.Piece.IsWhite).CanMove(board, move))
                     return false;
 
                 return true;
@@ -46,8 +46,8 @@ namespace ChessSharp.Pieces
         /// <returns>True if the tile is attacked by the queen, false if not</returns>
         public override bool IsAttackingTile(Grid board, Tile piecePos, Tile destionation)
         {
-            if (!new Rook(piecePos.piece.IsWhite).IsAttackingTile(board, piecePos, destionation) &&
-                !new Bishop(piecePos.piece.IsWhite).IsAttackingTile(board, piecePos, destionation))
+            if (!new Rook(piecePos.Piece.IsWhite).IsAttackingTile(board, piecePos, destionation) &&
+                !new Bishop(piecePos.Piece.IsWhite).IsAttackingTile(board, piecePos, destionation))
                 return false;
 
             return true;

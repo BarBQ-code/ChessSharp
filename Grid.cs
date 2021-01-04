@@ -209,7 +209,7 @@ namespace ChessSharp
                 else
                     throw new InvalidFENBoardException("En passant argument is invalid");
 
-                Pawn pawn = pawnTile.piece as Pawn;
+                Pawn pawn = pawnTile.Piece as Pawn;
 
                 if (pawn == null)
                     throw new InvalidFENBoardException("En passant is invalid");
@@ -319,78 +319,78 @@ namespace ChessSharp
             Tile start = move.Start;
             Tile end = move.End;
 
-            if (start.piece == null)
+            if (start.Piece == null)
                 throw new InvalidMoveException("Source tile has no piece");
 
-            if (end.piece != null)
+            if (end.Piece != null)
             {
-                if (start.piece.IsWhite == end.piece.IsWhite)
+                if (start.Piece.IsWhite == end.Piece.IsWhite)
                     throw new InvalidMoveException("Source tile piece and destination tile piece are of the same team");
             }
 
-            if (start.piece.CanMove(this, move))
+            if (start.Piece.CanMove(this, move))
             {
                 Move temp = new Move(move);
-                if (end.piece != null) 
+                if (end.Piece != null) 
                 {
-                    end.piece.IsKilled = true;
+                    end.Piece.IsKilled = true;
                 }
 
                 if(move.MoveType == MoveType.Promotion)
                 {
-                    if (!(start.piece is Pawn))
+                    if (!(start.Piece is Pawn))
                         throw new InvalidMoveException("Source tile must contain pawn in promotion move");
 
                     if(move.PromotionPiece is Pawn)
                         throw new InvalidMoveException("Can't promote to pawn");
 
-                    end.piece = move.PromotionPiece;
+                    end.Piece = move.PromotionPiece;
                 }
                 else if(move.MoveType == MoveType.EnPassant)
                 {
                     if(CurrentPlayer.IsWhite)
                     {
-                        end.piece = start.piece;
-                        GetTile(end.X, end.Y - 1).piece = null;
+                        end.Piece = start.Piece;
+                        GetTile(end.X, end.Y - 1).Piece = null;
                     }
                     else
                     {
-                        end.piece = start.piece;
-                        GetTile(end.X, end.Y + 1).piece = null;
+                        end.Piece = start.Piece;
+                        GetTile(end.X, end.Y + 1).Piece = null;
                     }
                 }
-                else if(start.piece is Pawn) //check for first pawn moves to set CanCaptureEnPassant property
+                else if(start.Piece is Pawn) //check for first pawn moves to set CanCaptureEnPassant property
                 {
-                    Pawn pawn = start.piece as Pawn;
+                    Pawn pawn = start.Piece as Pawn;
                     if(Grid.Distance(start, end) == 4) //first move
                     {
                         pawn.CanBeCapturedEnPassant = true;
                     }
 
-                    end.piece = start.piece;
+                    end.Piece = start.Piece;
                 }
                 else
                 {
-                    end.piece = start.piece;
+                    end.Piece = start.Piece;
 
                     if (move.MoveType == MoveType.ShortCastles)
                     {
 
-                        GetTile(end.X - 1, start.Y).piece = GetTile(end.X + 1, start.Y).piece;
-                        GetTile(end.X + 1, start.Y).piece = null;
-                        King king = GetTile(start).piece as King;
+                        GetTile(end.X - 1, start.Y).Piece = GetTile(end.X + 1, start.Y).Piece;
+                        GetTile(end.X + 1, start.Y).Piece = null;
+                        King king = GetTile(start).Piece as King;
                         king.HasMoved = true;
                     }
                     else if (move.MoveType == MoveType.LongCastles)
                     {
-                        GetTile(end.X + 1, start.Y).piece = GetTile(end.X - 2, start.Y).piece;
-                        GetTile(end.X - 2, start.Y).piece = null;
-                        King king = GetTile(start).piece as King;
+                        GetTile(end.X + 1, start.Y).Piece = GetTile(end.X - 2, start.Y).Piece;
+                        GetTile(end.X - 2, start.Y).Piece = null;
+                        King king = GetTile(start).Piece as King;
                         king.HasMoved = true;
                     }
                 }
 
-                if(move.MoveType == MoveType.Capture || start.piece is Pawn)
+                if(move.MoveType == MoveType.Capture || start.Piece is Pawn)
                 {
                     FiftyMoveRuleCount = 0;
                 }
@@ -399,7 +399,7 @@ namespace ChessSharp
                     FiftyMoveRuleCount++;
                 }
 
-                start.piece = null;
+                start.Piece = null;
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
                 MoveCount++;
                 MoveHistory.Push(temp);
@@ -422,11 +422,11 @@ namespace ChessSharp
 
             foreach(Tile tile in Board)
             {
-                if(tile.piece != null)
+                if(tile.Piece != null)
                 {
-                    if (tile.piece.IsWhite == CurrentPlayer.IsWhite)
+                    if (tile.Piece.IsWhite == CurrentPlayer.IsWhite)
                     {
-                        moves.AddRange(tile.piece.GetAllMoves(this, tile));
+                        moves.AddRange(tile.Piece.GetAllMoves(this, tile));
                     }
                 }
                 
@@ -449,13 +449,13 @@ namespace ChessSharp
                 for (int j = 0; j < 8; j++)
                 {
                     Tile tile = GetTile(j, i);
-                    if(tile.piece != null)
+                    if(tile.Piece != null)
                     {
                         if (emptySpacesCount != 0)
                         {
                             res += emptySpacesCount;
                         }
-                        res += tile.piece.ToString();
+                        res += tile.Piece.ToString();
                         emptySpacesCount = 0;
                     }
                     else
@@ -573,8 +573,8 @@ namespace ChessSharp
         public void Pop()
         {
             Move move = MoveHistory.Last();
-            GetTile(move.Start).piece = move.Start.piece;
-            GetTile(move.End).piece = move.End.piece;
+            GetTile(move.Start).Piece = move.Start.Piece;
+            GetTile(move.End).Piece = move.End.Piece;
             MoveCount--;
         }
         /// <summary>Returns the tile in the x and y position of the board</summary>
@@ -607,9 +607,9 @@ namespace ChessSharp
         {
             foreach (Tile tile in Board)
             {
-                if(tile.piece != null)
+                if(tile.Piece != null)
                 {
-                    if(tile.piece == piece)
+                    if(tile.Piece == piece)
                     {
                         return tile;
                     }
@@ -630,9 +630,9 @@ namespace ChessSharp
                 for (int j = 0; j < 8; j++)
                 {
                     Tile tile = Board[i, j];
-                    if (tile.piece != null)
+                    if (tile.Piece != null)
                     {
-                        res += tile.piece.ToString() + " ";
+                        res += tile.Piece.ToString() + " ";
                     }
                     else
                         res += ". ";
@@ -770,13 +770,13 @@ namespace ChessSharp
                     for (int j = 0; j < 8; j++)
                     {
                         Tile tile = board[i, j];
-                        if (tile.piece != null)
+                        if (tile.Piece != null)
                         {
                             if (emptySpacesCount != 0)
                             {
                                 res += emptySpacesCount;
                             }
-                            res += tile.piece.ToString();
+                            res += tile.Piece.ToString();
                             emptySpacesCount = 0;
                         }
                         else
@@ -811,15 +811,15 @@ namespace ChessSharp
         {
             foreach(Tile tile in Board)
             {
-                if(tile.piece != null)
+                if(tile.Piece != null)
                 {
-                    if (tile.piece.IsWhite)
+                    if (tile.Piece.IsWhite)
                     {
-                        WhitePieces.Add(tile.piece);
+                        WhitePieces.Add(tile.Piece);
                     }
                     else
                     {
-                        BlackPieces.Add(tile.piece);
+                        BlackPieces.Add(tile.Piece);
                     }
                 }
             }
@@ -1013,9 +1013,9 @@ namespace ChessSharp
                 for (int j = 0; j < 8; j++)
                 {
                     Tile tile;
-                    if(GetTile(j, i).piece != null)
+                    if(GetTile(j, i).Piece != null)
                     {
-                        tile = new Tile(Piece.PieceIdentifier(GetTile(j, i).piece.ToString()[0]), j, i);
+                        tile = new Tile(Piece.PieceIdentifier(GetTile(j, i).Piece.ToString()[0]), j, i);
                     }
                     else
                     {
@@ -1135,9 +1135,9 @@ namespace ChessSharp
         {
             foreach (Tile tile in Board)
             {
-                if (tile.piece != null && tile.piece.IsWhite != team) //if enemy piece
+                if (tile.Piece != null && tile.Piece.IsWhite != team) //if enemy piece
                 {
-                    if (tile.piece.IsAttackingTile(this, tile, tilePos))
+                    if (tile.Piece.IsAttackingTile(this, tile, tilePos))
                     {
                         return true;
                     }
@@ -1171,10 +1171,10 @@ namespace ChessSharp
             Tile start = move.Start;
             Tile end = move.End;
 
-            Piece temp = end.piece;
+            Piece temp = end.Piece;
 
-            end.piece = start.piece;
-            start.piece = null;
+            end.Piece = start.Piece;
+            start.Piece = null;
 
             if (isWhite)
             {
@@ -1190,13 +1190,13 @@ namespace ChessSharp
 
                 if (whiteKing.InCheck(this, kingTile))
                 {
-                    start.piece = end.piece;
-                    end.piece = temp;
+                    start.Piece = end.Piece;
+                    end.Piece = temp;
                     return false;
                 }
 
-                start.piece = end.piece;
-                end.piece = temp;
+                start.Piece = end.Piece;
+                end.Piece = temp;
                 return true;
             }
             else
@@ -1213,13 +1213,13 @@ namespace ChessSharp
 
                 if (blackKing.InCheck(this, kingTile))
                 {
-                    start.piece = end.piece;
-                    end.piece = temp;
+                    start.Piece = end.Piece;
+                    end.Piece = temp;
                     return false;
                 }
 
-                start.piece = end.piece;
-                end.piece = temp;
+                start.Piece = end.Piece;
+                end.Piece = temp;
                 return true;
             }
 

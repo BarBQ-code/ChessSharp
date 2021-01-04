@@ -29,7 +29,7 @@ namespace ChessSharp.Pieces
                 if (!IsAttackingTile(board, start, end))
                     return false;
 
-                if (!board.IsLegalMove(move, start.piece.IsWhite))
+                if (!board.IsLegalMove(move, start.Piece.IsWhite))
                     return false;
 
                 return true;
