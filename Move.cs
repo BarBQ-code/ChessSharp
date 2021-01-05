@@ -440,7 +440,7 @@ namespace ChessSharp
         }
         public override int GetHashCode()
         {
-            return HashCode.Combine(Start, End, Player, MoveType, PromotionPiece, additionalMoveType);
+            return base.GetHashCode();
         }
 
         public static bool operator ==(Move m1, Move m2)

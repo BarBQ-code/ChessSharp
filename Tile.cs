@@ -50,7 +50,7 @@ namespace ChessSharp
         }
         public override int GetHashCode()
         {
-            return HashCode.Combine(X, Y, Piece);
+            return base.GetHashCode();
         }
         public static bool operator ==(Tile t1, Tile t2)
         {

@@ -156,7 +156,7 @@ namespace ChessSharp
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(IsWhite, IsKilled, pieceChar);
+            return base.GetHashCode();
         }
 
         public static bool operator ==(Piece p1, Piece p2)
