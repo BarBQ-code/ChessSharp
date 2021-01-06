@@ -503,16 +503,40 @@ namespace ChessSharp
             if (!whiteKing.HasMoved)
             {
                 if (!whiteKing.kingSideCatlingDone)
-                    castlingRights += 'K';
+                {
+                    Rook rightRook = GetTile(7, 0).Piece as Rook;
+                    if(rightRook != null && !rightRook.HasMoved)
+                    {
+                        castlingRights += 'K';
+                    }
+                }
                 if (!whiteKing.queenSideCasltingDone)
-                    castlingRights += 'Q';
+                {
+                    Rook leftRook = GetTile(0, 0).Piece as Rook;
+                    if(leftRook != null && !leftRook.HasMoved)
+                    {
+                        castlingRights += 'Q';
+                    }
+                }
             }
             if (!blackKing.HasMoved)
             {
                 if (!blackKing.kingSideCatlingDone)
-                    castlingRights += 'k';
+                {
+                    Rook rightRook = GetTile(7, 7).Piece as Rook;
+                    if (rightRook != null && !rightRook.HasMoved)
+                    {
+                        castlingRights += 'k';
+                    }
+                }
                 if (!blackKing.queenSideCasltingDone)
-                    castlingRights += 'q';
+                {
+                    Rook leftRook = GetTile(0, 7).Piece as Rook;
+                    if (leftRook != null && !leftRook.HasMoved)
+                    {
+                        castlingRights += 'q';
+                    }
+                }
             }
             
 
