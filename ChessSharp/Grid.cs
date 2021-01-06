@@ -48,7 +48,7 @@ namespace ChessSharp
         /// <summary> Holds all the boards position used for 3 fold repition detection  </summary>
         /// <see cref="Tile"/>
 
-        private List<Tile[,]> AllBoards = new List<Tile[,]>();
+        private readonly List<Tile[,]> AllBoards = new List<Tile[,]>();
 
         #endregion
 
