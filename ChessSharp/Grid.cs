@@ -565,6 +565,8 @@ namespace ChessSharp
 
             res += (MoveCount / 2) + 1 + " ";
 
+            res = res.Trim();
+
             return res;
         }
         /// <summary> 
