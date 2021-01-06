@@ -373,20 +373,28 @@ namespace ChessSharp
                 {
                     end.Piece = start.Piece;
 
+                    if(start.Piece is King)
+                    {
+                        King king = start.Piece as King;
+                        king.HasMoved = true;
+                    }
+                    else if(start.Piece is Rook)
+                    {
+                        Rook rook = start.Piece as Rook;
+                        rook.HasMoved = true;
+                    }
+
                     if (move.MoveType == MoveType.ShortCastles)
                     {
-
                         GetTile(end.X - 1, start.Y).Piece = GetTile(end.X + 1, start.Y).Piece;
                         GetTile(end.X + 1, start.Y).Piece = null;
                         King king = GetTile(start).Piece as King;
-                        king.HasMoved = true;
                     }
                     else if (move.MoveType == MoveType.LongCastles)
                     {
                         GetTile(end.X + 1, start.Y).Piece = GetTile(end.X - 2, start.Y).Piece;
                         GetTile(end.X - 2, start.Y).Piece = null;
                         King king = GetTile(start).Piece as King;
-                        king.HasMoved = true;
                     }
                 }
 
@@ -492,14 +500,21 @@ namespace ChessSharp
 
             string castlingRights = "";
 
-            if (!whiteKing.kingSideCatlingDone)
-                castlingRights += 'K';
-            if (!whiteKing.queenSideCasltingDone)
-                castlingRights += 'Q';
-            if (!blackKing.kingSideCatlingDone)
-                castlingRights += 'k';
-            if (!blackKing.queenSideCasltingDone)
-                castlingRights += 'q';
+            if (!whiteKing.HasMoved)
+            {
+                if (!whiteKing.kingSideCatlingDone)
+                    castlingRights += 'K';
+                if (!whiteKing.queenSideCasltingDone)
+                    castlingRights += 'Q';
+            }
+            if (!blackKing.HasMoved)
+            {
+                if (!blackKing.kingSideCatlingDone)
+                    castlingRights += 'k';
+                if (!blackKing.queenSideCasltingDone)
+                    castlingRights += 'q';
+            }
+            
 
             if (whiteKing.HasMoved && blackKing.HasMoved)
                 castlingRights = "-";
