@@ -174,7 +174,7 @@ namespace ChessSharp
             if (ReferenceEquals(p1, p2))
                 return false;
             if ((object)p1 == null || (object)p2 == null)
-                return false;
+                return true;
 
             return !p1.Equals(p2);
         }

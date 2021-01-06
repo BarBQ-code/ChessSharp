@@ -458,7 +458,7 @@ namespace ChessSharp
             if (ReferenceEquals(m1, m2))
                 return false;
             if ((object)m1 == null || (object)m2 == null)
-                return false;
+                return true;
 
             return !m1.Equals(m2);
         }

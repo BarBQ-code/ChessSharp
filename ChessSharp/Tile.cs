@@ -66,7 +66,7 @@ namespace ChessSharp
             if (ReferenceEquals(t1, t2))
                 return false;
             if ((object)t1 == null || (object)t2 == null)
-                return false;
+                return true;
 
             return !t1.Equals(t2);
         }
