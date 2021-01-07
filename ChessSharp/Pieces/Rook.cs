@@ -84,5 +84,38 @@ namespace ChessSharp.Pieces
            
 
         }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            Rook rook = obj as Rook;
+            return rook.HasMoved == HasMoved && rook.IsWhite == IsWhite;
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public static bool operator ==(Rook r1, Rook r2)
+        {
+            if (ReferenceEquals(r1, r2))
+                return true;
+            if ((object)r1 == null || (object)r2 == null)
+                return false;
+
+            return r1.Equals(r2);
+        }
+        public static bool operator !=(Rook r1, Rook r2)
+        {
+            if (ReferenceEquals(r1, r2))
+                return false;
+            if ((object)r1 == null || (object)r2 == null)
+                return true;
+
+            return !r1.Equals(r2);
+        }
     }
 }

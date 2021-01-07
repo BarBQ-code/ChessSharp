@@ -42,7 +42,7 @@ namespace ChessSharp.Pieces
         /// <returns>True if the move is valid, false if it isn't</returns>
         public override bool CanMove(Grid board, Move move)
         {
-            if(base.CanMove(board, move))
+            if (base.CanMove(board, move))
             {
                 Tile start = move.Start;
                 Tile end = move.End;
@@ -55,11 +55,11 @@ namespace ChessSharp.Pieces
                     if (!board.IsLegalMove(new Move(start, end, board.CurrentPlayer), start.Piece.IsWhite))
                         return false;
 
-                    return true;    
+                    return true;
                 }
-                else if(Grid.Distance(start, end) == castlingDistance && start.Y == end.Y && start.Y == startingRank) // same rank and castling distance
+                else if (Grid.Distance(start, end) == castlingDistance && start.Y == end.Y && start.Y == startingRank) // same rank and castling distance
                 {
-                    if(end.X > start.X) // short castle
+                    if (end.X > start.X) // short castle
                     {
                         if (kingSideCatlingDone)
                             return false;
@@ -133,11 +133,11 @@ namespace ChessSharp.Pieces
             if (!(kingLocation.Piece is King))
                 throw new ArgumentException("Tile provided doesn't contain a king");
 
-            foreach(Tile tile in board.Board)
+            foreach (Tile tile in board.Board)
             {
-                if(tile.Piece != null && tile.Piece.IsWhite != kingLocation.Piece.IsWhite) //if enemy team piece
+                if (tile.Piece != null && tile.Piece.IsWhite != kingLocation.Piece.IsWhite) //if enemy team piece
                 {
-                    if(tile.Piece.IsAttackingTile(board, tile, kingLocation))
+                    if (tile.Piece.IsAttackingTile(board, tile, kingLocation))
                     {
                         return true;
                     }
@@ -164,11 +164,11 @@ namespace ChessSharp.Pieces
             if (!king.InCheck(board, kingLocation))
                 return false;
 
-            if(kingLocation.Piece.IsWhite)
+            if (kingLocation.Piece.IsWhite)
             {
-                foreach(Piece piece in board.WhitePieces)
+                foreach (Piece piece in board.WhitePieces)
                 {
-                    foreach(Tile tile in board.Board)
+                    foreach (Tile tile in board.Board)
                     {
                         if (board.GetTile(piece) != null)
                         {
@@ -180,20 +180,20 @@ namespace ChessSharp.Pieces
                     }
                 }
             }
-            else   
+            else
             {
                 foreach (Piece piece in board.BlackPieces)
                 {
                     foreach (Tile tile in board.Board)
                     {
-                        if(board.GetTile(piece) != null)
+                        if (board.GetTile(piece) != null)
                         {
                             if (piece.CanMove(board, new Move(board.GetTile(piece), tile, board.CurrentPlayer)))
                             {
                                 return false;
                             }
                         }
-                        
+
                     }
                 }
             }
@@ -242,6 +242,40 @@ namespace ChessSharp.Pieces
             return false;
         }
 
-        
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            King king = obj as King;
+            return king.IsWhite == IsWhite
+                   && king.kingSideCatlingDone == kingSideCatlingDone
+                   && king.queenSideCasltingDone == queenSideCasltingDone
+                   && king.startingRank == startingRank;
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public static bool operator ==(King k1, King k2)
+        {
+            if (ReferenceEquals(k1, k2))
+                return true;
+            if ((object)k1 == null || (object)k2 == null)
+                return false;
+
+            return k1.Equals(k2);
+        }
+        public static bool operator !=(King k1, King k2)
+        {
+            if (ReferenceEquals(k1, k2))
+                return false;
+            if ((object)k1 == null || (object)k2 == null)
+                return true;
+
+            return !k1.Equals(k2);
+        }
     }
 }

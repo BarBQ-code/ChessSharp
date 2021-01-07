@@ -186,5 +186,40 @@ namespace ChessSharp.Pieces
             }
             return false;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            Pawn pawn = obj as Pawn;
+            return pawn.CanBeCapturedEnPassant == CanBeCapturedEnPassant
+                   && pawn.startingRank == startingRank
+                   && pawn.IsWhite == IsWhite;
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public static bool operator ==(Pawn p1, Pawn p2)
+        {
+            if (ReferenceEquals(p1, p2))
+                return true;
+            if ((object)p1 == null || (object)p2 == null)
+                return false;
+
+            return p1.Equals(p2);
+        }
+        public static bool operator !=(Pawn p1, Pawn p2)
+        {
+            if (ReferenceEquals(p1, p2))
+                return false;
+            if ((object)p1 == null || (object)p2 == null)
+                return true;
+
+            return !p1.Equals(p2);
+        }
     }
 }
