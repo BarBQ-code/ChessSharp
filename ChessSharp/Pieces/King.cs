@@ -250,6 +250,7 @@ namespace ChessSharp.Pieces
                 return false;
             King king = obj as King;
             return king.IsWhite == IsWhite
+                   && king.HasMoved == HasMoved
                    && king.kingSideCatlingDone == kingSideCatlingDone
                    && king.queenSideCasltingDone == queenSideCasltingDone
                    && king.startingRank == startingRank;
