@@ -364,7 +364,22 @@ namespace ChessSharp
                     Pawn pawn = start.Piece as Pawn;
                     if(Grid.Distance(start, end) == 4) //first move
                     {
-                        pawn.CanBeCapturedEnPassant = true;
+                        Pawn leftPawn = GetTile(end.X - 1, end.Y).Piece as Pawn;
+                        if(leftPawn != null)
+                        {
+                            if (leftPawn.IsWhite != pawn.IsWhite)
+                            {
+                                pawn.CanBeCapturedEnPassant = true;
+                            }
+                        }
+                        Pawn rightPawn = GetTile(end.X + 1, end.Y).Piece as Pawn;
+                        if(rightPawn != null)
+                        {
+                            if(rightPawn.IsWhite != pawn.IsWhite)
+                            {
+                                pawn.CanBeCapturedEnPassant = true;
+                            }
+                        }
                     }
 
                     end.Piece = start.Piece;
@@ -545,50 +560,49 @@ namespace ChessSharp
 
             res += castlingRights + " ";
 
+            static Pawn FindEnPassantPawn(List<Piece> pawns)
+            {
+                Pawn epPawn;
+                foreach (Piece pawn in pawns)
+                {
+                    epPawn = pawn as Pawn;
+                    if (epPawn.CanBeCapturedEnPassant)
+                        return epPawn;
+                }
+                return null;
+            }
+
             //Init enpassant section
             if(CurrentPlayer.IsWhite)
             {
-                Piece bPawn = BlackPieces.Find(piece => piece is Pawn);
-                Pawn epPawn = bPawn as Pawn;
+                List<Piece> pawns = BlackPieces.FindAll(piece => piece is Pawn);
+                Pawn epPawn = FindEnPassantPawn(pawns);
+
                 if (epPawn != null)
                 {
-                    if (epPawn.CanBeCapturedEnPassant)
-                    {
-                        Tile pawnTile = GetTile(epPawn);
-                        string pawnSquare = pawnTile.ToString();
-                        char file = pawnSquare[0];
-                        int rank = int.Parse(pawnSquare[1].ToString()) + 1;
-                        res += file + rank.ToString() + " ";
-                    }
-                    else
-                    {
-                        res += "- ";
-                    }
+                    Tile pawnTile = GetTile(epPawn);
+                    string pawnSquare = pawnTile.ToString();
+                    char file = pawnSquare[0];
+                    int rank = int.Parse(pawnSquare[1].ToString()) + 1;
+                    res += file + rank.ToString() + " ";
                 }
                 else
                 {
                     res += "- ";
                 }
-
             }
             else
             {
-                Piece wPawn = WhitePieces.Find(piece => piece is Pawn);
-                Pawn epPawn = wPawn as Pawn;
+                List<Piece> pawns = WhitePieces.FindAll(piece => piece is Pawn);
+                Pawn epPawn = FindEnPassantPawn(pawns);
+
                 if (epPawn != null)
-                {
-                    if (epPawn.CanBeCapturedEnPassant)
-                    {
-                        Tile pawnTile = GetTile(epPawn);
-                        string pawnSquare = pawnTile.ToString();
-                        char file = pawnSquare[0];
-                        int rank = int.Parse(pawnSquare[1].ToString()) - 1;
-                        res += file + rank.ToString() + " ";
-                    }
-                    else
-                    {
-                        res += "- ";
-                    }
+                { 
+                    Tile pawnTile = GetTile(epPawn);
+                    string pawnSquare = pawnTile.ToString();
+                    char file = pawnSquare[0];
+                    int rank = int.Parse(pawnSquare[1].ToString()) - 1;
+                    res += file + rank.ToString() + " ";    
                 }
                 else
                 {
