@@ -65,7 +65,42 @@ namespace ChessSharp.Tests
             Assert.True(board.GameState == GameState.ACTIVE);
             Assert.True(board.FiftyMoveRuleCount == 0);
             Assert.True((board.MoveCount / 2) + 1 == 1);
+        }
+        [Fact]
+        public void TestFENConstructor()
+        {
+            Grid board = new Grid("5r2/2p2rb1/1pNp4/p2Pp1pk/2P1K3/PP3PP1/5R2/5R2 w - - 1 51");
 
+            Assert.True(wr == board.GetTile(5, 0).Piece);
+            Assert.True(wr == board.GetTile(5, 1).Piece);
+            Assert.True(wp == board.GetTile(0, 2).Piece);
+            Assert.True(wp == board.GetTile(1, 2).Piece);
+            Assert.True(wp == board.GetTile(5, 2).Piece);
+            Assert.True(wp == board.GetTile(6, 2).Piece);
+            Assert.True(wp == board.GetTile(2, 3).Piece);
+            Assert.True(new King(true) { HasMoved = true, kingSideCatlingDone = true, queenSideCasltingDone = true } == board.GetTile(4, 3).Piece);
+            Assert.True(bp == board.GetTile(0, 4).Piece);
+            Assert.True(wp == board.GetTile(3, 4).Piece);
+            Assert.True(bp == board.GetTile(4, 4).Piece);
+            Assert.True(bp == board.GetTile(6, 4).Piece);
+            Assert.True(new King(false) { HasMoved = true, kingSideCatlingDone = true, queenSideCasltingDone = true } == board.GetTile(7, 4).Piece);
+            Assert.True(bp == board.GetTile(1, 5).Piece);
+            Assert.True(wn == board.GetTile(2, 5).Piece);
+            Assert.True(bp == board.GetTile(3, 5).Piece);
+            Assert.True(bp == board.GetTile(2, 6).Piece);
+            Assert.True(br == board.GetTile(5, 6).Piece);
+            Assert.True(bb == board.GetTile(6, 6).Piece);
+            Assert.True(br == board.GetTile(5, 7).Piece);
+
+            Assert.True(board.WhitePieces.Count == 10);
+            Assert.True(board.KilledWhitePieces.Count == 6);
+            Assert.True(board.BlackPieces.Count == 10);
+            Assert.True(board.KilledBlackPieces.Count == 6);
+            Assert.True(board.CurrentPlayer.IsWhite);
+            Assert.True(board.GameState == GameState.ACTIVE);
+            Assert.True(board.FiftyMoveRuleCount == 1);
+            Assert.True((board.MoveCount / 2) + 1 == 51);
+            Assert.True(board.FEN() == "5r2/2p2rb1/1pNp4/p2Pp1pk/2P1K3/PP3PP1/5R2/5R2 w - - 1 51");
         }
     }
 }
