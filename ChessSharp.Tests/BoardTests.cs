@@ -102,5 +102,10 @@ namespace ChessSharp.Tests
             Assert.True((board.MoveCount / 2) + 1 == 51);
             Assert.True(board.FEN() == "5r2/2p2rb1/1pNp4/p2Pp1pk/2P1K3/PP3PP1/5R2/5R2 w - - 1 51");
         }
+        [Fact]
+        public void TestMakeMove()
+        {
+
+        }
     }
 }
