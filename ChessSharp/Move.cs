@@ -79,7 +79,7 @@ namespace ChessSharp
             Piece promotionPiece = null;
             if(move.PromotionPiece != null)
             {
-                promotionPiece = Piece.PieceIdentifier(promotionPiece.ToString()[0]);
+                promotionPiece = Piece.PieceIdentifier(move.PromotionPiece.ToString()[0]);
             }
 
             Start = start;
