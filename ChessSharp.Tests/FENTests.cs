@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ChessSharp;
+using ChessSharp.Exceptions;
 using Xunit;
 
 namespace ChessSharp.Tests
@@ -163,5 +164,49 @@ namespace ChessSharp.Tests
 
             Assert.Equal(expected, actual);
         }
+        [Fact]
+        public void FENTestEnPassant()
+        {
+            string expected = "rnbqkbnr/1pp1pppp/p7/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 3";
+
+            Grid board = new Grid();
+            board.MakeMove(Move.FromUCI(board, "e2e4"));
+            board.MakeMove(Move.FromUCI(board, "a7a6"));
+            board.MakeMove(Move.FromUCI(board, "e4e5"));
+            board.MakeMove(Move.FromUCI(board, "d7d5"));
+            string actual = board.FEN();
+
+            Assert.Equal(expected, actual);
+        }
+        [Fact]
+        public void FENTestFENConstructor()
+        {
+            string expected = "5r2/2p2rb1/1pNp4/p2Pp1pk/2P1K3/PP3PP1/5R2/5R2 w - - 1 51";
+
+            Grid board = new Grid("5r2/2p2rb1/1pNp4/p2Pp1pk/2P1K3/PP3PP1/5R2/5R2 w - - 1 51");
+            string actual = board.FEN();
+
+            Assert.Equal(expected, actual);
+        }
+        [Fact]
+        public void TestInvlaidFenArguments()
+        {
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid(""); }); //must have six arguments
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("1 2 3 4 5"); }); //must have six arguments
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqkbnr/ppppLppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); }); //Invalid char in the middle of the fen
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR wb KQkq - 0 1"); }); //Invalid player turn argument
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR ; KQkq - 0 1"); }); //Invalid player turn arguemnt
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w LKQkq - 0 1"); }); //To many chars in the castling rights argument
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Lkq - 0 1"); }); // Ilegal char in the castling rights argument
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQQBNR w KQkq - 0 1"); }); //White king missing 
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); }); //Black king missing
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq abc 0 1");  }); //Enpassant argument must be 2 chars long or "-"
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq e2 0 1"); }); // column must be either x3 or x6
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq e3 0 1"); }); //It will throw invalid enpassant because there is no pawn in the right place
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - -1 1"); }); //Fifty move rule must be positive int
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - a 1"); }); //Fifty move rule arg must be an int
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0"); }); //Move count must be greater than 0
+            Assert.Throws<InvalidFENBoardException>(() => { Grid board = new Grid("rnbqqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 a"); }); //Move count must be an int
+        }   
     }
 }
