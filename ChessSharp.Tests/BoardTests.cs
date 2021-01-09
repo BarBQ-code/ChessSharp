@@ -214,5 +214,18 @@ namespace ChessSharp.Tests
              * I'll implement it soon
             */
         }
+        [Fact] 
+        public void TestIsKingInCheckMate()
+        {
+            //White king checkmate
+            Grid board = new Grid("3k4/8/8/8/8/8/r7/4K2r w - - 0 1");
+            Assert.True(board.IsKingInCheckMate(true));
+
+            //Black king checkmate
+            board = new Grid("R2k4/7R/8/8/8/8/8/4K3 w - - 0 1");
+            Assert.True(board.IsKingInCheckMate(false));
+
+            //I'll add more complex mates patterns in the king class, for now it's enough here
+        }
     }
 }
