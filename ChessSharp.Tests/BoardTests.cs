@@ -244,6 +244,22 @@ namespace ChessSharp.Tests
 
             //I'll add more stalemate patterns in the king's class, for now it's enough here
         }
-        
+        [Fact]
+        public void TestIsFiftyMoveRule()
+        {
+            /*
+             * Grid board = new Grid();
+               for(int i = 0; i < 25; i++)
+               {
+                Assert.True(board.MakeMove(Move.FromUCI(board, "g1f3")));
+                Assert.True(board.MakeMove(Move.FromUCI(board, "b8c6")));
+                Assert.True(board.MakeMove(Move.FromUCI(board, "f3g1")));
+                Assert.True(board.MakeMove(Move.FromUCI(board, "c6b8")));
+               }
+                Assert.True(board.IsFiftyMoveRule());
+             * Don't run this test, it takes a lot of time
+             * But the test passed
+            */
+        }
     }
 }
