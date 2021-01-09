@@ -227,5 +227,23 @@ namespace ChessSharp.Tests
 
             //I'll add more complex mates patterns in the king class, for now it's enough here
         }
+        [Fact]
+        public void TestIsStaleMate()
+        {
+            //Test 2 kings stalemate
+            Grid board = new Grid("3k4/8/8/8/8/8/8/4K3 w - - 0 1");
+            Assert.True(board.IsStaleMate());
+
+            //Test simple black king in stalemate
+            board = new Grid("3k4/8/2Q1K3/8/8/8/8/8 b - - 0 1");
+            Assert.True(board.IsStaleMate());
+
+            //Test simple white king is stalemate
+            board = new Grid("3K4/8/2q1k3/8/8/8/8/8 w - - 0 1");
+            Assert.True(board.IsStaleMate());
+
+            //I'll add more stalemate patterns in the king's class, for now it's enough here
+        }
+        
     }
 }
