@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ChessSharp;
 using ChessSharp.Exceptions;
@@ -170,6 +171,38 @@ namespace ChessSharp.Tests
             Assert.Throws<ArgumentNullException>(() => { board.MakeMove(null); });
             Assert.Throws<InvalidMoveException>(() => { board.MakeMove(Move.FromUCI(board, "e4e2")); }); //Source tile has no piece
             Assert.Throws<InvalidMoveException>(() => { board.MakeMove(Move.FromUCI(board, "e1e2")); }); // Source piece and dest piece are of the same team
+        }
+        [Fact]
+        public void TestLegalMoves()
+        {
+            Grid board = new Grid();
+            List<Move> legalMoves = board.LegalMoves();
+            List<Move> moves = new List<Move>();
+
+            moves.Add(Move.FromUCI(board, "b1a3"));
+            moves.Add(Move.FromUCI(board, "b1c3"));
+            moves.Add(Move.FromUCI(board, "g1f3"));
+            moves.Add(Move.FromUCI(board, "g1h3"));
+            moves.Add(Move.FromUCI(board, "a2a3"));
+            moves.Add(Move.FromUCI(board, "a2a4"));
+            moves.Add(Move.FromUCI(board, "b2b3"));
+            moves.Add(Move.FromUCI(board, "b2b4"));
+            moves.Add(Move.FromUCI(board, "c2c3"));
+            moves.Add(Move.FromUCI(board, "c2c4"));
+            moves.Add(Move.FromUCI(board, "d2d3"));
+            moves.Add(Move.FromUCI(board, "d2d4"));
+            moves.Add(Move.FromUCI(board, "e2e3"));
+            moves.Add(Move.FromUCI(board, "e2e4"));
+            moves.Add(Move.FromUCI(board, "f2f3"));
+            moves.Add(Move.FromUCI(board, "f2f4"));
+            moves.Add(Move.FromUCI(board, "g2g3"));
+            moves.Add(Move.FromUCI(board, "g2g4"));
+            moves.Add(Move.FromUCI(board, "h2h3"));
+            moves.Add(Move.FromUCI(board, "h2h4"));
+
+            Assert.True(legalMoves.SequenceEqual(moves));
+
+            //I wiil check every piece by itself, this is good enough for the board check
         }
     }
 }
