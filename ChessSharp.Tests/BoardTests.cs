@@ -204,5 +204,15 @@ namespace ChessSharp.Tests
 
             //I wiil check every piece by itself, this is good enough for the board check
         }
+        [Fact]
+        public void TestPop()
+        {
+            /*
+             * The pop function works except for the fifty move rule
+             * To fix this I need to fix the way I copy the board
+             * Right now I only copy the board (the array) and not his properties, which is bad
+             * I'll implement it soon
+            */
+        }
     }
 }
