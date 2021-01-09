@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ChessSharp;
+using ChessSharp.Exceptions;
 using ChessSharp.Pieces;
 using Xunit;
 
@@ -64,7 +65,7 @@ namespace ChessSharp.Tests
             Assert.True(board.CurrentPlayer.IsWhite);
             Assert.True(board.GameState == GameState.ACTIVE);
             Assert.True(board.FiftyMoveRuleCount == 0);
-            Assert.True((board.MoveCount / 2) + 1 == 1);
+            Assert.True(board.MoveCount == 1);
         }
         [Fact]
         public void TestFENConstructor()
@@ -99,13 +100,76 @@ namespace ChessSharp.Tests
             Assert.True(board.CurrentPlayer.IsWhite);
             Assert.True(board.GameState == GameState.ACTIVE);
             Assert.True(board.FiftyMoveRuleCount == 1);
-            Assert.True((board.MoveCount / 2) + 1 == 51);
+            Assert.True(board.MoveCount == 51);
             Assert.True(board.FEN() == "5r2/2p2rb1/1pNp4/p2Pp1pk/2P1K3/PP3PP1/5R2/5R2 w - - 1 51");
         }
         [Fact]
         public void TestMakeMove()
         {
+            Grid board = new Grid();
 
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e2e4")));
+            Assert.True(board.FEN() == "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1");
+
+            //test for illegal move
+            board = new Grid();
+            Assert.False(board.MakeMove(Move.FromUCI(board, "g1g3")));
+
+            //test promotion
+            board = new Grid("4k3/7P/8/8/8/8/8/4K3 w - - 0 1");
+            Assert.True(board.MakeMove(Move.FromUCI(board, "h7h8", new Queen(true))));
+            Assert.True(board.FEN() == "4k2Q/8/8/8/8/8/8/4K3 b - - 0 1");
+
+            //test enpassant 
+            board = new Grid("rnbqkbnr/ppp1ppp1/7p/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 3");
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e5d6")));
+            Assert.True(board.FEN() == "rnbqkbnr/ppp1ppp1/3P3p/8/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 3");
+
+            //test for detectiong if pawn can be captured enpassant
+            board = new Grid();
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e2e4")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "h7h6")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e4e5")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "d7d5")));
+            Pawn pawn = board.GetTile(3, 4).Piece as Pawn;
+            Assert.True(pawn.CanBeCapturedEnPassant);
+
+            //test if king move is detected
+            board = new Grid();
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e2e3")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e7e5")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e1e2")));
+            King king = board.GetTile(4, 1).Piece as King;
+            Assert.True(king.HasMoved);
+
+            //test if rook move is detected
+            board = new Grid();
+            Assert.True(board.MakeMove(Move.FromUCI(board, "h2h3")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e7e5")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "h1h2")));
+            Rook rook = board.GetTile(7, 1).Piece as Rook;
+            Assert.True(rook.HasMoved);
+
+            //test for short castles
+            board = new Grid();
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e2e4")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e7e5")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "g1f3")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "b8c6")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "f1c4")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "g8f6")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e1g1")));
+            Assert.True(board.FEN() == "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 b kq - 5 4");
+
+            //test for long castles
+            board = new Grid("rnbqk2r/pppp1ppp/4pn2/2b5/4PB2/2NP4/PPP1QPPP/R3KBNR w KQkq - 0 1");
+            Assert.True(board.MakeMove(Move.FromUCI(board, "e1c1")));
+            Assert.True(board.FEN() == "rnbqk2r/pppp1ppp/4pn2/2b5/4PB2/2NP4/PPP1QPPP/2KR1BNR b kq - 1 1");
+
+            board = new Grid();
+            Assert.Throws<ArgumentNullException>(() => { board.MakeMove(null); });
+            Assert.Throws<InvalidMoveException>(() => { board.MakeMove(Move.FromUCI(board, "e4e2")); }); //Source tile has no piece
+            Assert.Throws<InvalidMoveException>(() => { board.MakeMove(Move.FromUCI(board, "e1e2")); }); // Source piece and dest piece are of the same team
         }
     }
 }
