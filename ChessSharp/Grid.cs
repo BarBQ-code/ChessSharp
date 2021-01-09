@@ -751,6 +751,10 @@ namespace ChessSharp
         /// </exception>
         public bool IsStaleMate()
         {
+            if (WhitePieces.Count == 1 && WhitePieces[0] is King
+                && BlackPieces.Count == 1 && BlackPieces[0] is King)
+                return true;
+
             if(CurrentPlayer.IsWhite)
             {
                 Piece wKing = WhitePieces.Find(piece => piece is King);
