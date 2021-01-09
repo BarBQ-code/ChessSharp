@@ -64,9 +64,12 @@ namespace ChessSharp.Pieces
                         if (kingSideCatlingDone)
                             return false;
 
-                        Rook rook = board.GetTile(end.X + 1, end.Y).Piece as Rook;
                         King king = start.Piece as King;
 
+                        if (king.HasMoved)
+                            return false;
+
+                        Rook rook = board.GetTile(end.X + 1, end.Y).Piece as Rook;
 
                         if (rook == null || king == null)
                         {
@@ -94,8 +97,12 @@ namespace ChessSharp.Pieces
                         if (queenSideCasltingDone)
                             return false;
 
-                        Rook rook = board.GetTile(end.X - 2, end.Y).Piece as Rook;
                         King king = start.Piece as King;
+
+                        if (king.HasMoved)
+                            return false;
+
+                        Rook rook = board.GetTile(end.X - 2, end.Y).Piece as Rook;
 
                         if (rook == null || king == null)
                             return false;
@@ -103,7 +110,7 @@ namespace ChessSharp.Pieces
                         if (king.InCheck(board, start))
                             return false;
 
-                        if (rook.HasMoved || king.HasMoved)
+                        if (rook.HasMoved)
                             return false;
 
                         var tiles = board.GetTilesInRow(start, end);
