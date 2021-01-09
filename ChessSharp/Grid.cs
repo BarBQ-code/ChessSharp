@@ -455,7 +455,6 @@ namespace ChessSharp
                         moves.AddRange(tile.Piece.GetAllMoves(this, tile));
                     }
                 }
-                
             }
 
             return moves;
@@ -633,7 +632,8 @@ namespace ChessSharp
             Move move = MoveHistory.Last();
             GetTile(move.Start).Piece = move.Start.Piece;
             GetTile(move.End).Piece = move.End.Piece;
-            MoveCount--;
+            if(!move.Player.IsWhite)
+                MoveCount--;
         }
         /// <summary>Returns the tile in the x and y position of the board</summary>
         /// <param name="x">X positon on board</param>
