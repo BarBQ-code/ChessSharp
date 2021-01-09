@@ -189,22 +189,25 @@ namespace ChessSharp
             {
                 if (Grid.Distance(start, end) == 4 && start.Y == end.Y)
                 {
-                    if (end.X > start.X)
+                    if(start.Piece.CanMove(board, new Move(start, end, board.CurrentPlayer)))
                     {
-                        Rook rook = board.GetTile(end.X + 1, end.Y).Piece as Rook;
-                        if (rook != null)
+                        if (end.X > start.X)
                         {
-                            if (!king.HasMoved && !rook.HasMoved)
-                                return MoveType.ShortCastles;
+                            Rook rook = board.GetTile(end.X + 1, end.Y).Piece as Rook;
+                            if (rook != null)
+                            {
+                                if (!king.HasMoved && !rook.HasMoved)
+                                    return MoveType.ShortCastles;
+                            }
                         }
-                    }
-                    else if (start.X > end.X)
-                    {
-                        Rook rook = board.GetTile(end.X - 2, end.Y).Piece as Rook;
-                        if (rook != null)
+                        else if (start.X > end.X)
                         {
-                            if (!king.HasMoved && !rook.HasMoved)
-                                return MoveType.LongCastles;
+                            Rook rook = board.GetTile(end.X - 2, end.Y).Piece as Rook;
+                            if (rook != null)
+                            {
+                                if (!king.HasMoved && !rook.HasMoved)
+                                    return MoveType.LongCastles;
+                            }
                         }
                     }
                 }
