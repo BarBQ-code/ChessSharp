@@ -41,7 +41,7 @@ namespace ChessSharp
         /// </example>
         public int FiftyMoveRuleCount { get; private set; } = 0;
         /// <summary>Gets the move count (need to be divisible by two) </summary>
-        public int MoveCount { get; private set; } = 0;
+        public int MoveCount { get; private set; } = 1;
         /// <summary> Holds the information of all the moves made </summary>
         /// <see cref="Move"/>
         public Stack<Move> MoveHistory { get; private set; } = new Stack<Move>();
@@ -244,7 +244,7 @@ namespace ChessSharp
             if(isInt)
             {
                 if (moveCount > 0)
-                    MoveCount = (moveCount * 2) - 1;
+                    MoveCount = moveCount;
                 else
                     throw new InvalidFENBoardException("Move count argument must be greater than 0");
             }
@@ -421,10 +421,13 @@ namespace ChessSharp
                 {
                     FiftyMoveRuleCount++;
                 }
+                if(!CurrentPlayer.IsWhite)
+                {
+                    MoveCount++;
+                }
 
                 start.Piece = null;
                 CurrentPlayer.IsWhite = !CurrentPlayer.IsWhite;
-                MoveCount++;
                 MoveHistory.Push(temp);
                 AllBoards.Add(CreateCopyOfBoard());
                 ResetEnPassant();
@@ -616,7 +619,7 @@ namespace ChessSharp
 
             //Init MoveCount
 
-            res += (MoveCount / 2) + 1 + " ";
+            res += MoveCount + " ";
 
             res = res.Trim();
 
