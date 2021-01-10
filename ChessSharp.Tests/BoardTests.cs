@@ -295,6 +295,7 @@ namespace ChessSharp.Tests
             Assert.True(board.GetTilesInRow(board.GetTile(0, 0), board.GetTile(0, 0)).Count == 0);
             Assert.True(board.GetTilesInRow(board.GetTile(0, 0), board.GetTile(1, 0)).Count == 0);
             Assert.True(board.GetTilesInRow(board.GetTile(1, 0), board.GetTile(0, 0)).Count == 0);
+            Assert.True(board.GetTilesInRow(board.GetTile(4, 0), board.GetTile(4, 0)).Count == 0);
 
             //Check for the first rank
             List<Tile> firstRankTiles = new List<Tile>();
@@ -308,6 +309,30 @@ namespace ChessSharp.Tests
 
             List<Tile> tiles = board.GetTilesInRow(board.GetTile(0, 0), board.GetTile(7, 0));
             Assert.True(firstRankTiles.SequenceEqual(tiles));
+        }
+        [Fact]
+        public void TestGetTilesInCol()
+        {
+            Grid board = new Grid();
+            
+            //Check for empty lists
+            Assert.True(board.GetTilesInCol(board.GetTile(0, 0), board.GetTile(0, 0)).Count == 0);
+            Assert.True(board.GetTilesInCol(board.GetTile(0, 1), board.GetTile(0, 0)).Count == 0);
+            Assert.True(board.GetTilesInCol(board.GetTile(0, 0), board.GetTile(0, 1)).Count == 0);
+            Assert.True(board.GetTilesInCol(board.GetTile(0, 5), board.GetTile(0, 5)).Count == 0);
+
+            //Check for the first file
+            List<Tile> firstFileTiles = new List<Tile>();
+
+            firstFileTiles.Add(board.GetTile(0, 1));
+            firstFileTiles.Add(board.GetTile(0, 2));
+            firstFileTiles.Add(board.GetTile(0, 3));
+            firstFileTiles.Add(board.GetTile(0, 4));
+            firstFileTiles.Add(board.GetTile(0, 5));
+            firstFileTiles.Add(board.GetTile(0, 6));
+
+            List<Tile> tiles = board.GetTilesInCol(board.GetTile(0, 0), board.GetTile(0, 7));
+            Assert.True(firstFileTiles.SequenceEqual(tiles));
         }
     }
 }
