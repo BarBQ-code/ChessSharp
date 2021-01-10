@@ -261,5 +261,30 @@ namespace ChessSharp.Tests
              * But the test passed
             */
         }
+        [Fact]
+        public void TestThreeFoldRepition()
+        {
+            /*
+             * Grid board = new Grid();
+
+            Assert.True(board.MakeMove(Move.FromUCI(board, "g1f3")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "b8c6")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "f3g1")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "c6b8")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "g1f3")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "b8c6")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "f3g1")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "c6b8")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "g1f3")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "b8c6")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "f3g1")));
+            Assert.True(board.MakeMove(Move.FromUCI(board, "c6b8")));
+
+            Assert.True(board.CanClaimThreeFoldRepitition());
+             * This test also takes a bit of time
+             * The test passed
+             */
+
+        }
     }
 }
