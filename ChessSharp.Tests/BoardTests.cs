@@ -334,5 +334,41 @@ namespace ChessSharp.Tests
             List<Tile> tiles = board.GetTilesInCol(board.GetTile(0, 0), board.GetTile(0, 7));
             Assert.True(firstFileTiles.SequenceEqual(tiles));
         }
+        [Fact]
+        public void TestGetDiagonalTiles()
+        {
+            Grid board = new Grid();
+
+            //Check for empty lists
+            Assert.True(board.GetDiagonalTiles(board.GetTile(0, 0), board.GetTile(0, 0)).Count == 0);
+            Assert.True(board.GetDiagonalTiles(board.GetTile(0, 0), board.GetTile(0, 1)).Count == 0);
+            Assert.True(board.GetDiagonalTiles(board.GetTile(0, 1), board.GetTile(0, 0)).Count == 0);
+
+            //Check the left to right diagonal
+            List<Tile> leftToRightDiagonalTiles = new List<Tile>();
+
+            leftToRightDiagonalTiles.Add(board.GetTile(1, 1));
+            leftToRightDiagonalTiles.Add(board.GetTile(2, 2));
+            leftToRightDiagonalTiles.Add(board.GetTile(3, 3));
+            leftToRightDiagonalTiles.Add(board.GetTile(4, 4));
+            leftToRightDiagonalTiles.Add(board.GetTile(5, 5));
+            leftToRightDiagonalTiles.Add(board.GetTile(6, 6));
+
+            List<Tile> tiles = board.GetDiagonalTiles(board.GetTile(0, 0), board.GetTile(7, 7));
+            Assert.True(leftToRightDiagonalTiles.SequenceEqual(tiles));
+
+            //Check right to left diagonal
+            List<Tile> rightToLeftDiagonalTiles = new List<Tile>();
+
+            rightToLeftDiagonalTiles.Add(board.GetTile(1, 6));
+            rightToLeftDiagonalTiles.Add(board.GetTile(2, 5));
+            rightToLeftDiagonalTiles.Add(board.GetTile(3, 4));
+            rightToLeftDiagonalTiles.Add(board.GetTile(4, 3));
+            rightToLeftDiagonalTiles.Add(board.GetTile(5, 2));
+            rightToLeftDiagonalTiles.Add(board.GetTile(6, 1));
+
+            tiles = board.GetDiagonalTiles(board.GetTile(7, 0), board.GetTile(0, 7));
+            Assert.True(rightToLeftDiagonalTiles.SequenceEqual(tiles));
+        }
     }
 }
