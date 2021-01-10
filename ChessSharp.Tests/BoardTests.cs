@@ -286,5 +286,28 @@ namespace ChessSharp.Tests
              */
 
         }
+        [Fact]
+        public void TestGetTilesInRow()
+        {
+            Grid board = new Grid();
+
+            //Check for empty lists
+            Assert.True(board.GetTilesInRow(board.GetTile(0, 0), board.GetTile(0, 0)).Count == 0);
+            Assert.True(board.GetTilesInRow(board.GetTile(0, 0), board.GetTile(1, 0)).Count == 0);
+            Assert.True(board.GetTilesInRow(board.GetTile(1, 0), board.GetTile(0, 0)).Count == 0);
+
+            //Check for the first rank
+            List<Tile> firstRankTiles = new List<Tile>();
+
+            firstRankTiles.Add(board.GetTile(1, 0));
+            firstRankTiles.Add(board.GetTile(2, 0));
+            firstRankTiles.Add(board.GetTile(3, 0));
+            firstRankTiles.Add(board.GetTile(4, 0));
+            firstRankTiles.Add(board.GetTile(5, 0));
+            firstRankTiles.Add(board.GetTile(6, 0));
+
+            List<Tile> tiles = board.GetTilesInRow(board.GetTile(0, 0), board.GetTile(7, 0));
+            Assert.True(firstRankTiles.SequenceEqual(tiles));
+        }
     }
 }
