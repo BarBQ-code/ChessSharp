@@ -405,13 +405,11 @@ namespace ChessSharp
                     {
                         GetTile(end.X - 1, start.Y).Piece = GetTile(end.X + 1, start.Y).Piece;
                         GetTile(end.X + 1, start.Y).Piece = null;
-                        King king = GetTile(start).Piece as King;
                     }
                     else if (move.MoveType == MoveType.LongCastles)
                     {
                         GetTile(end.X + 1, start.Y).Piece = GetTile(end.X - 2, start.Y).Piece;
                         GetTile(end.X - 2, start.Y).Piece = null;
-                        King king = GetTile(start).Piece as King;
                     }
                 }
 
@@ -825,7 +823,7 @@ namespace ChessSharp
                 count = 0;
             }
             //Copy of fen to make equality easier
-            string FEN(Tile[,] board)
+            static string FEN(Tile[,] board)
             {
                 string res = "";
                 int emptySpacesCount = 0;
