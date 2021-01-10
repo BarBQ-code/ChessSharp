@@ -370,5 +370,18 @@ namespace ChessSharp.Tests
             tiles = board.GetDiagonalTiles(board.GetTile(7, 0), board.GetTile(0, 7));
             Assert.True(rightToLeftDiagonalTiles.SequenceEqual(tiles));
         }
+        [Fact]
+        public void TestIsLegalMove()
+        {
+            Grid board = new Grid("r1k5/8/8/8/8/1p6/P7/K7 w - - 0 1");
+
+            //Check if move is legal (in a pin sense) for white
+            Assert.False(board.IsLegalMove(Move.FromUCI(board, "a2b3"), true));
+
+            //Check the same position for black
+            board = new Grid("k7/p7/1P6/8/8/8/8/R2K4 b - - 0 1");
+            Assert.False(board.IsLegalMove(Move.FromUCI(board, "a7b6"), false));
+
+        }
     }
 }
