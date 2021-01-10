@@ -177,28 +177,29 @@ namespace ChessSharp.Tests
         {
             Grid board = new Grid();
             List<Move> legalMoves = board.LegalMoves();
-            List<Move> moves = new List<Move>();
-
-            moves.Add(Move.FromUCI(board, "b1a3"));
-            moves.Add(Move.FromUCI(board, "b1c3"));
-            moves.Add(Move.FromUCI(board, "g1f3"));
-            moves.Add(Move.FromUCI(board, "g1h3"));
-            moves.Add(Move.FromUCI(board, "a2a3"));
-            moves.Add(Move.FromUCI(board, "a2a4"));
-            moves.Add(Move.FromUCI(board, "b2b3"));
-            moves.Add(Move.FromUCI(board, "b2b4"));
-            moves.Add(Move.FromUCI(board, "c2c3"));
-            moves.Add(Move.FromUCI(board, "c2c4"));
-            moves.Add(Move.FromUCI(board, "d2d3"));
-            moves.Add(Move.FromUCI(board, "d2d4"));
-            moves.Add(Move.FromUCI(board, "e2e3"));
-            moves.Add(Move.FromUCI(board, "e2e4"));
-            moves.Add(Move.FromUCI(board, "f2f3"));
-            moves.Add(Move.FromUCI(board, "f2f4"));
-            moves.Add(Move.FromUCI(board, "g2g3"));
-            moves.Add(Move.FromUCI(board, "g2g4"));
-            moves.Add(Move.FromUCI(board, "h2h3"));
-            moves.Add(Move.FromUCI(board, "h2h4"));
+            List<Move> moves = new List<Move>
+            {
+                Move.FromUCI(board, "b1a3"),
+                Move.FromUCI(board, "b1c3"),
+                Move.FromUCI(board, "g1f3"),
+                Move.FromUCI(board, "g1h3"),
+                Move.FromUCI(board, "a2a3"),
+                Move.FromUCI(board, "a2a4"),
+                Move.FromUCI(board, "b2b3"),
+                Move.FromUCI(board, "b2b4"),
+                Move.FromUCI(board, "c2c3"),
+                Move.FromUCI(board, "c2c4"),
+                Move.FromUCI(board, "d2d3"),
+                Move.FromUCI(board, "d2d4"),
+                Move.FromUCI(board, "e2e3"),
+                Move.FromUCI(board, "e2e4"),
+                Move.FromUCI(board, "f2f3"),
+                Move.FromUCI(board, "f2f4"),
+                Move.FromUCI(board, "g2g3"),
+                Move.FromUCI(board, "g2g4"),
+                Move.FromUCI(board, "h2h3"),
+                Move.FromUCI(board, "h2h4")
+            };
 
             Assert.True(legalMoves.SequenceEqual(moves));
 
@@ -298,14 +299,15 @@ namespace ChessSharp.Tests
             Assert.True(board.GetTilesInRow(board.GetTile(4, 0), board.GetTile(4, 0)).Count == 0);
 
             //Check for the first rank
-            List<Tile> firstRankTiles = new List<Tile>();
-
-            firstRankTiles.Add(board.GetTile(1, 0));
-            firstRankTiles.Add(board.GetTile(2, 0));
-            firstRankTiles.Add(board.GetTile(3, 0));
-            firstRankTiles.Add(board.GetTile(4, 0));
-            firstRankTiles.Add(board.GetTile(5, 0));
-            firstRankTiles.Add(board.GetTile(6, 0));
+            List<Tile> firstRankTiles = new List<Tile>
+            {
+                board.GetTile(1, 0),
+                board.GetTile(2, 0),
+                board.GetTile(3, 0),
+                board.GetTile(4, 0),
+                board.GetTile(5, 0),
+                board.GetTile(6, 0)
+            };
 
             List<Tile> tiles = board.GetTilesInRow(board.GetTile(0, 0), board.GetTile(7, 0));
             Assert.True(firstRankTiles.SequenceEqual(tiles));
@@ -322,14 +324,15 @@ namespace ChessSharp.Tests
             Assert.True(board.GetTilesInCol(board.GetTile(0, 5), board.GetTile(0, 5)).Count == 0);
 
             //Check for the first file
-            List<Tile> firstFileTiles = new List<Tile>();
-
-            firstFileTiles.Add(board.GetTile(0, 1));
-            firstFileTiles.Add(board.GetTile(0, 2));
-            firstFileTiles.Add(board.GetTile(0, 3));
-            firstFileTiles.Add(board.GetTile(0, 4));
-            firstFileTiles.Add(board.GetTile(0, 5));
-            firstFileTiles.Add(board.GetTile(0, 6));
+            List<Tile> firstFileTiles = new List<Tile>
+            {
+                board.GetTile(0, 1),
+                board.GetTile(0, 2),
+                board.GetTile(0, 3),
+                board.GetTile(0, 4),
+                board.GetTile(0, 5),
+                board.GetTile(0, 6)
+            };
 
             List<Tile> tiles = board.GetTilesInCol(board.GetTile(0, 0), board.GetTile(0, 7));
             Assert.True(firstFileTiles.SequenceEqual(tiles));
@@ -345,27 +348,29 @@ namespace ChessSharp.Tests
             Assert.True(board.GetDiagonalTiles(board.GetTile(0, 1), board.GetTile(0, 0)).Count == 0);
 
             //Check the left to right diagonal
-            List<Tile> leftToRightDiagonalTiles = new List<Tile>();
-
-            leftToRightDiagonalTiles.Add(board.GetTile(1, 1));
-            leftToRightDiagonalTiles.Add(board.GetTile(2, 2));
-            leftToRightDiagonalTiles.Add(board.GetTile(3, 3));
-            leftToRightDiagonalTiles.Add(board.GetTile(4, 4));
-            leftToRightDiagonalTiles.Add(board.GetTile(5, 5));
-            leftToRightDiagonalTiles.Add(board.GetTile(6, 6));
+            List<Tile> leftToRightDiagonalTiles = new List<Tile>
+            {
+                board.GetTile(1, 1),
+                board.GetTile(2, 2),
+                board.GetTile(3, 3),
+                board.GetTile(4, 4),
+                board.GetTile(5, 5),
+                board.GetTile(6, 6)
+            };
 
             List<Tile> tiles = board.GetDiagonalTiles(board.GetTile(0, 0), board.GetTile(7, 7));
             Assert.True(leftToRightDiagonalTiles.SequenceEqual(tiles));
 
             //Check right to left diagonal
-            List<Tile> rightToLeftDiagonalTiles = new List<Tile>();
-
-            rightToLeftDiagonalTiles.Add(board.GetTile(1, 6));
-            rightToLeftDiagonalTiles.Add(board.GetTile(2, 5));
-            rightToLeftDiagonalTiles.Add(board.GetTile(3, 4));
-            rightToLeftDiagonalTiles.Add(board.GetTile(4, 3));
-            rightToLeftDiagonalTiles.Add(board.GetTile(5, 2));
-            rightToLeftDiagonalTiles.Add(board.GetTile(6, 1));
+            List<Tile> rightToLeftDiagonalTiles = new List<Tile>
+            {
+                board.GetTile(1, 6),
+                board.GetTile(2, 5),
+                board.GetTile(3, 4),
+                board.GetTile(4, 3),
+                board.GetTile(5, 2),
+                board.GetTile(6, 1)
+            };
 
             tiles = board.GetDiagonalTiles(board.GetTile(7, 0), board.GetTile(0, 7));
             Assert.True(rightToLeftDiagonalTiles.SequenceEqual(tiles));
