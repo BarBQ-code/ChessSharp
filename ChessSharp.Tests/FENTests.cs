@@ -122,6 +122,7 @@ namespace ChessSharp.Tests
 
             Assert.Equal(expected, actual);
         }
+        [Fact]
         public void FENAfterBlackLeftRookMoves()
         {
             string expected = "1nbqkbnr/rppppppp/p7/8/3PP3/8/PPP2PPP/RNBQKBNR w KQk - 1 3";
