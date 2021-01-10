@@ -4,7 +4,9 @@ using ChessSharp.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("ChessSharp.Tests")]
 namespace ChessSharp
 {
     /// <summary> Represents the chess board </summary>
@@ -1100,6 +1102,7 @@ namespace ChessSharp
         /// <param name="pos1">First Tile <see cref="Tile"/></param>
         /// <param name="pos2">Second Tile <see cref="Tile"/></param>
         /// <returns>A list of tile between the given two tiles <see cref="Tile"/></returns>
+        
         internal List<Tile> GetTilesInRow(Tile pos1, Tile pos2) // get X axis
         {
             List<Tile> res = new List<Tile>();
