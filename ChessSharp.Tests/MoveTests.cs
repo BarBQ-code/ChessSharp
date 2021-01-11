@@ -81,5 +81,15 @@ namespace ChessSharp.Tests
                 Move.FromUCI(board, "h7h8", new Pawn(true)); //Can't promote to a pawn
             });
         }
+        [Fact]
+        public void TestMoveCopyingConstructor()
+        {
+            Grid board = new Grid();
+            Move expected = Move.FromUCI(board, "e2e4");
+
+            Move actual = new Move(expected);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }
