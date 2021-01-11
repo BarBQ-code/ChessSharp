@@ -2,7 +2,9 @@
 using ChessSharp.Players;
 using ChessSharp.Exceptions;
 using System;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("ChessSharp.Tests")]
 namespace ChessSharp
 {
     /// <summary>Enum for identifying moves, used alot in MakeMove various Move functions</summary>
