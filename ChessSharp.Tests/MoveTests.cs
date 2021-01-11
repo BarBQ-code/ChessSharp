@@ -31,5 +31,15 @@ namespace ChessSharp.Tests
 
             Assert.Equal(expected, actual);
         }
+        [Fact]
+        public void TestMoveFromUCIPromotion()
+        {
+            Grid board = new Grid("4k3/7P/8/8/8/8/8/4K3 w - - 0 1");
+            Move expected = new Move(new Tile(new Pawn(true), 7, 6), new Tile(null, 7, 7), board.CurrentPlayer, MoveType.Promotion, new Queen(true));
+
+            Move actual = Move.FromUCI(board, "h7h8", new Queen(true));
+
+            Assert.Equal(expected, actual);
+        }
     }
 }
