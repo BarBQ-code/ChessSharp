@@ -14,7 +14,7 @@ namespace ChessSharp.Tests
         public void TestMoveFromUCIE4()
         {
             Grid board = new Grid();
-            Move expected = new Move(new Tile(new Pawn(true), 4, 1), new Tile(null, 4, 3), board.CurrentPlayer);
+            Move expected = new Move(board.GetTile(4, 1), board.GetTile(4, 3), board.CurrentPlayer);
 
             Move actual = Move.FromUCI(board, "e2e4");
 
@@ -26,7 +26,7 @@ namespace ChessSharp.Tests
             Grid board = new Grid();
             board.MakeMove(Move.FromUCI(board, "e2e4"));
 
-            Move expected = new Move(new Tile(new Pawn(false), 4, 6), new Tile(null, 4, 4), board.CurrentPlayer);
+            Move expected = new Move(board.GetTile(4, 6), board.GetTile(4, 4), board.CurrentPlayer);
 
             Move actual = Move.FromUCI(board, "e7e5");
 
@@ -36,7 +36,7 @@ namespace ChessSharp.Tests
         public void TestMoveFromUCIPromotion()
         {
             Grid board = new Grid("4k3/7P/8/8/8/8/8/4K3 w - - 0 1");
-            Move expected = new Move(new Tile(new Pawn(true), 7, 6), new Tile(null, 7, 7), board.CurrentPlayer, MoveType.Promotion, new Queen(true));
+            Move expected = new Move(board.GetTile(7, 6), board.GetTile(7, 7), board.CurrentPlayer, MoveType.Promotion, new Queen(true));
 
             Move actual = Move.FromUCI(board, "h7h8", new Queen(true));
 
@@ -88,6 +88,41 @@ namespace ChessSharp.Tests
             Move expected = Move.FromUCI(board, "e2e4");
 
             Move actual = new Move(expected);
+
+            Assert.Equal(expected, actual);
+        }
+        [Fact]
+        public void TestMoveTypeIdentifierShortCastles()
+        {
+            //Test for white
+            Grid board = new Grid("r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 1");
+            MoveType expected = MoveType.ShortCastles;
+
+            MoveType actual = Move.MoveTypeIdentifier(board, board.GetTile(4, 0), board.GetTile(6, 0));
+
+            Assert.Equal(expected, actual);
+
+            //Test for black
+            board = new Grid("r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQR1K1 b kq - 7 5");
+
+            actual = Move.MoveTypeIdentifier(board, board.GetTile(4, 7), board.GetTile(6, 7));
+
+            Assert.Equal(expected, actual);
+        }
+        [Fact]
+        public void TestMoveTypeIdentifierLongCastles()
+        {
+            //Test for white
+            Grid board = new Grid("r1bqk2r/ppp2ppp/2np1n2/2b1p3/4P3/2NPBN2/PPPQ1PPP/R3KB1R w KQkq - 0 1");
+            MoveType expected = MoveType.LongCastles;
+
+            MoveType actual = Move.MoveTypeIdentifier(board, board.GetTile(4, 0), board.GetTile(2, 0));
+
+            Assert.Equal(expected, actual);
+            //Test for black
+            board = new Grid("r3kbnr/pppq1ppp/2np4/4p3/2B1P1b1/2NPBN2/PPP2PPP/R2QK2R b KQkq - 0 1");
+
+            actual = Move.MoveTypeIdentifier(board, board.GetTile(4, 7), board.GetTile(2, 7));
 
             Assert.Equal(expected, actual);
         }
