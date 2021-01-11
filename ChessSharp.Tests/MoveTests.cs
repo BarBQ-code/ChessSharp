@@ -146,5 +146,15 @@ namespace ChessSharp.Tests
 
             Assert.Equal(expected, actual);
         }
+        [Fact]
+        public void TestMoveTypeIdentifierNormal()
+        {
+            Grid board = new Grid();
+            MoveType expected = MoveType.Normal;
+
+            MoveType actual = Move.MoveTypeIdentifier(board, board.GetTile(4, 1), board.GetTile(4, 3));
+
+            Assert.Equal(expected, actual);
+        }
     }
 }
