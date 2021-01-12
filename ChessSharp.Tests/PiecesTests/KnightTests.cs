@@ -15,7 +15,7 @@ namespace ChessSharp.Tests.PiecesTests
             Grid board = new Grid("4k3/8/8/4N3/8/8/8/4K3 w - - 0 1");
             Tile knightPos = board.GetTile(4, 4);
 
-            List<Move> legalKnightMoves = knightPos.Piece.GetAllMoves(board, knightPos);
+            List<Move> legalKnightMoves = knightPos.Piece.GetAllMoves(board, knightPos); //get all moves uses canmove so it's a canmove test
             List<Move> moves = new List<Move>
             {
                 Move.FromUCI(board, "e5c4"),
@@ -28,6 +28,22 @@ namespace ChessSharp.Tests.PiecesTests
                 Move.FromUCI(board, "e5g6")
             };
             Assert.True(legalKnightMoves.All(moves.Contains) && legalKnightMoves.Count == moves.Count);
+        }
+        [Fact]
+        public void TestKnightIsAttackingTile()
+        {
+            Grid board = new Grid("4k3/8/8/8/8/8/8/N3K3 w - - 0 1");
+            Tile knightPos = board.GetTile(0, 0);
+
+            Assert.False(knightPos.Piece.IsAttackingTile(board, knightPos, board.GetTile(0, 0)));
+            Assert.False(knightPos.Piece.IsAttackingTile(board, knightPos, board.GetTile(0, 1)));
+            Assert.False(knightPos.Piece.IsAttackingTile(board, knightPos, board.GetTile(0, 2)));
+            Assert.False(knightPos.Piece.IsAttackingTile(board, knightPos, board.GetTile(1, 1)));
+            Assert.False(knightPos.Piece.IsAttackingTile(board, knightPos, board.GetTile(1, 0)));
+            Assert.False(knightPos.Piece.IsAttackingTile(board, knightPos, board.GetTile(2, 0)));
+
+            Assert.True(knightPos.Piece.IsAttackingTile(board, knightPos, board.GetTile(1, 2)));
+            Assert.True(knightPos.Piece.IsAttackingTile(board, knightPos, board.GetTile(2, 1)));
         }
     }
 }
