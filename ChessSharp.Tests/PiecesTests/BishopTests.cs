@@ -41,6 +41,14 @@ namespace ChessSharp.Tests.PiecesTests
             Assert.True(bishopPos.Piece.GetAllMoves(board, bishopPos).Count == 0);
         }
         [Fact]
+        public void TestBishopInPin()
+        {
+            Grid board = new Grid("4k3/4r3/8/8/8/8/4B3/4K3 w - - 0 1");
+            Tile bishopPos = board.GetTile(4, 1);
+
+            Assert.True(bishopPos.Piece.GetAllMoves(board, bishopPos).Count == 0);
+        }
+        [Fact]
         public void TestBishopIsAttackingTile()
         {
             Grid board = new Grid("4k3/8/8/8/8/8/8/B3K3 w - - 0 1");
