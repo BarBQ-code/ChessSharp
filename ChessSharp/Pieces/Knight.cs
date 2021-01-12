@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace ChessSharp.Pieces
 {
     public class Knight : Piece

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace ChessSharp.Pieces
 {
     public class Queen : Piece
