@@ -30,6 +30,19 @@ namespace ChessSharp.Tests.PiecesTests
             Assert.True(legalKnightMoves.All(moves.Contains) && legalKnightMoves.Count == moves.Count);
         }
         [Fact]
+        public void TestKnightInPin()
+        {
+            //Straight line
+            Grid board = new Grid("4k3/4r3/8/8/8/8/4N3/4K3 w - - 0 1");
+            Tile knightPos = board.GetTile(4, 1);
+            Assert.True(knightPos.Piece.GetAllMoves(board, knightPos).Count == 0);
+
+            //Diagonal 
+            board = new Grid("4k3/8/8/8/7b/8/5N2/4K3 w - - 0 1");
+            knightPos = board.GetTile(5, 1);
+            Assert.True(knightPos.Piece.GetAllMoves(board, knightPos).Count == 0);
+        }
+        [Fact]
         public void TestKnightIsAttackingTile()
         {
             Grid board = new Grid("4k3/8/8/8/8/8/8/N3K3 w - - 0 1");
