@@ -178,5 +178,55 @@ namespace ChessSharp.Tests
 
             Assert.Equal(expected, actual);
         }
+        [Fact]
+        public void TestMoveToString()
+        {
+            Grid board = new Grid();
+
+            Move e4 = Move.FromUCI(board, "e2e4");
+            Assert.Equal("e4", e4.ToString());
+            board.MakeMove(e4);
+
+            Move e5 = Move.FromUCI(board, "e7e5");
+            Assert.Equal("e5", e5.ToString());
+            board.MakeMove(e5);
+
+            Move Nf3 = Move.FromUCI(board, "g1f3");
+            Assert.Equal("Nf3", Nf3.ToString());
+            board.MakeMove(Nf3);
+
+            Move nc6 = Move.FromUCI(board, "b8c6");
+            Assert.Equal("nc6", nc6.ToString());
+            board.MakeMove(nc6);
+
+            //test captures
+            Move Nxe5 = Move.FromUCI(board, "f3e5");
+            Assert.Equal("Nxe5", Nxe5.ToString());
+            board.MakeMove(Nxe5);
+
+            //test pawn captures
+            board = new Grid("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2");
+            Move exd5 = Move.FromUCI(board, "e4d5");
+            Assert.Equal("exd5", exd5.ToString());
+
+            //test pawn enpassant
+            board = new Grid("rnbqkb1r/ppp1pppp/5n2/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 3");
+            Move exd6 = Move.FromUCI(board, "e5d6");
+            Assert.Equal("exd6", exd6.ToString());
+
+            //test pawn promotion
+            board = new Grid("4k3/7P/8/8/8/8/8/4K3 w - - 0 1");
+            Move h7h8 = Move.FromUCI(board, "h7h8", new Queen(true));
+            Assert.Equal("h8=Q", h7h8.ToString()); //this should be check to but for now it doesn't work, I'll add it later
+
+            //test check
+            board = new Grid("r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4");
+            Move c4f7 = Move.FromUCI(board, "c4f7");
+            Assert.Equal("Bxf7+", c4f7.ToString());
+
+            //test checkmate
+            Move h5f7 = Move.FromUCI(board, "h5f7");
+            Assert.Equal("Qxf7#", h5f7.ToString());
+        }
     }
 }
