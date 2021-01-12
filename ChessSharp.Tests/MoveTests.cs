@@ -228,5 +228,19 @@ namespace ChessSharp.Tests
             Move h5f7 = Move.FromUCI(board, "h5f7");
             Assert.Equal("Qxf7#", h5f7.ToString());
         }
+        [Fact]
+        public void TestMoveEquality()
+        {
+            Grid board = new Grid();
+            Move e4 = Move.FromUCI(board, "e2e4");
+
+            Move copye4 = new Move(e4);
+            Assert.True(e4.Equals(copye4));
+            Assert.True(copye4.Equals(e4));
+            Assert.True(e4 == copye4);
+            Assert.True(copye4 == e4);
+            Assert.False(e4 != copye4);
+            Assert.False(copye4 != e4);
+        }
     }
 }
