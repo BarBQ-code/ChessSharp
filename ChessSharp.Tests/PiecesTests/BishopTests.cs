@@ -40,5 +40,34 @@ namespace ChessSharp.Tests.PiecesTests
 
             Assert.True(bishopPos.Piece.GetAllMoves(board, bishopPos).Count == 0);
         }
+        [Fact]
+        public void TestBishopIsAttackingTile()
+        {
+            Grid board = new Grid("4k3/8/8/8/8/8/8/B3K3 w - - 0 1");
+            Tile bishopPos = board.GetTile(0, 0);
+
+            List<Tile> tilesThatBishopIsAttacking = board.GetDiagonalTiles(board.GetTile(0, 0), board.GetTile(7, 7));
+            List<Tile> bishopTiles = new List<Tile>
+            {
+                board.GetTile(1, 1),
+                board.GetTile(2, 2),
+                board.GetTile(3, 3),
+                board.GetTile(4, 4),
+                board.GetTile(5, 5),
+                board.GetTile(6, 6),
+            };
+            Assert.True(tilesThatBishopIsAttacking.SequenceEqual(bishopTiles));
+
+            Assert.False(bishopPos.Piece.IsAttackingTile(board, bishopPos, board.GetTile(0, 1)));
+            Assert.False(bishopPos.Piece.IsAttackingTile(board, bishopPos, board.GetTile(0, 2)));
+            Assert.False(bishopPos.Piece.IsAttackingTile(board, bishopPos, board.GetTile(1, 0)));
+            Assert.False(bishopPos.Piece.IsAttackingTile(board, bishopPos, board.GetTile(2, 0)));
+
+            //In this pos the bishop is blocked so it doesn't have any moves
+            //But it still attack 1 tile
+            board = new Grid("4k3/8/8/8/8/8/1P6/B3K3 w - - 0 1");
+            Assert.True(bishopPos.Piece.GetAllMoves(board, bishopPos).Count == 0);
+            Assert.True(bishopPos.Piece.IsAttackingTile(board, bishopPos, board.GetTile(1, 1)));
+        }
     }
 }
