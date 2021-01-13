@@ -49,5 +49,20 @@ namespace ChessSharp.Tests.PiecesTests
 
             Assert.True(queenPos.Piece.GetAllMoves(board, queenPos).Count == 0);
         }
+        [Fact]
+        public void TestQueenInPin()
+        {
+            //Straight pin
+            Grid board = new Grid("4k3/4r3/8/8/8/8/4Q3/4K3 w - - 0 1");
+            Tile queenPos = board.GetTile(4, 1);
+
+            Assert.True(queenPos.Piece.GetAllMoves(board, queenPos).Count == 5);
+
+            //Diagonal pin
+            board = new Grid("4k3/8/8/8/7b/8/5Q2/4K3 w - - 0 1");
+            queenPos = board.GetTile(5, 1);
+
+            Assert.True(queenPos.Piece.GetAllMoves(board, queenPos).Count == 2);
+        }
     }
 }
