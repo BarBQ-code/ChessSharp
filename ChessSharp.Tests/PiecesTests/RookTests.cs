@@ -51,5 +51,27 @@ namespace ChessSharp.Tests.PiecesTests
 
             Assert.True(rookPos.Piece.GetAllMoves(board, rookPos).Count == 5);
         }
+        [Fact]
+        public void TestRookIsAttackingTile()
+        {
+            Grid board = new Grid("4k3/8/8/8/8/8/4K3/R7 w - - 0 1");
+            Tile rookPos = board.GetTile(0, 0);
+
+            List<Tile> firstRankTiles = board.GetTilesInRow(rookPos, board.GetTile(7, 0));
+            firstRankTiles.ForEach(tile => Assert.True(rookPos.Piece.IsAttackingTile(board, rookPos, tile)));
+
+            List<Tile> firstFileTiles = board.GetTilesInCol(rookPos, board.GetTile(0, 7));
+            firstFileTiles.ForEach(tile => Assert.True(rookPos.Piece.IsAttackingTile(board, rookPos, tile)));
+
+            Assert.False(rookPos.Piece.IsAttackingTile(board, rookPos, board.GetTile(1, 1)));
+            Assert.False(rookPos.Piece.IsAttackingTile(board, rookPos, board.GetTile(2, 1)));
+            Assert.False(rookPos.Piece.IsAttackingTile(board, rookPos, board.GetTile(1, 2)));
+
+            //Rook is blocked and has no moves
+            board = new Grid("4k3/8/8/8/8/8/N3K3/RB6 w - - 0 1");
+            rookPos = board.GetTile(0, 0);
+
+            Assert.True(rookPos.Piece.GetAllMoves(board, rookPos).Count == 0);
+        }
     }
 }
