@@ -49,5 +49,16 @@ namespace ChessSharp.Tests.PiecesTests
 
             Assert.True(pawnPos.Piece.GetAllMoves(board, pawnPos).Count == 0);
         }
+        [Fact]
+        public void TestPawnIsAttackingTile()
+        {
+            Grid board = new Grid();
+            Tile ePawn = board.GetTile(4, 1);
+
+            Assert.True(ePawn.Piece.IsAttackingTile(board, ePawn, board.GetTile(3, 2)));
+            Assert.True(ePawn.Piece.IsAttackingTile(board, ePawn, board.GetTile(5, 2)));
+            Assert.False(ePawn.Piece.IsAttackingTile(board, ePawn, board.GetTile(4, 2)));
+            Assert.False(ePawn.Piece.IsAttackingTile(board, ePawn, board.GetTile(4, 3)));
+        }
     }
 }
