@@ -64,5 +64,23 @@ namespace ChessSharp.Tests.PiecesTests
 
             Assert.True(queenPos.Piece.GetAllMoves(board, queenPos).Count == 2);
         }
+        [Fact]
+        public void TestQueenIsAttackingTile()
+        {
+            Grid board = new Grid("4k3/8/8/8/8/8/4K3/Q7 w - - 0 1");
+            Tile queenPos = board.GetTile(0, 0);
+
+            List<Tile> firstRankTiles = board.GetTilesInRow(queenPos, board.GetTile(7, 0));
+            firstRankTiles.ForEach(tile => Assert.True(queenPos.Piece.IsAttackingTile(board, queenPos, tile)));
+
+            List<Tile> firstFileTiles = board.GetTilesInCol(queenPos, board.GetTile(0, 7));
+            firstFileTiles.ForEach(tile => Assert.True(queenPos.Piece.IsAttackingTile(board, queenPos, tile)));
+
+            List<Tile> diagonalTiles = board.GetDiagonalTiles(queenPos, board.GetTile(7, 7));
+            diagonalTiles.ForEach(tile => Assert.True(queenPos.Piece.IsAttackingTile(board, queenPos, tile)));
+
+            Assert.False(queenPos.Piece.IsAttackingTile(board, queenPos, board.GetTile(1, 2)));
+            Assert.False(queenPos.Piece.IsAttackingTile(board, queenPos, board.GetTile(2, 1)));
+        }
     }
 }
