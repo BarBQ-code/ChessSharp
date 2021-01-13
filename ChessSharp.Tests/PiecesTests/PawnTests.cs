@@ -41,5 +41,13 @@ namespace ChessSharp.Tests.PiecesTests
              * For the pawn class it's just a regular push
             */
         }
+        [Fact]
+        public void TestPawnInPin()
+        {
+            Grid board = new Grid("4k3/8/8/8/7b/8/5P2/4K3 w - - 0 1");
+            Tile pawnPos = board.GetTile(5, 1);
+
+            Assert.True(pawnPos.Piece.GetAllMoves(board, pawnPos).Count == 0);
+        }
     }
 }
