@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessSharp.Pieces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
@@ -59,6 +60,19 @@ namespace ChessSharp.Tests.PiecesTests
             Assert.True(ePawn.Piece.IsAttackingTile(board, ePawn, board.GetTile(5, 2)));
             Assert.False(ePawn.Piece.IsAttackingTile(board, ePawn, board.GetTile(4, 2)));
             Assert.False(ePawn.Piece.IsAttackingTile(board, ePawn, board.GetTile(4, 3)));
+        }
+        [Fact]
+        public void TestPawnEquality()
+        {
+            Pawn p1 = new Pawn(true) { CanBeCapturedEnPassant = true };
+            Pawn p2 = new Pawn(true) { CanBeCapturedEnPassant = true };
+
+            Assert.True(p1.Equals(p2));
+            Assert.True(p2.Equals(p1));
+            Assert.True(p1 == p2);
+            Assert.True(p2 == p1);
+            Assert.False(p1 != p2);
+            Assert.False(p2 != p1);
         }
     }
 }
