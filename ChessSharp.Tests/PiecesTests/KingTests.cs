@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessSharp.Pieces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -143,7 +144,17 @@ namespace ChessSharp.Tests.PiecesTests
             Assert.False(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(2, 0)));
             Assert.False(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(6, 0)));
             Assert.False(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(4, 2)));
+        }
+        [Fact]
+        public void TestWhiteKingInCheck()
+        {
+            Grid board = new Grid("4k3/4r3/8/8/8/8/8/4K3 w - - 0 1");
+            Tile kingPos = board.GetTile(4, 0);
+            King king = kingPos.Piece as King;
 
+            Assert.True(king.InCheck(board, kingPos));
+            //There is no need to test to much here
+            //because I've tested all the other piece IsAttackingTile method which this method relies on
         }
     }
 }
