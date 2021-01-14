@@ -156,5 +156,16 @@ namespace ChessSharp.Tests.PiecesTests
             //There is no need to test to much here
             //because I've tested all the other piece IsAttackingTile method which this method relies on
         }
+        [Fact]
+        public void TestBlackKingInCheck()
+        {
+            Grid board = new Grid("4k3/8/8/8/8/8/4R3/4K3 w - - 0 1");
+            Tile kingPos = board.GetTile(4, 7);
+            King king = kingPos.Piece as King;
+
+            Assert.True(king.InCheck(board, kingPos));
+            //There is no need to test to much here
+            //because I've tested all the other piece IsAttackingTile method which this method relies on
+        }
     }
 }
