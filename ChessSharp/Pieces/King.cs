@@ -78,7 +78,10 @@ namespace ChessSharp.Pieces
                         if (king.InCheck(board, start))
                             return false;
 
-                        if (rook.HasMoved || king.HasMoved)
+                        if (rook.HasMoved)
+                            return false;
+
+                        if (board.IsTileAttacked(end, start.Piece.IsWhite))
                             return false;
 
                         var tiles = board.GetTilesInRow(start, end);
@@ -110,6 +113,9 @@ namespace ChessSharp.Pieces
                             return false;
 
                         if (rook.HasMoved)
+                            return false;
+
+                        if (board.IsTileAttacked(end, start.Piece.IsWhite))
                             return false;
 
                         var tiles = board.GetTilesInRow(start, end);
