@@ -190,5 +190,28 @@ namespace ChessSharp.Tests.PiecesTests
 
             Assert.True(king.InCheckMate(board, kingPos));
         }
+        [Fact]
+        public void TestBlackKingInCheckMate()
+        {
+            //Ladder checkmate
+            Grid board = new Grid("R3k3/7R/8/8/8/8/8/4K3 b - - 0 1");
+            Tile kingPos = board.GetTile(4, 7);
+            King king = kingPos.Piece as King;
+
+            Assert.True(king.InCheckMate(board, kingPos));
+            //another type of checkmate
+            board = new Grid("4k3/4Q3/8/8/8/8/4R3/4K3 b - - 0 1");
+            kingPos = board.GetTile(4, 7);
+            king = kingPos.Piece as King;
+
+            Assert.True(king.InCheckMate(board, kingPos));
+
+            //checkmate with a pin
+            board = new Grid("6rk/6pp/6N1/8/8/8/8/4K2R b - - 0 1");
+            kingPos = board.GetTile(7, 7);
+            king = kingPos.Piece as King;
+
+            Assert.True(king.InCheckMate(board, kingPos));
+        }
     }
 }
