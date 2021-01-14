@@ -167,5 +167,28 @@ namespace ChessSharp.Tests.PiecesTests
             //There is no need to test to much here
             //because I've tested all the other piece IsAttackingTile method which this method relies on
         }
+        [Fact]
+        public void TestWhiteKingInCheckMate()
+        {
+            //Ladder checkmate
+            Grid board = new Grid("4k3/8/8/8/8/8/7r/r3K3 w - - 0 1");
+            Tile kingPos = board.GetTile(4, 0);
+            King king = kingPos.Piece as King;
+
+            Assert.True(king.InCheckMate(board, kingPos));
+            //another type of checkmate
+            board = new Grid("4k3/4r3/8/8/8/8/4q3/4K3 w - - 0 1");
+            kingPos = board.GetTile(4, 0);
+            king = kingPos.Piece as King;
+
+            Assert.True(king.InCheckMate(board, kingPos));
+
+            //checkmate with a pin
+            board = new Grid("4k2r/8/8/8/8/6n1/6PP/6RK w k - 0 1");
+            kingPos = board.GetTile(7, 0);
+            king = kingPos.Piece as King;
+
+            Assert.True(king.InCheckMate(board, kingPos));
+        }
     }
 }
