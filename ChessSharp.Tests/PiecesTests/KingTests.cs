@@ -60,6 +60,13 @@ namespace ChessSharp.Tests.PiecesTests
             };
 
             Assert.True(kingLegalMoves.All(moves.Contains) && kingLegalMoves.Count == moves.Count);
+
+            //Check if king can castle when he is cutoff
+            board = new Grid("4k3/8/8/8/2b2b2/8/8/R3K2R w KQ - 0 1");
+            kingPos = board.GetTile(4, 0);
+
+            Assert.False(kingPos.Piece.CanMove(board, Move.FromUCI(board, "e1g1")));
+            Assert.False(kingPos.Piece.CanMove(board, Move.FromUCI(board, "e1c1")));
         }
     }
 }
