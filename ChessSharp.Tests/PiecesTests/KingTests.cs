@@ -128,5 +128,22 @@ namespace ChessSharp.Tests.PiecesTests
             Assert.False(kingPos.Piece.CanMove(board, Move.FromUCI(board, "e8g8")));
             Assert.False(kingPos.Piece.CanMove(board, Move.FromUCI(board, "e8c8")));
         }
+        [Fact]
+        public void TestKingIsAttackingTile()
+        {
+            Grid board = new Grid("4k3/8/8/8/8/8/8/4K3 w - - 0 1");
+            Tile kingPos = board.GetTile(4, 0);
+
+            Assert.True(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(3, 0)));
+            Assert.True(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(3, 1)));
+            Assert.True(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(4, 1)));
+            Assert.True(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(5, 0)));
+            Assert.True(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(5, 1)));
+
+            Assert.False(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(2, 0)));
+            Assert.False(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(6, 0)));
+            Assert.False(kingPos.Piece.IsAttackingTile(board, kingPos, board.GetTile(4, 2)));
+
+        }
     }
 }
