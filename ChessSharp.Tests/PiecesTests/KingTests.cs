@@ -213,5 +213,19 @@ namespace ChessSharp.Tests.PiecesTests
 
             Assert.True(king.InCheckMate(board, kingPos));
         }
+        [Fact]
+        public void TestKingEquality()
+        {
+            King king1 = new King(true);
+            King king2 = new King(true);
+
+            Assert.True(king1.Equals(king2));
+            Assert.True(king2.Equals(king1));
+            Assert.True(king1 == king2);
+            Assert.True(king2 == king1);
+            Assert.False(king1 != king2);
+            Assert.False(king2 != king1);
+            //I don't feel like checking more, I am preety sure that it works
+        }
     }
 }
