@@ -69,7 +69,7 @@ namespace ChessSharp.Tests.PiecesTests
             Assert.False(kingPos.Piece.CanMove(board, Move.FromUCI(board, "e1c1")));
         }
         [Fact]
-        public void TestBlackKingCanMove()
+        public void TestBlackKingNormalMoves()
         {
             //In init pos there are no moves for the king
             Grid board = new Grid();
@@ -100,6 +100,33 @@ namespace ChessSharp.Tests.PiecesTests
 
             Assert.True(kingLegalMoves.Count == 1);
             Assert.True(kingPos.Piece.CanMove(board, Move.FromUCI(board, "e8e7")));
+        }
+        [Fact]
+        public void TestBlackKingCastles()
+        {
+            Grid board = new Grid("r3k2r/8/8/8/8/8/8/4K3 b kq - 0 1");
+            Tile kingPos = board.GetTile(4, 7);
+
+            List<Move> kingLegalMoves = kingPos.Piece.GetAllMoves(board, kingPos);
+            List<Move> moves = new List<Move>
+            {
+                Move.FromUCI(board, "e8f8"),
+                Move.FromUCI(board, "e8d8"),
+                Move.FromUCI(board, "e8c8"),
+                Move.FromUCI(board, "e8g8"),
+                Move.FromUCI(board, "e8d7"),
+                Move.FromUCI(board, "e8e7"),
+                Move.FromUCI(board, "e8f7")
+            };
+
+            Assert.True(kingLegalMoves.All(moves.Contains) && kingLegalMoves.Count == moves.Count);
+
+            //Check if king can castle when he is cutoff
+            board = new Grid("r3k2r/8/8/2B2B2/8/8/8/4K3 w kq - 0 1");
+            kingPos = board.GetTile(4, 7);
+
+            Assert.False(kingPos.Piece.CanMove(board, Move.FromUCI(board, "e8g8")));
+            Assert.False(kingPos.Piece.CanMove(board, Move.FromUCI(board, "e8c8")));
         }
     }
 }
