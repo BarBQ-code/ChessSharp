@@ -1,22 +1,20 @@
 # ChessSharp
-======
 ![Build passing](https://img.shields.io/badge/build-passing-green)
 
 ChessSharp is a simple to use chess library
+
+# Setup
 In order to setup this library, type in the command line:
 ``` git clone https://github.com/BarBQ-code/ChessSharp.git ```
 
-Add a new console application project and add this nibrary as a reference
+Add a new console application project and add this library as a reference
 
-
-#Usage
-======
 Then import the library:
 
 ```csharp 
 using ChessSharp; 
 ```
-
+# Usage
 Inorder to create a quick board:
 
 ```csharp
