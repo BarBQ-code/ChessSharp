@@ -1,10 +1,10 @@
-﻿
-public enum GameState
+﻿public enum GameState
 {
     ACTIVE,
     WHITE_WIN,
     BLACK_WIN,
     STALEMATE,
+    DRAW_BY_INSUFFICIENT_MATERIAL,
     RESIGNATION,
     THREE_FOLD_REPITION,
     FIFTY_MOVE_RULE
