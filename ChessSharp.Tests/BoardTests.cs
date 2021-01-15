@@ -286,6 +286,14 @@ namespace ChessSharp.Tests
 
         }
         [Fact]
+        public void TestDrawByInSufficientMaterial()
+        {
+            Grid board = new Grid("8/3k4/8/8/3K4/8/8/8 w - - 0 1");
+            Assert.True(board.GameState == GameState.DRAW_BY_INSUFFICIENT_MATERIAL);
+
+            //This method is not completed yet so there is no point in making complex tests
+        }
+        [Fact]
         public void TestGetTilesInRow()
         {
             Grid board = new Grid();
