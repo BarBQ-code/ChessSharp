@@ -14,6 +14,38 @@ Then import the library:
 ```csharp 
 using ChessSharp; 
 ```
+# Features
+:white_check_mark: Move Validation
+
+:white_check_mark: Check
+
+:white_check_mark: CheckMate
+
+:white_check_mark: StaleMate 
+
+:white_check_mark: ThreeFold Repition
+
+:white_check_mark: Draw By Fifty Move Rule
+
+:white_check_mark: Castling
+
+:white_check_mark: Pawn Promotion
+
+:white_check_mark: En Passant Capture
+
+:white_check_mark: Easy Move Creation (Using UCI)
+
+:white_check_mark: FEN String Parsing And Board To FEN Conversion
+
+:white_check_mark: Algebric Notation Support
+
+:white_check_mark: Simple PGN Parsing Support
+
+:white_check_mark: Move History
+
+:negative_squared_cross_mark: Five Fold Repition
+
+:negative_squared_cross_mark: Draw By Insufficient Material
 # Usage
 Inorder to create a quick board:
 
@@ -59,6 +91,12 @@ To create a move use Move.FromUCI
 
 ```csharp
 Move e4 = Move.FromUCI(board, "e2e4");
+```
+
+To create a promotion move:
+
+```csharp
+Move h8 = Move.FromUCI(board, "h7h8", new Queen(true));
 ```
 
 Use the library:
@@ -121,8 +159,3 @@ Output:
 r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4
 ```
 
-Things to add:
-```
-Draw by in sufficient material
-Five fold repition
-```
