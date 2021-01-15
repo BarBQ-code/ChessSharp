@@ -1,4 +1,6 @@
-﻿Chess Sharp Is A Simple To Use Chess Library
+# ChessSharp
+![Build passing](https://img.shields.io/badge/build-passing-green)
+Chess Sharp Is A Simple To Use Chess Library
 
 In Order To Setup This Library, Type In The Command Line:
 ``` git clone https://github.com/BarBQ-code/ChessSharp.git ```
