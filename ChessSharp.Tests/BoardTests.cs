@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using ChessSharp;
 using ChessSharp.Exceptions;
 using ChessSharp.Pieces;
 using Xunit;

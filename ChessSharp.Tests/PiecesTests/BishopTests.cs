@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using ChessSharp;
 using Xunit;
 using System.Linq;
 
