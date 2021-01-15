@@ -229,12 +229,8 @@ namespace ChessSharp.Tests
         [Fact]
         public void TestIsStaleMate()
         {
-            //Test 2 kings stalemate
-            Grid board = new Grid("3k4/8/8/8/8/8/8/4K3 w - - 0 1");
-            Assert.True(board.IsStaleMate());
-
             //Test simple black king in stalemate
-            board = new Grid("3k4/8/2Q1K3/8/8/8/8/8 b - - 0 1");
+            Grid board = new Grid("3k4/8/2Q1K3/8/8/8/8/8 b - - 0 1");
             Assert.True(board.IsStaleMate());
 
             //Test simple white king is stalemate
