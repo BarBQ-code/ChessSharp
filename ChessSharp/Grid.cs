@@ -751,10 +751,6 @@ namespace ChessSharp
         /// </exception>
         public bool IsStaleMate()
         {
-            if (WhitePieces.Count == 1 && WhitePieces[0] is King
-                && BlackPieces.Count == 1 && BlackPieces[0] is King)
-                return true;
-
             if(CurrentPlayer.IsWhite)
             {
                 Piece wKing = WhitePieces.Find(piece => piece is King);
@@ -859,7 +855,15 @@ namespace ChessSharp
             return false;
         }
         #endregion
-
+        /// <summary>
+        /// Checks if there is a draw by insufficient material
+        /// This function is not finished, I need to add more complex logic
+        /// </summary>
+        /// <returns>Return the corresponding GameState <see cref="GameState"/></returns>
+        public bool DrawByInSufficientMaterial()
+        {
+            return (WhitePieces.Count == 1 && WhitePieces[0] is King) && (BlackPieces.Count == 1 && BlackPieces[0] is King);
+        }
         #region Private Methods
         /// <summary>
         /// Initializes the WhitePiece and BlackPieces properties in the start of each game and the killed
@@ -912,6 +916,10 @@ namespace ChessSharp
             {
                 GameState = GameState.STALEMATE;
                 return;
+            }
+            if (DrawByInSufficientMaterial())
+            {
+                GameState = GameState.DRAW_BY_INSUFFICIENT_MATERIAL;
             }
             if(IsFiftyMoveRule())
             {
