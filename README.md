@@ -15,7 +15,7 @@ Then import the library:
 using ChessSharp; 
 ```
 # Features
-:white_check_mark: Fully Tested
+:white_check_mark: Fully Documented
 
 :white_check_mark: Move Validation
 
