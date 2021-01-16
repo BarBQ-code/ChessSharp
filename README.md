@@ -39,7 +39,7 @@ using ChessSharp;
 
 :white_check_mark: FEN String Parsing And Board To FEN Conversion
 
-:white_check_mark: Algebric Notation Support
+:white_check_mark: Algebraic Notation Support
 
 :white_check_mark: Simple PGN Parsing Support
 
